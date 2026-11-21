@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { LandingPreview } from "@/components/landing-preview";
 import { SayLessDot } from "@/components/sayless-dot";
+import { LandingMotion } from "@/components/landing-motion";
 import styles from "./landing.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <LandingMotion className={styles.page}>
       <main className={styles.main} id="main">
         <section className={styles.hero} aria-labelledby="landing-title">
           <div className={styles.heroCopy}>
@@ -17,7 +18,7 @@ export default function Home() {
               <Link className={styles.textLink} href="/demo">Try the demo</Link>
             </div>
           </div>
-          <figure className={styles.dotArt} aria-label="Colorful SayLess dot characters">
+          <figure className={styles.dotArt} aria-label="Colorful SayLess dot characters" data-reveal data-stagger>
             <SayLessDot mood="curious" color="lavender" className={styles.dotCurious} />
             <SayLessDot mood="pause" color="melon" className={styles.dotPause} />
             <SayLessDot mood="bright" color="jonquil" className={styles.dotBright} />
@@ -27,13 +28,13 @@ export default function Home() {
         <LandingPreview />
         <section className={styles.howSection} id="how-it-works" aria-labelledby="how-title">
           <h2 id="how-title">notice. practice. repeat.</h2>
-          <div className={styles.steps}>
+          <div className={styles.steps} data-reveal data-stagger>
             <article><SayLessDot mood="curious" color="jonquil" className={styles.stepDot} /><h3>Find your patterns</h3><p>See the words you lean on.</p></article>
             <article><SayLessDot mood="pause" color="lavender" className={styles.stepDot} /><h3>Make one change</h3><p>Record a pitch. Get a focused tip.</p></article>
             <article><SayLessDot mood="calm" color="mint" className={styles.stepDot} /><h3>Hear your progress</h3><p>Replay both takes. Keep what works.</p></article>
           </div>
         </section>
-        <section className={styles.closing} aria-labelledby="closing-title">
+        <section className={styles.closing} aria-labelledby="closing-title" data-reveal>
           <h2 id="closing-title">your next take starts here.</h2>
           <Link className="primary" href="/app#practice">Practice your pitch</Link>
         </section>
@@ -44,6 +45,6 @@ export default function Home() {
         <Link href="/demo">Demo</Link>
         <Link href="/docs">Docs</Link>
       </footer>
-    </div>
+    </LandingMotion>
   );
 }

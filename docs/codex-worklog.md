@@ -30,9 +30,36 @@ On `codex/demo-device-preview`, put `/demo` inside a handset with a slim metal r
 
 Lint, typecheck, build, and served landing checks passed. Chrome verified all five steps, recap details, and the transition to sample replay at 320px and 390px and at two desktop heights. Inspected the desktop recap capture and verified five distinct light surfaces at 320px, 390px, and 1440px. Replaced the chat disclosure with seven estimated expression counts from a labeled simulated conversation. Verified the breakdown and the full demo flow at all three widths. Enlarged the desktop handset to use the viewport and made the recap card fill the space between the progress bar and controls. Checked short and tall viewports, including 320px mobile.
 
+## Minimal landing labels — November 21, 2026
+
+- Branch `codex/landing-minimal-copy` starts from `origin/main` (`b0c482f`) and carries forward the unmerged visual-first landing work.
+- Removed the four requested Discover/Practice labels and the unused sample-footer spacing. Kept chart behavior, sample-qualified metrics, and illustrative goal labeling unchanged. No app/demo/API changes.
+- Verified lint, typecheck, seven fixture tests, production build, HTTP/CSS checks, and all three preview tabs in isolated Chrome at 1440, 390, and 320px: removed labels absent, no horizontal overflow. No merge or deployment.
+
+## Visual-first landing preview — November 21, 2026
+
+- Branch `codex/landing-visual-first` starts at latest `origin/main` (`b0c482f`) and carries forward the unmerged landing changes. No app/demo/API changes.
+- Applied the Fermata browser review: one navigation row, no duplicate preview heading, no dropdowns or explanation blocks, and one short illustrative label. Practice shows inline timestamped words beneath the progressively filled waveform with one pause/resume/replay control. Plays once and holds; reduced motion is static. Compare replaces the large stat card with an inline badge, annotations, and a 550ms graph reveal with a clearly distinguished illustrative goal.
+- Responsive chart variants avoid horizontal scrolling. Retains SayLess palette, dot artwork, readable text and 44px controls. Sites presentation guidance informed the simpler hierarchy; source/method notes remain in `docs/landing-preview-metrics.md` rather than marketing copy.
+- Isolated Chrome (Puppeteer, explicitly authorized by user) checked 1440, 390, and 320px widths: no horizontal overflow or dropdowns. Captured and inspected Practice/Compare screenshots; tested autoplay advancement, pause/resume, finished hold/replay, reduced-motion static output, and no browser errors. Practice at 390px is about 490px tall versus the previous ~767px. Lint, typecheck, seven tests, production build, and HTTP/CSS/routes checks pass; final punctuation adjustment rechecked before handoff.
+- No merge or deployment. Local preview stays on port 3000.
+
+## Landing-sized previews — November 21, 2026
+
+- `codex/landing-compact-preview` starts from `origin/main` (`b0c482f`) and carries forward the unmerged landing graph work; unrelated app/demo/pitch changes remain intact.
+- Capped the outer preview at 960px, removed duplicate Practice/Compare headings, large minimum heights, and the nested Practice card frame. Practice now caps at 600px with a 48px waveform and tighter spacing, preserving 16px body text and 44px controls.
+- Compare now places a compact 75%/before-after summary beside the 210px-high chart. Goal controls and all 13 checkpoints remain available under a disclosure. Mobile stacks naturally without clipping content or scaling text down. Sites guidance informed the reduction in visible controls and repeated copy.
+- Autoplay, reduced-motion support, fixture math, and projections remain unchanged. Lint, typecheck, seven fixture/layout source tests, production build, and whitespace checks pass. Browser visual verification is pending; no merge/deployment.
+
 ## Edge-to-edge pitch on load — November 21, 2026
 
 On `codex/pitch-edge-to-edge`, made the deck fill the browser viewport from the first slide and removed the presentation toolbar. Lint, typecheck, and build passed. Chrome verified the layout on load and forward and backward keyboard navigation at desktop and mobile viewport sizes.
+## Compact autoplay landing graphs — November 21, 2026
+
+- `codex/landing-autoplay-polish` starts at `origin/main` (`dd17765`) and carries forward the unmerged graph work. Main's pitch route and shared navigation are preserved; API and guided demo unchanged.
+- Practice now uses a centered 720px maximum card, pale Azure surface, progressively filled waveform, varied authored hesitation words, and timestamp disclosure. Removed the slider/playhead. Silent 3× autoplay holds then loops, with pause/resume, offscreen/hidden-tab suspension, timer cleanup, and reduced-motion static mode.
+- Compare has 13 selectable checkpoints with plateaus and setbacks, solid synthetic examples, and dashed illustrative projections. Data labels and disclaimers follow Sites guidance; no measured performance or prediction claims.
+- Lint, typecheck, six fixture/source tests, production build, and whitespace checks pass. Browser-tab access is unavailable, so visual/interaction QA remains pending. No merge or deployment.
 
 ## Fullscreen pitch deck — November 21, 2026
 
@@ -55,6 +82,12 @@ Lint, typecheck, build, and served landing checks passed. Chrome verified scroll
 ## Pitch deck URL — November 21, 2026
 
 On `codex/pitch-route`, added a Next.js rewrite so `/pitch` serves Allison’s existing deck and keeps the short URL in the address bar. Lint, typecheck, and production build passed. The production server returned HTTP 200 and identical HTML from `/pitch` and `/pitch.html`.
+## Timestamped waveform and practice goals — November 21, 2026
+
+- Branch `codex/landing-waveform-goals` starts at latest `origin/main` (`9b9a440`) and carries forward the transcript feature, preserving main's shared header and phone-first demo changes. No API or demo-flow changes.
+- Replaced segment bars with an original SVG waveform, highlighted um/uh regions, exact authored timestamp controls, silent user-initiated playhead, seek slider, first/retry switch, and same-duration proposed-pause preview. Mobile waveform scrolls without compressing labels; motion preferences disable playback animation.
+- Added Duolingo-inspired goal chart with 25/50/75% target controls, baseline, weekly milestones, accessible numeric disclosure, and explicit non-predictive labeling. Sites guidance informed the separation of illustrative goals from evidence; no new hosting or dependencies.
+- Lint, typecheck, production build, and served HTML/CSS/navigation checks pass; five fixture tests cover counts, timing/token alignment, and goal math. Isolated browser unavailable, so visual and interactive browser QA remains unverified. No merge or deployment.
 
 ## Shared navigation and phone-first demo — November 21, 2026
 
@@ -65,6 +98,13 @@ Lint, typecheck, production build, and the served landing check passed. Chrome c
 ## Steady landing navigation — November 21, 2026
 
 On `codex/steady-landing-nav`, pinned the landing navbar at its original desktop and mobile insets and removed the "Use SayLess" hover lift. In-page targets clear the bar. Lint, typecheck, build, and the served landing check passed. Chrome verified the bar and button positions at 320px and 1440px and confirmed the preview anchor stays visible.
+## Transcript preview and scroll motion — November 21, 2026
+
+- Branch `codex/landing-transcript-motion`, based on latest main (`9c89c9c`). Landing-only changes; the app, guided demo, audio assets, and practice API are unchanged.
+- Replaced landing audio players with a selectable six-segment transcript graph, first/retry controls, highlighted fillers, and a comparison chart. Authored equal 60-second synthetic fixtures with 8 and 2 whole-word um/uh occurrences; the displayed 75% reduction is derived, explicitly illustrative, and never presented as a customer average or research finding. Source and caveats: [metric notes](landing-preview-metrics.md).
+- Added once-per-section intersection-based reveals, staggered dots/cards, animated comparison bars, and panel transitions. Keeps standard scrolling and focus, preserves dot rotations, cancels motion when reduced motion is enabled, and leaves content visible without JS.
+- Sites presentation guidance informed concise copy, concrete examples, and separation of sample claims from evidence. No new hosting or dependencies.
+- Verified: three fixture tests, lint, typecheck, production build, diff whitespace check, and final HTTP/CSS regression including highlight markup, no landing audio, all product routes, and legacy redirect. Browser visual/mobile/interaction QA is unverified because isolated IAB is unavailable. Local final-build preview at port 3000; no deployment or merge performed.
 
 ## Landing polish merge — November 21, 2026
 
