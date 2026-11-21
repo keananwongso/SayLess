@@ -18,7 +18,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Demo and code map
 
-- The two-minute demo shows Communication Wrapped, one project-pitch prompt, and feedback comparing two takes. See the [rehearsal steps](README.md#two-minute-demo).
+- The two-minute demo shows Communication Wrapped, one project-pitch prompt, and feedback comparing two takes. See the [rehearsal steps](docs/demo-rehearsal.md).
 - `src/app/page.tsx` connects the screens. `src/components/` contains the Wrapped, Practice, and Results views. `src/lib/` holds CSV parsing, metrics, and sample data.
 - `POST /api/practice` accepts recorded audio in the multipart `audio` field and returns `{ transcript, suggestion }` on success or `{ error }` on failure. Keep the offline sample replay usable when the live route fails.
 - Use synthetic data in the repo. Keep imported chats in the browser and put `OPENAI_API_KEY` in a local environment file or Vercel's server-side settings.
+
+## Local development
+
+Run `npm ci` and `npm run dev`, then open http://localhost:3000. Set `OPENAI_API_KEY` in your shell or `.env.local` for live coaching. Add the same variable to the Production environment in Vercel for the hosted app.
+
+See the [original hackathon kickoff template](docs/hackathon-kickoff-prompt.md) for team planning. It contains placeholders for roles, branch ownership, and the schedule.

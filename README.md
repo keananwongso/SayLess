@@ -1,30 +1,17 @@
 # SayLess
 
-Say less. Mean more.
+**Say less. Mean more.**
 
-SayLess helps you discover your communication habits, practice a project pitch, and compare two takes.
+SayLess is an AI communication coach for students and early-career professionals who want to get to the point with more confidence. It helps you notice patterns in how you communicate, practice speaking, and see what changes when you try again.
 
-Run `npm ci` and `npm run dev`, then open http://localhost:3000.
+[Try SayLess](https://sayless-nine.vercel.app)
 
-## Live practice
+## How it works
 
-Set `OPENAI_API_KEY` in the shell or in `.env.local` for local development. For Vercel, add it to the project's Production environment variables. The server sends recorded audio and its transcript to OpenAI to generate feedback. The browser keeps both takes in memory until the tab is refreshed.
+- **Discover your habits.** Communication Wrapped shows repeated words, signature phrases, and how often you ask questions in chat. Start with a sample or import a CSV of messages you have permission to use.
+- **Practice out loud.** Record a short answer to a project-pitch prompt. SayLess transcribes what you said, estimates your pace, counts fillers such as “um” and “uh,” and gives you one specific suggestion for the next take.
+- **Try again and compare.** Answer the same prompt and see both takes side by side. You can also explore a sample comparison without using your microphone.
 
-Wrapped analyzes the built-in synthetic chat by default. To import consented data, provide a CSV with `speaker` and `message` columns. Imported chats stay in the browser.
+## Privacy
 
-## Two-minute demo
-
-- **Before the pitch** — In Chrome, open Practice, allow mic access, and save a first take with a couple of natural fillers. Return to Wrapped in the same tab.
-- **0:00–0:40** — Give the workplace communication opener and introduce SayLess.
-- **0:40–0:55** — Show the sample Wrapped. Alex said “wait” seven times across eight messages.
-- **0:55–1:30** — Open pitch practice, hear the prompt, and record a roughly ten-second retry. Lead with SayLess and who it helps.
-- **1:30–1:50** — Show the two takes and one coaching suggestion. If the mic or live coaching stalls, open **Watch sample replay** to show the synthetic comparison.
-- **1:50–2:00** — Close with “Say less. Mean more.”
-
-Run `npm run lint`, `npm run typecheck`, and `npm run build` before deploying.
-
-## Team kickoff
-
-Start with the [shared agent instructions](AGENTS.md). Claude Code loads them through `CLAUDE.md`.
-
-The [hackathon kickoff prompt](docs/hackathon-kickoff-prompt.md) is the original template. It still contains placeholders for team roles, branch ownership, and the schedule.
+Imported chats are analyzed in your browser. Practice audio and its transcript are sent to OpenAI to generate feedback. Your results are held in the current tab and clear when you refresh.
