@@ -25,6 +25,10 @@ assert.match(css, /grid-template-columns/);
 assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
 assert.match(html, /id="landing-title"/);
+assert.match(html, /id="how-it-works"/);
+assert.match(html, /Synthetic sample/);
+assert.match(html, /aria-controls="preview-content"/);
+assert.match(html, /href="\/practice#practice"/);
 for (const path of ["/demo", "/practice", "/landing/sayless-coaching-collage.png"]) {
   assert.equal((await fetch(new URL(path, base))).status, 200, path);
 }

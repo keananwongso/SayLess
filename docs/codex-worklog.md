@@ -1,5 +1,12 @@
 # Codex work log
 
+## Clean landing redesign — November 21, 2026
+
+- Branch: `codex/landing-clean-redesign`, based on `origin/main` at `dfc2b29`, carrying forward the landing-route/CSS-loader repair. Preserved the newer Jade guided demo and hash-aware full app; its final CTA now opens `/practice#practice`.
+- Took layout inspiration from the supplied Fermata reference: compact floating navigation, centered hero, generous spacing, and a component-based product preview. Kept DESIGN.md palette/type, restrained original dot marks, and a smaller existing illustration. Sites presentation guidance informed the concrete product walkthrough and explicit sample labeling; no new hosted Site or services.
+- Added `LandingPreview` with accessible pressed-state screen buttons for Discover, Practice, and Compare. Counts, transcripts, suggestions, and audio come from the existing synthetic Alex fixture; no invented customer claims. Uses native audio controls and responsive layouts.
+- Verification: lint, typecheck, production build, and HTTP regression checks pass against the final restarted server, including stylesheet class mappings and `/demo` and `/practice` destinations. Stopped the old production server before rebuilding to prevent stale CSS asset references. Browser visual and interaction checks remain pending browser access; do not treat the HTTP check as a visual test.
+
 ## Landing styling repair — November 21, 2026
 
 - Branch: `codex/fix-landing-styles`, based on latest `origin/main` (`a6d3d67`). Brings forward the landing page and illustration from `codex/landing-demo-dots` without replacing the newer guided demo.
