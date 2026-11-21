@@ -1,5 +1,6 @@
 "use client";
 
+import * as Select from "@radix-ui/react-select";
 import { useRef, useState, type ChangeEvent } from "react";
 import { analyzeMessages, MAX_CSV_BYTES, parseMessages, sampleMessages } from "@/lib/wrapped";
 
@@ -88,14 +89,32 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
       </div>
 
       <div className="dataset-controls">
-        <label className="speaker-field">
-          Speaker
-          <select value={speaker} onChange={(event) => setSpeaker(event.target.value)}>
-            {speakers.map((name) => <option key={name}>{name}</option>)}
-          </select>
-        </label>
+        <div className="speaker-field">
+          <span id="wrapped-speaker-label">Speaker</span>
+          <Select.Root value={speaker} onValueChange={setSpeaker}>
+            <Select.Trigger className="secondary speaker-trigger" aria-labelledby="wrapped-speaker-label">
+              <Select.Value />
+              <Select.Icon asChild><span className="control-chevron" aria-hidden="true" /></Select.Icon>
+            </Select.Trigger>
+            <Select.Portal>
+              <Select.Content className="speaker-menu" position="popper" align="start" sideOffset={6} collisionPadding={16}>
+                <Select.Viewport className="speaker-options">
+                  {speakers.map((name) => (
+                    <Select.Item className="speaker-option" key={name} value={name}>
+                      <Select.ItemText>{name}</Select.ItemText>
+                      <Select.ItemIndicator className="speaker-check" aria-hidden="true">✓</Select.ItemIndicator>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Portal>
+          </Select.Root>
+        </div>
         <details className="import">
-          <summary>Import chat CSV</summary>
+          <summary className="secondary">
+            Import chat CSV
+            <span className="control-chevron" aria-hidden="true" />
+          </summary>
           <p id="csv-help">Use a CSV with speaker and message columns. The chat stays in this tab.</p>
           <label className="consent">
             <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />
