@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --bg: #141512;
+  --surface: #20211c;
+  --line: #3b3d34;
+  --text: #f8f7ef;
+  --muted: #b4b5a9;
+  --accent: #d8fa77;
+  --dark-ink: #1c240c;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
+}
+
+button, select, summary { cursor: pointer; }
+button:disabled { cursor: wait; opacity: .62; }
+button, select, input, summary { outline-offset: 5px; }
+:focus-visible { outline: 2px solid var(--accent); }
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem max(5vw, calc((100vw - 1120px) / 2));
+}
+
+.wordmark { font-size: 1.55rem; font-weight: 850; letter-spacing: -.075em; }
+.wordmark span, .hero em { color: var(--accent); }
+
+nav { display: flex; gap: clamp(.8rem, 3vw, 2.2rem); font-size: .9rem; color: var(--muted); }
+nav button[aria-current] { color: var(--text); text-decoration: underline; text-underline-offset: .5em; }
+
+.shell { width: min(1120px, 90%); margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) 0 3rem; }
+.hero { display: grid; justify-items: start; gap: 1.2rem; }
+.eyebrow { font: 700 .74rem/1.4 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .13em; }
+.hero h1 { font-weight: 850; font-size: clamp(3.6rem, 9vw, 8rem); line-height: .85; letter-spacing: -.09em; }
+.hero em { font-style: normal; }
+.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  color: var(--dark-ink);
+  background: var(--accent);
+  border-radius: .6rem;
+  font-weight: 750;
+  padding: .85rem 1.1rem;
+}
+.primary:hover:not(:disabled) { background: #e6ff9d; }
