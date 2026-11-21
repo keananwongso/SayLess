@@ -69,3 +69,69 @@
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
+
+.questWindow {
+  height: 56px;
+  overflow: hidden;
+  border-radius: var(--control-radius);
+  background: color-mix(in srgb, var(--color-azure) 12%, var(--color-surface));
+}
+
+.questReel {
+  animation: quest-roll 600ms cubic-bezier(.18, .65, .2, 1) both;
+}
+
+.questReel p {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding-inline: 12px;
+  font-weight: 650;
+}
+
+.questDialog {
+  position: fixed;
+  inset: 0;
+  width: min(calc(100% - 32px), 360px);
+  max-height: calc(100% - 32px);
+  margin: auto;
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--card-radius);
+}
+
+.questDialog::backdrop {
+  background: color-mix(in srgb, var(--color-ink) 46%, transparent);
+}
+
+.questDialogBody {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+
+.questDialogBody form button {
+  width: 100%;
+}
+
+.questTimer {
+  display: grid;
+  justify-items: center;
+  padding: 12px;
+  border-radius: var(--control-radius);
+  background: color-mix(in srgb, var(--color-azure) 12%, var(--color-surface));
+}
+
+.questTimer strong {
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes quest-roll {
+  to { transform: translateY(-80%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .questReel { animation: none; }
+}

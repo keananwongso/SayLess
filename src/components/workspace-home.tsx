@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { ConversationProjection } from "@/components/conversation-projection";
+import { DailyQuestPreview } from "@/components/daily-quest-preview";
 import { SayLessDot } from "@/components/sayless-dot";
 import { saveChallengeProgress, useChallengeProgress } from "@/lib/challenge-progress";
-import { currentStreak, dailyChallenge, DAILY_XP, localDay, qualifiesForDailyChallenge, type ChallengeTake } from "@/lib/challenges";
+import { currentStreak, DAILY_XP, localDay, qualifiesForDailyChallenge, type ChallengeTake } from "@/lib/challenges";
 import { jadeConversationDuration, jadeExpressions, jadeGoal, jadeTopExpression } from "@/lib/jade-demo";
 import styles from "./workspace-overview.module.css";
 
-export function WorkspaceHome({ takes, onPractice, onFriends }: {
+export function WorkspaceHome({ takes, onFriends }: {
   takes: ChallengeTake[];
-  onPractice: () => void;
   onFriends: () => void;
 }) {
   const progress = useChallengeProgress();
@@ -65,8 +65,8 @@ export function WorkspaceHome({ takes, onPractice, onFriends }: {
       </dl>
 
       <article className={styles.card}>
-        <div><p className="eyebrow muted">Daily quest</p><h2>{dailyChallenge.title}</h2></div>
-        <p>{dailyChallenge.prompt}</p>
+        <h2>Daily quest</h2>
+        <DailyQuestPreview />
         {completedToday ? (
           <div className="action-row">
             <strong>Completed today</strong>
@@ -74,15 +74,13 @@ export function WorkspaceHome({ takes, onPractice, onFriends }: {
           </div>
         ) : canClaim ? (
           <button className="primary" onClick={claim}>Claim {DAILY_XP} XP</button>
-        ) : (
-          <button className="primary" onClick={onPractice}>Do daily quest <span aria-hidden="true">→</span></button>
-        )}
+        ) : null}
         {notice && <p className="footnote" role="status">{notice}</p>}
       </article>
 
       <button className={styles.friendsPreview} onClick={onFriends}>
         <SayLessDot className={styles.avatar} mood="bright" color="azure" />
-        <span><strong>Friends</strong><span>Try a sample check-in with Jade and Riley</span></span>
+        <span><strong>Friends</strong><span>See the sample friends list</span></span>
         <span aria-hidden="true">→</span>
       </button>
     </section>

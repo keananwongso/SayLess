@@ -182,3 +182,7 @@ See the [voice analysis architecture](voice-analysis.md), [practice API and trac
 ## Product routes
 
 The landing, Jade’s demo, working app, and architecture now have separate routes. The Analyze tab accepts a consented recording and shows whole-recording filler counts, repeated language, transcript, and playable timestamps. It uses the existing Deepgram pipeline in analysis mode.
+
+## Workspace friends and daily quest
+
+On `main`, replaced the sample friend quest with four synthetic profiles and practice streaks. Home now rolls for a speaking prompt and opens a 20-second recording preview. The preview uses local UI state with no audio capture or XP award. Live pitch practice remains available from Profile. Lint, typecheck, and build passed. Chrome verified the popup, countdown, stop, retry, Escape focus return, and the four friends.

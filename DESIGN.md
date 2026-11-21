@@ -53,7 +53,7 @@ Animate workspace content and the selected tab highlight while keeping the hands
 | Demo two-week goal | Pair the recap baseline and two-week target. Use a flat reference line for the baseline and a dashed Mint line for the practice targets. |
 | Home | Lead with weekly check-ins, then show XP, the daily quest, and a Friends preview. |
 | Stats | Show practice takes when available. Use Lavender for Jade’s demo recap and Mint for her example targets. Label the demo data and keep it apart from personal takes. |
-| Friends sample check-in | Put Jade and Riley’s portraits above one shared speaking prompt. Make the topic roll the main action and show weekly progress from each friend’s own starting count. Use labeled solid and dashed lines to distinguish the two series. |
+| Friends | Use a compact list with dot avatars, names, and practice streaks. Label synthetic friends and keep quest sharing in a separate card. |
 | Practice | Put the prompt on a pale Azure fill inside a single card. Keep recording as the primary action. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
 | Profile | Use a dot avatar, compact stats, and a seven-day completion strip. Show practice totals for the current session and challenge progress saved in the browser. |
 | Results | Use the same metric order and units on both takes. Use Azure for the baseline highlight, Mint for a positive change, and Lavender for the coaching suggestion. Use Jonquil for the sample replay label. |
