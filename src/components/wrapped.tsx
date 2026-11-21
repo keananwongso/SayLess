@@ -14,6 +14,7 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
   const speakers = Array.from(new Set(messages.map((message) => message.speaker)));
   const insight = analyzeMessages(messages, speaker);
   const format = (count: number) => count.toLocaleString("en-US");
+  const messageCount = `${format(insight.total)} ${insight.total === 1 ? "message" : "messages"}`;
 
   async function importFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -44,7 +45,7 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
     <section aria-labelledby="wrapped-title" className="flow">
       <div className="spread">
         <div className="hero">
-          <p className="eyebrow" id="wrapped-source">Communication Wrapped</p>
+          <p className="eyebrow">Communication Wrapped</p>
           <h1 id="wrapped-title" tabIndex={-1}>Say less.<br /><em>Mean more.</em></h1>
           <p className="lede">See what you keep saying. Then practice saying what matters.</p>
           <button className="primary" onClick={onPractice}>Practice your pitch <span aria-hidden="true">↗</span></button>
@@ -56,10 +57,10 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
               <p className={insight.word.text.length > 8 ? "feature-word feature-word-small" : "feature-word"}>
                 “{insight.word.text}”
               </p>
-              <p><strong>{format(insight.word.count)} times</strong> in {format(insight.total)} messages</p>
+              <p><strong>{format(insight.word.count)} times</strong> in {messageCount}</p>
             </>
           ) : (
-            <p className="empty-word">No standout word in {format(insight.total)} messages.</p>
+            <p className="empty-word">No standout word in {messageCount}.</p>
           )}
           <p className="card-source">{isSample ? "Sample chat" : "Imported chat"} · {speaker}</p>
         </article>

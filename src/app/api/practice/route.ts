@@ -33,8 +33,10 @@ export async function POST(request: Request) {
     return errorResponse("Record a take before asking for feedback.", 400);
   }
 
-  const extension = audioExtensions[audio.type.split(";")[0]];
-  if (!extension) return errorResponse("This recording format is unsupported. Try Chrome.", 415);
+  const audioType = audio.type.split(";")[0];
+  if (!Object.hasOwn(audioExtensions, audioType)) {
+    return errorResponse("This recording format is unsupported. Try Chrome.", 415);
+  }
   if (audio.size > MAX_AUDIO_BYTES) {
     return errorResponse("The recording is too large. Try a shorter take.", 413);
   }
@@ -42,10 +44,10 @@ export async function POST(request: Request) {
   const authorization = { Authorization: `Bearer ${apiKey}` };
   const signal = AbortSignal.any([request.signal, AbortSignal.timeout(20_000)]);
   const transcriptionInput = new FormData();
-  transcriptionInput.set("file", audio, `pitch.${extension}`);
+  transcriptionInput.set("file", audio, `pitch.${audioExtensions[audioType]}`);
   transcriptionInput.set("model", "gpt-4o-transcribe");
   transcriptionInput.set("language", "en");
-  transcriptionInput.set("prompt", "Transcribe exactly as spoken, preserving audible fillers, hesitations, repeated words, and false starts. Example style: Um, so, uh, here's what we built.");
+  transcriptionInput.set("prompt", "Transcribe speech exactly as spoken, preserving audible fillers, hesitations, repeated words, and false starts. Return an empty transcript if there is no speech.");
 
   try {
     const transcription = await fetch("https://api.openai.com/v1/audio/transcriptions", {

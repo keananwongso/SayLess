@@ -11,6 +11,7 @@ type Recording = {
   stream?: MediaStream;
   recorder?: MediaRecorder;
   timer?: number;
+  audioContext?: AudioContext;
 };
 
 function stopTracks(stream?: MediaStream) {
@@ -20,6 +21,9 @@ function stopTracks(stream?: MediaStream) {
 function release(recording: Recording) {
   window.clearInterval(recording.timer);
   stopTracks(recording.stream);
+  if (recording.audioContext && recording.audioContext.state !== "closed") {
+    void recording.audioContext.close().catch(() => undefined);
+  }
 }
 
 const formats = ["audio/webm;codecs=opus", "audio/mp4", "audio/ogg;codecs=opus"];
@@ -77,12 +81,20 @@ export function Practice({ attempt, onResult, onSample }: {
     }
 
     try {
+      if (typeof AudioContext !== "undefined") {
+        recording.audioContext = new AudioContext();
+        void recording.audioContext.resume().catch(() => undefined);
+      }
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       if (signal.aborted) {
         stopTracks(stream);
         return;
       }
       recording.stream = stream;
+      const analyzer = recording.audioContext?.createAnalyser();
+      if (analyzer) recording.audioContext?.createMediaStreamSource(stream).connect(analyzer);
+      const samples = analyzer && new Float32Array(analyzer.fftSize);
+      let detectedSound = false;
       const mimeType = formats.find((format) => MediaRecorder.isTypeSupported(format));
       const recorder = new MediaRecorder(stream, { mimeType, audioBitsPerSecond: 64_000 });
       recording.recorder = recorder;
@@ -93,12 +105,17 @@ export function Practice({ attempt, onResult, onSample }: {
       };
       recorder.onerror = () => reset("The microphone stopped recording. Try again or watch the sample.");
       recorder.onstop = async () => {
+        const silence = recording.audioContext?.state === "running" && !detectedSound;
         release(recording);
         if (signal.aborted) return;
         const seconds = (performance.now() - startedAt) / 1000;
         const audio = new Blob(chunks, { type: recorder.mimeType });
         if (seconds < 1 || audio.size === 0) {
           reset("Record at least one second of audio.");
+          return;
+        }
+        if (silence) {
+          reset("We couldn't hear your pitch. Check your microphone and try again.");
           return;
         }
         if (audio.size > MAX_AUDIO_BYTES) {
@@ -115,18 +132,19 @@ export function Practice({ attempt, onResult, onSample }: {
             body: form,
             signal: AbortSignal.any([signal, AbortSignal.timeout(24_000)]),
           });
-          const data = (await response.json()) as Partial<Feedback> & { error?: string };
-          if (!response.ok || !data.transcript || !data.suggestion) {
-            throw new Error(data.error ?? "Live coaching is unavailable. Try again or watch the sample.");
+          const data = await response.json().catch(() => null) as (Partial<Feedback> & { error?: string }) | null;
+          if (!response.ok || !data?.transcript || !data.suggestion) {
+            reset(data?.error ?? "Live coaching is unavailable. Try again or watch the sample.");
+            return;
           }
           if (signal.aborted) return;
           active.current = null;
           speak(data.suggestion);
           onResult({ transcript: data.transcript, suggestion: data.suggestion, seconds });
         } catch (failure) {
-          reset(failure instanceof Error && failure.name !== "TimeoutError"
-            ? recordingError(failure)
-            : "Live coaching timed out. Try again or watch the sample.");
+          reset(failure instanceof Error && failure.name === "TimeoutError"
+            ? "Live coaching timed out. Try again or watch the sample."
+            : "Couldn't reach live coaching. Check your connection or watch the sample.");
         }
       };
       recorder.start();
@@ -134,6 +152,10 @@ export function Practice({ attempt, onResult, onSample }: {
 
       recording.timer = window.setInterval(() => {
         const seconds = (performance.now() - startedAt) / 1000;
+        if (!detectedSound && analyzer && samples) {
+          analyzer.getFloatTimeDomainData(samples);
+          detectedSound = samples.some((sample) => Math.abs(sample) > 0.004);
+        }
         setElapsed(Math.min(Math.floor(seconds), MAX_RECORDING_SECONDS));
         if (seconds >= MAX_RECORDING_SECONDS && recorder.state === "recording") recorder.stop();
       }, 100);
