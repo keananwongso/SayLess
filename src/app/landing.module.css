@@ -16,7 +16,6 @@ body:has(.page)::before {
 .intro { font-size: 18px; line-height: 1.65; color: var(--color-muted); }
 .actions { display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 28px; }
 .textLink { font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; }
-.note { margin-top: 16px; color: var(--color-muted); font-size: 14px; }
 .dotArt { position: absolute; inset: 0; pointer-events: none; }
 .dotArt svg { position: absolute; width: 108px; filter: drop-shadow(0 10px 0 #190f1708); }
 .dotCurious { left: 8%; top: 75px; transform: rotate(-16deg); }

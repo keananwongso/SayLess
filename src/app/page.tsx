@@ -16,7 +16,6 @@ export default function Home() {
               <Link className="primary" href="/app">Use SayLess</Link>
               <Link className={styles.textLink} href="/demo">Try the demo</Link>
             </div>
-            <p className={styles.note}>No account needed.</p>
           </div>
           <figure className={styles.dotArt} aria-label="Colorful SayLess dot characters">
             <SayLessDot mood="curious" color="lavender" className={styles.dotCurious} />
