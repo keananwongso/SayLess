@@ -13,6 +13,10 @@ Set `DEEPGRAM_API_KEY` in the server environment to enable Nova-3 with filler re
 
 For a recording upload from `/app`, send a second multipart field, `mode=analysis`. This returns `{ transcript, events?, durationSeconds? }` and skips the pitch coaching call. Counts cover the whole recording. The browser computes repeated words and phrases from the transcript and plays each timestamped event from the selected file.
 
+## Production rate limit
+
+The Vercel Firewall allows 12 requests per 60-second window per IP to `/api/practice`. The limit covers both practice and analysis uploads. Excess requests receive HTTP 429 at the edge before reaching the transcription and coaching providers. Manage the rule under **Practice API rate limit** in the SayLess project’s Firewall settings.
+
 ## Response
 
 All route responses include `X-Request-Id`. Here is a synthetic successful result:

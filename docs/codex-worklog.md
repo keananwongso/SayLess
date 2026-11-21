@@ -202,3 +202,7 @@ Both pitch URLs now open on the first content slide. Presenters can still start 
 ## Daily quest pop-up — November 21, 2026
 
 Branch `fix/mobile-daily-quest` centers the open recording preview and lets its content scroll on short screens. Chrome verified portrait and landscape phone sizes, the recording preview control, and focus return on close. Lint, typecheck, and build passed.
+
+## Practice API rate limit
+
+Published a Vercel Firewall rule allowing 12 requests per 60 seconds per IP on `/api/practice`. Verified that a live sample request returned transcription and coaching, then sent audio-free requests to confirm HTTP 429 above the threshold without calling the providers.
