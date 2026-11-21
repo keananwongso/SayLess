@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { SayLessDot } from "@/components/sayless-dot";
 import { useTakePlayback } from "@/components/use-take-playback";
 import { dailyChallenge, fillerJarCount, improvementScore, qualifiesForDailyChallenge } from "@/lib/challenges";
 import { chooseRule, pitchMetrics, PITCH_PROMPT, type Filler, type FillerEvent, type Take } from "@/lib/practice";
@@ -11,8 +12,8 @@ import { loadTakeAudio } from "@/lib/take-audio";
 import { analyzeMessages, sampleMessages } from "@/lib/wrapped";
 
 const steps = [
-  { id: "setup", label: "Meet Jade", action: "See Jade’s Wrapped" },
-  { id: "wrapped", label: "Wrapped", action: "Start practice" },
+  { id: "setup", label: "Meet Jade", action: "See Jade’s Yap Recap" },
+  { id: "wrapped", label: "Yap Recap", action: "Start practice" },
   { id: "practice", label: "Practice", action: "Hear the retry" },
   { id: "compare", label: "Compare", action: "Finish the challenge" },
   { id: "finish", label: "Finish" },
@@ -73,8 +74,8 @@ export function GuidedDemo() {
   }
 
   return (
-    <div className="phone-frame demo-onboarding" data-step={step.id}>
-      <main className="phone-screen" id="main" ref={screen} tabIndex={-1}>
+    <div className="app-surface demo-onboarding" data-step={step.id}>
+      <main className="app-screen" id="main" ref={screen} tabIndex={-1}>
         <div className="demo-progress">
           <p><strong>{step.label}</strong> · {index + 1} of {steps.length}</p>
           <progress aria-label="Demo progress" value={index + 1} max={steps.length} />
@@ -91,14 +92,14 @@ export function GuidedDemo() {
             )}
 
             {step.id === "wrapped" && (
-              <>
-                <p className="demo-note">Jade’s chat</p>
-                <h1 id="demo-title" ref={title} tabIndex={-1}>jade’s most repeated word.</h1>
+              <div className="demo-recap">
+                <h1 id="demo-title" ref={title} tabIndex={-1}>yap recap.</h1>
                 {jadeWrapped.word && (
-                  <>
-                    <p className="demo-reveal">“{jadeWrapped.word.text}”</p>
-                    <p className="demo-copy"><strong>{jadeWrapped.word.count} times</strong> in {jadeWrapped.total} messages.</p>
-                  </>
+                  <div className="demo-recap-insight">
+                    <p>Jade’s most repeated word</p>
+                    <p className="demo-recap-word">“{jadeWrapped.word.text}”</p>
+                    <p><strong>{jadeWrapped.word.count} times</strong> in {jadeWrapped.total} messages</p>
+                  </div>
                 )}
                 <details className="demo-details">
                   <summary>See chat details</summary>
@@ -110,7 +111,7 @@ export function GuidedDemo() {
                     ))}
                   </dl>
                 </details>
-              </>
+              </div>
             )}
 
             {step.id === "practice" && (
@@ -159,8 +160,9 @@ export function GuidedDemo() {
 
             {step.id === "finish" && (
               <>
+                <SayLessDot className="demo-celebration" mood="bright" color="mint" />
                 <h1 id="demo-title" ref={title} tabIndex={-1}>one small win.</h1>
-                <p className="demo-count">+{earned} <span>demo XP</span></p>
+                <p className="demo-reward"><strong>+{earned}</strong> demo XP</p>
                 <p className="demo-copy">Jade completed the clear-pitch challenge with {counts[1].fillerCount} filler sound in {retry.seconds.toFixed(1)}s.</p>
                 <details className="demo-details">
                   <summary>See challenge details</summary>
@@ -176,15 +178,20 @@ export function GuidedDemo() {
           </div>
         </section>
       </main>
-      <footer className="phone-dock demo-controls">
-        {index > 0 && <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>}
+      <footer className="app-dock demo-controls">
         {step.id === "finish" ? (
           <>
-            <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
             <Link href="/app#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
+            <div className="demo-finish-links">
+              <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>
+              <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
+            </div>
           </>
         ) : (
-          <button className="primary" onClick={() => move(index + 1)}>{step.action} <span aria-hidden="true">→</span></button>
+          <>
+            {index > 0 && <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>}
+            <button className="primary" onClick={() => move(index + 1)}>{step.action} <span aria-hidden="true">→</span></button>
+          </>
         )}
       </footer>
     </div>

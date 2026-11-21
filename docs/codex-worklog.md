@@ -1,5 +1,11 @@
 # Codex work log
 
+## Demo Yap Recap and responsive layout — November 21, 2026
+
+Replaced the imitation phone hardware with a content-sized desktop surface. On phones, the app and demo stay edge to edge with controls below scrolling content. Renamed Jade’s demo reveal to Yap Recap and gave the source-backed word count a distinct Ink and Lavender treatment. Simplified the finish screen around one primary action.
+
+Lint, typecheck, build, and served landing checks passed. Chrome verified all five demo steps and sample replay at 320px, 390px, and 1440px. Opened the recap details and inspected desktop captures of the reveal and finish.
+
 ## Phone interface and local profile — November 21, 2026
 
 On `codex/phone-interface`, added a desktop phone frame and full-width mobile screens for the app and Jade’s demo. App tabs and demo actions stay reachable below scrolling content. Practice retains access to the last live results.

@@ -13,7 +13,7 @@ export function WorkspaceNav({ active, onSelect }: {
   onSelect: (tab: Tab) => void;
 }) {
   return (
-    <nav className="phone-dock workspace-nav" aria-label="SayLess workspace">
+    <nav className="app-dock workspace-nav" aria-label="SayLess workspace">
       {tabs.map(({ id, label, icon }) => (
         <button key={id} type="button" aria-current={active === id ? "page" : undefined} onClick={() => onSelect(id)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
