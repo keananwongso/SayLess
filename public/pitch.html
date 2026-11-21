@@ -204,8 +204,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .primary { background:var(--ink); border-color:var(--ink); color:white }
   .primary:hover { background:var(--focus) }
   .button:disabled { opacity:.4; cursor:default }
-  .notes { margin:12px 0; background:white; border-radius:18px; padding:20px 24px; line-height:1.5 }
-  .note-head { display:block; margin-bottom:7px }
   @media(max-width:760px) {
     .shell { padding:8px }
     .slide { min-height:72svh; padding:24px 20px }
@@ -225,11 +223,16 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     .toolbar { align-items:flex-start }
     .toolbar .controls:last-child { justify-content:flex-end }
   }
+  @media screen {
+    .presenting .shell { width:100%; padding:0 }
+    .presenting .toolbar { display:none }
+    .presenting .slide { min-height:100dvh; border:0; border-radius:0; box-shadow:none }
+  }
   @media print {
     @page { size:landscape; margin:0 }
     body { print-color-adjust:exact; -webkit-print-color-adjust:exact }
     .shell { max-width:none; padding:0 }
-    .toolbar,.notes { display:none!important }
+    .toolbar { display:none!important }
     main .slide { display:grid!important; min-height:100vh; break-after:page; border-radius:0; box-shadow:none }
     main .slide:last-child { break-after:auto }
   }
@@ -318,8 +321,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   </main>
   <div class="toolbar" aria-label="Presentation controls">
     <div class="controls">
-      <button class="button" type="button" id="notes-toggle" aria-controls="notes" aria-expanded="false">Notes</button>
-      <button class="button" type="button" id="fullscreen" hidden>Fullscreen</button>
+      <button class="button" type="button" id="fullscreen" title="Use the arrow keys to change slides and Esc to exit">Fullscreen</button>
     </div>
     <div class="controls">
       <button class="button" type="button" id="previous" aria-label="Previous slide" disabled>←</button>
@@ -327,36 +329,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     </div>
   </div>
 
-  <aside id="notes" class="notes" aria-label="Speaker notes" hidden>
-    <div>
-      <strong class="note-head">0:00–0:20 · 20 seconds</strong>
-      <p class="slide-note">Gen Z is infiltrating the workforce. We brought iced coffee, brain rot, and a suspicious ability to say “let’s circle back.” Here’s a taste of what our chat habits look like. In our sample Wrapped, Alex typed “wait” seven times in eight messages. So what happens when it’s time to speak?</p>
-    </div>
-    <div hidden>
-      <strong class="note-head">0:20–0:40 · 20 seconds</strong>
-      <p class="slide-note">Try pitching an idea like this. “Um… like… so… basically…” By the time I get to the idea, you’ve already heard me hesitate four times. Pauses are normal. The problem is that we rarely hear our own habits, especially when we’re under pressure.</p>
-    </div>
-    <div hidden>
-      <strong class="note-head">0:40–0:50 · 10 seconds</strong>
-      <p class="slide-note">In one Canadian survey, 88% used workplace jargon, and only 22% said it helped them understand. In a UK survey, 35.4% of Gen Z respondents understood “touch base.” In a separate practice dataset, the median speaker used about 3.5 fillers a minute.</p>
-    </div>
-    <div hidden>
-      <strong class="note-head">0:50–0:53 · 3 seconds</strong>
-      <p class="slide-note">Our chats have a favorite opener too. Just look at “wait.”</p>
-    </div>
-    <div hidden>
-      <strong class="note-head">0:53–0:55 · 2 seconds</strong>
-      <p class="slide-note">What are we waiting for?</p>
-    </div>
-    <div hidden>
-      <p class="slide-note">Switch to the prepared SayLess demo tab.</p>
-    </div>
-  </aside>
 </div>
 <script>
   const slides = Array.from(document.querySelectorAll("main .slide"));
-  const notes = document.querySelector("#notes");
-  const notesToggle = document.querySelector("#notes-toggle");
+  const screen = document.documentElement;
   const fullscreen = document.querySelector("#fullscreen");
   const previous = document.querySelector("#previous");
   const next = document.querySelector("#next");
@@ -366,7 +342,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     current = Math.min(Math.max(index, 0), slides.length - 1);
     slides.forEach((slide, position) => {
       slide.hidden = position !== current;
-      notes.children[position].hidden = position !== current;
     });
     previous.disabled = current === 0;
     next.disabled = current === slides.length - 1;
@@ -376,34 +351,33 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     }
   }
 
-  function togglePanel(button, panel) {
-    panel.hidden = !panel.hidden;
-    button.setAttribute("aria-expanded", String(!panel.hidden));
+  function exitPresentation() {
+    screen.classList.remove("presenting");
+    fullscreen.focus({ preventScroll: true });
   }
 
   previous.addEventListener("click", () => showSlide(current - 1));
   next.addEventListener("click", () => showSlide(current + 1));
-  notesToggle.addEventListener("click", () => {
-    togglePanel(notesToggle, notes);
-    if (!notes.hidden) notes.scrollIntoView({ block: "nearest" });
+  fullscreen.addEventListener("click", async () => {
+    screen.classList.add("presenting");
+    showSlide(current);
+    try {
+      await screen.requestFullscreen?.();
+    } catch {
+      // Keep the slide expanded when the browser blocks native fullscreen.
+    }
   });
-  if (document.fullscreenEnabled) {
-    fullscreen.hidden = false;
-    fullscreen.addEventListener("click", async () => {
-      try {
-        if (document.fullscreenElement) await document.exitFullscreen();
-        else await document.documentElement.requestFullscreen();
-      } catch {
-        fullscreen.hidden = true;
-      }
-    });
-    document.addEventListener("fullscreenchange", () => {
-      fullscreen.textContent = document.fullscreenElement ? "Exit fullscreen" : "Fullscreen";
-    });
-  }
+
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) exitPresentation();
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (event.code === "Escape" && !document.fullscreenElement && screen.classList.contains("presenting")) {
+      exitPresentation();
+      return;
+    }
     if (event.code === "Space" && event.target.closest("button, a")) return;
     const destinations = {
       ArrowRight: current + 1, PageDown: current + 1, Space: current + 1,

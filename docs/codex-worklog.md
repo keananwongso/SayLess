@@ -1,5 +1,9 @@
 # Codex work log
 
+## Fullscreen pitch deck — November 21, 2026
+
+On `codex/pitch-fullscreen`, expanded the active slide to the screen edges in fullscreen, hid the toolbar while presenting, and removed speaker notes. The deck fills the browser viewport when native fullscreen is blocked. Lint, typecheck, and build passed. Chrome verified native fullscreen, hidden controls, keyboard navigation through all six slides, and exiting native and viewport fullscreen.
+
 ## Pitch deck URL — November 21, 2026
 
 On `codex/pitch-route`, added a Next.js rewrite so `/pitch` serves Allison’s existing deck and keeps the short URL in the address bar. Lint, typecheck, and production build passed. The production server returned HTTP 200 and identical HTML from `/pitch` and `/pitch.html`.
