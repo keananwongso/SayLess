@@ -28,7 +28,8 @@ export default function DocsPage() {
         <div className={styles.features}>
           <section>
             <h3>Home</h3>
-            <p>Open Home for the daily quest, your check-ins, and your streak. To earn {dailyChallenge.xp} XP, record a practice take of 20 seconds or less with at most two filler sounds, then claim it on Home.</p>
+            <p>Select <strong>Roll daily quest</strong> for a random topic and a 20-second timer. The preview runs with audio capture off.</p>
+            <p>To earn {dailyChallenge.xp} XP, record a practice take of 20 seconds or less with at most two filler sounds, then claim it on Home.</p>
           </section>
           <section>
             <h3>Stats</h3>
@@ -38,7 +39,7 @@ export default function DocsPage() {
           </section>
           <section>
             <h3>Friends</h3>
-            <p>See sample activity from Jade and Riley. Use <strong>Copy quest prompt</strong> to share today’s clear-pitch challenge.</p>
+            <p>See Jade, Riley, and the other sample friends and their practice streaks. Use <strong>Copy quest prompt</strong> to share today’s clear-pitch challenge.</p>
           </section>
           <section>
             <h3>Profile</h3>
