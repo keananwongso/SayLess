@@ -20,8 +20,8 @@ const steps = [
 
 const jadeTakes = sampleProfiles[0].takes;
 const simulatedExpressions = [
-  { expression: "like", count: 40 },
-  { expression: "wait", count: 35 },
+  { expression: "wait", count: 40 },
+  { expression: "like", count: 35 },
   { expression: "yeah", count: 10 },
   { expression: "wow", count: 7 },
   { expression: "um / uh", count: 6 },
