@@ -9,7 +9,6 @@ import { chooseRule, pitchMetrics, PITCH_PROMPT, type Filler, type FillerEvent, 
 import { sampleProfiles } from "@/lib/sample-pitches";
 import { speak, stopSpeech } from "@/lib/speech";
 import { loadTakeAudio } from "@/lib/take-audio";
-import { analyzeMessages, sampleMessages } from "@/lib/wrapped";
 
 const steps = [
   { id: "setup", label: "Meet Jade", action: "See Jade’s Yap Recap" },
@@ -20,7 +19,16 @@ const steps = [
 ] as const;
 
 const jadeTakes = sampleProfiles[0].takes;
-const jadeWrapped = analyzeMessages(sampleMessages, sampleProfiles[0].name);
+const simulatedExpressions = [
+  { expression: "like", count: 40 },
+  { expression: "wait", count: 35 },
+  { expression: "yeah", count: 10 },
+  { expression: "wow", count: 7 },
+  { expression: "um / uh", count: 6 },
+  { expression: "you know", count: 4 },
+  { expression: "I mean", count: 2 },
+] as const;
+const [topExpression] = simulatedExpressions;
 
 function FillerClip({ take, target, label, playing, onPlay }: {
   take: Take;
@@ -95,23 +103,28 @@ export function GuidedDemo() {
             {step.id === "wrapped" && (
               <div className="demo-recap">
                 <h1 id="demo-title" ref={title} tabIndex={-1}>yap recap.</h1>
-                {jadeWrapped.word && (
-                  <div className="demo-recap-insight">
-                    <p>Jade’s most repeated word</p>
-                    <p className="demo-recap-word">“{jadeWrapped.word.text}”</p>
-                    <p><strong>{jadeWrapped.word.count} times</strong> in {jadeWrapped.total} messages</p>
-                  </div>
-                )}
-                <details className="demo-details">
-                  <summary>See chat details</summary>
-                  {jadeWrapped.phrase && <p>Signature phrase <strong>“{jadeWrapped.phrase.text}”</strong> · {jadeWrapped.phrase.count} times</p>}
-                  <p>{jadeWrapped.profile.strengths[0]}</p>
+                <p className="demo-recap-source">Simulated conversation · 2:23 · all speakers</p>
+                <div className="demo-recap-insight">
+                  <p>Most frequent expression</p>
+                  <p className="demo-recap-word">“{topExpression.expression}”</p>
+                  <p>About <strong>{topExpression.count} times</strong></p>
+                </div>
+                <div className="demo-recap-breakdown">
+                  <h2>Estimated expression counts</h2>
                   <dl>
-                    {jadeWrapped.habits.map(({ id, label, count }) => (
-                      <div key={id}><dt>{label}</dt><dd>{count}</dd></div>
+                    {simulatedExpressions.map(({ expression, count }) => (
+                      <div key={expression}>
+                        <dt>{expression}</dt>
+                        <dd>
+                          <span className="demo-recap-track" aria-hidden="true">
+                            <span style={{ width: `${100 * count / topExpression.count}%` }} />
+                          </span>
+                          <span>{count}</span>
+                        </dd>
+                      </div>
                     ))}
                   </dl>
-                </details>
+                </div>
               </div>
             )}
 
