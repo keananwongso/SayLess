@@ -125,38 +125,45 @@ export function WorkspaceFriends() {
   return (
     <section className="flow" aria-labelledby="friends-title">
       <h1 id="friends-title" tabIndex={-1}>friends.</h1>
+
+      <article className={`${overview.card} ${styles.quest}`} aria-labelledby="sample-friends-title">
+        <div className={styles.hero}>
+          <h2 id="sample-friends-title">Sample friend quest</h2>
+          <ul className={styles.pair} aria-label="Check-in partners">
+            {friends.map(({ name, mood, color }) => (
+              <li key={name}>
+                <span className={styles.friendPortrait}><SayLessDot className={styles.face} mood={mood} color={color} /></span>
+                <strong>{name}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className={styles.questBody}>
+          <div className={styles.topic}>
+            <p className="eyebrow">{rolling || topic ? "Their topic" : "One topic · 20 seconds each"}</p>
+            <div className={styles.window} data-rolling={rolling}>
+              {rolling && <div className={styles.reel} aria-hidden="true">{reel.map(prompt => <p key={prompt}>{prompt}</p>)}</div>}
+              <p role="status" className={styles.result}>{topic}</p>
+            </div>
+          </div>
+          {completed ? (
+            <>
+              <h2 ref={sampleProgress} tabIndex={-1}>Their week in practice</h2>
+              <FriendProgress />
+            </>
+          ) : topic ? (
+            <button className="primary" onClick={() => setCompleted(true)}>See sample progress</button>
+          ) : (
+            <button className="primary" disabled={rolling} onClick={roll}>{rolling ? "Rolling…" : "Roll a topic"}</button>
+          )}
+        </div>
+      </article>
+
       <article className={overview.card}>
         <h2>Share today’s quest</h2>
         <p>{dailyChallenge.prompt}</p>
         <button className="secondary" onClick={copyPrompt}>Copy quest prompt</button>
         {notice && <p className="footnote" role="status">{notice}</p>}
-      </article>
-
-      <article className={overview.card} aria-labelledby="sample-friends-title">
-        <div><p className="eyebrow muted">Sample check-in</p><h2 id="sample-friends-title">Jade and Riley</h2></div>
-        <ul className={styles.pair} aria-label="Sample check-in partners">
-          {friends.map(({ name, mood, color }) => (
-            <li key={name}><SayLessDot className={styles.avatar} mood={mood} color={color} /><strong>{name}</strong></li>
-          ))}
-        </ul>
-        <p className="muted">Two friends, one topic, 20 seconds each.</p>
-        <div className={styles.topic}>
-          <p className="eyebrow">Sample prompt</p>
-          <div className={styles.window} data-rolling={rolling}>
-            {rolling && <div className={styles.reel} aria-hidden="true">{reel.map(prompt => <p key={prompt}>{prompt}</p>)}</div>}
-            <p role="status" className={styles.result}>{topic}</p>
-          </div>
-        </div>
-        {completed ? (
-          <>
-            <h2 ref={sampleProgress} tabIndex={-1}>Their week in practice</h2>
-            <FriendProgress />
-          </>
-        ) : topic ? (
-          <button className="primary" onClick={() => setCompleted(true)}>See sample progress</button>
-        ) : (
-          <button className="primary" disabled={rolling} onClick={roll}>{rolling ? "Rolling…" : "Roll a topic"}</button>
-        )}
       </article>
     </section>
   );

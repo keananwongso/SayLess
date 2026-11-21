@@ -41,6 +41,8 @@ The public landing page uses a white Surface canvas with an Azure-tinted grid fa
 
 Use the shared sticky site navbar on every page. On desktop, use the same handset for Jade’s guided demo and the working app. The handset has a slim rim, camera cutout, and home indicator. On phones, both views use the available width. Let content scroll above the bottom controls and give each screen one prominent next action.
 
+Animate workspace content and the selected tab highlight while keeping the handset and dock in place. Use short entrances, one-time character motion, and direct tap feedback. Respect reduced motion for each effect.
+
 | Pattern | SayLess treatment |
 | --- | --- |
 | Primary action | Ink pill with white text. Give the main action one clear verb and one prominent placement. |
@@ -50,7 +52,8 @@ Use the shared sticky site navbar on every page. On desktop, use the same handse
 | Demo Yap Recap | Highlight the top expression in large Ink type on Lavender. Label the conversation as simulated and show the estimated counts in compact rows with bars. |
 | Demo two-week goal | Pair the recap baseline and two-week target. Use a flat reference line for the baseline and a dashed Mint line for the practice targets. |
 | Home | Lead with weekly check-ins, then show XP, the daily quest, and a Friends preview. |
-| Friends sample check-in | Give both friends the same prompt. Use original dot avatars and show each person’s weekly change from their own starting count. Use labeled solid and dashed lines to distinguish the two series. |
+| Stats | Show practice takes when available. Use Lavender for Jade’s demo recap and Mint for her example targets. Label the demo data and keep it apart from personal takes. |
+| Friends sample check-in | Put Jade and Riley’s portraits above one shared speaking prompt. Make the topic roll the main action and show weekly progress from each friend’s own starting count. Use labeled solid and dashed lines to distinguish the two series. |
 | Practice | Put the prompt on a pale Azure fill inside a single card. Keep recording as the primary action. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
 | Profile | Use a dot avatar, compact stats, and a seven-day completion strip. Show practice totals for the current session and challenge progress saved in the browser. |
 | Results | Use the same metric order and units on both takes. Use Azure for the baseline highlight, Mint for a positive change, and Lavender for the coaching suggestion. Use Jonquil for the sample replay label. |
