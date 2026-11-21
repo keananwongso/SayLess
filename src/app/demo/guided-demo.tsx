@@ -184,7 +184,7 @@ export function GuidedDemo() {
             {step.id === "finish" ? (
               <>
                 <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
-                <Link href="/practice#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
+                <Link href="/app#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
               </>
             ) : (
               <button className="primary" onClick={() => move(index + 1)}>{step.action} <span aria-hidden="true">→</span></button>

@@ -42,3 +42,7 @@ See the [voice analysis architecture](voice-analysis.md), [practice API and trac
 `design/demo-onboarding` separates setup, Wrapped, practice, comparison, and the challenge finish into five focused screens. Each uses one brand color as an accent. Chat statistics and full transcripts are available through disclosures.
 
 `design/jade-demo` turns the guided walkthrough into Jade’s story. The demo uses her chat findings and prerecorded pitch takes, with one starting action.
+
+## Product routes
+
+The landing, Jade’s demo, working app, and architecture now have separate routes. The Analyze tab accepts a consented recording and shows whole-recording filler counts, repeated language, transcript, and playable timestamps. It uses the existing Deepgram pipeline in analysis mode.

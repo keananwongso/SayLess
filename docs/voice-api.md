@@ -2,7 +2,7 @@
 
 ## Request
 
-`POST /api/practice` accepts a multipart `audio` file up to 4 MB. Use the browser's original recording. The route accepts WebM, Ogg, MP4, and WAV audio.
+`POST /api/practice` accepts a multipart `audio` file up to 4 MB. The route accepts WebM, Ogg, MP4/M4A, WAV, and MP3 audio.
 
 ```bash
 curl -i -F 'audio=@public/voice-samples/alex-first.m4a;type=audio/mp4' \
@@ -10,6 +10,8 @@ curl -i -F 'audio=@public/voice-samples/alex-first.m4a;type=audio/mp4' \
 ```
 
 Set `DEEPGRAM_API_KEY` in the server environment to enable Nova-3 with filler retention and word timestamps. `OPENAI_API_KEY` enables the coaching cue and the existing transcript-only service when no Deepgram key is configured. With Deepgram alone, SayLess uses a stock cue. The browser retains audio and current practice history in the tab for playback and comparison.
+
+For a recording upload from `/app`, send a second multipart field, `mode=analysis`. This returns `{ transcript, events?, durationSeconds? }` and skips the pitch coaching call. Counts cover the whole recording. The browser computes repeated words and phrases from the transcript and plays each timestamped event from the selected file.
 
 ## Response
 
@@ -50,6 +52,7 @@ A synthetic log entry looks like this:
   "event": "practice.completed",
   "requestId": "bc5af08a-202c-4361-85ed-72e2bcb88e55",
   "provider": "deepgram",
+  "mode": "practice",
   "status": 200,
   "outcome": "degraded",
   "failedStage": "coaching",

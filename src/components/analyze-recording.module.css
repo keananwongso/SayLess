@@ -1,0 +1,15 @@
+.intro .lede { max-width: 54ch; }
+.form { display: grid; gap: 8px; min-width: 0; max-width: 100%; }
+.file { overflow-wrap: anywhere; font-weight: 650; }
+.textAction { min-height: 44px; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.report { gap: 16px; }
+.report h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 760; letter-spacing: -.045em; }
+.metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.metrics > div { display: grid; align-content: start; gap: 4px; padding: 16px; border-radius: var(--control-radius); background: var(--color-dune); }
+.metrics > div:first-child { background: color-mix(in srgb, var(--color-azure) 20%, var(--color-surface)); }
+.metrics dt { font-size: 14px; font-weight: 650; }
+.metrics dd { font-size: clamp(20px, 4vw, 32px); font-weight: 780; line-height: 1.08; letter-spacing: -.05em; }
+.metrics .metricDetail { font-size: 14px; font-weight: 500; letter-spacing: normal; }
+.report summary { min-height: 44px; align-content: center; font-weight: 650; }
+.transcript { max-height: 360px; overflow: auto; white-space: pre-wrap; padding: 12px; border-radius: var(--control-radius); background: var(--color-dune); }
+@media (width < 600px) { .metrics { grid-template-columns: 1fr; } }

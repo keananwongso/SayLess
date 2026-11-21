@@ -1,4 +1,4 @@
-import { chooseRule, MAX_AUDIO_BYTES, normalizeFiller, PITCH_PROMPT, stockCue, type CoachingRule, type Feedback, type FillerEvent } from "@/lib/practice";
+import { chooseRule, MAX_AUDIO_BYTES, normalizeFiller, PITCH_PROMPT, stockCue, type CoachingRule, type Feedback, type FillerEvent, type RecordingAnalysis } from "@/lib/practice";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -8,9 +8,26 @@ const audioExtensions: Record<string, string> = {
   "audio/ogg": "ogg",
   "audio/mp4": "m4a",
   "audio/wav": "wav",
+  "audio/mpeg": "mp3",
 };
 
-type Transcription = { transcript: string; events?: FillerEvent[] };
+const audioTypes: Record<string, string> = {
+  webm: "audio/webm",
+  ogg: "audio/ogg",
+  opus: "audio/ogg",
+  m4a: "audio/mp4",
+  mp4: "audio/mp4",
+  wav: "audio/wav",
+  mp3: "audio/mpeg",
+};
+
+function audioTypeFor(file: File) {
+  const type = file.type.split(";")[0];
+  if (Object.hasOwn(audioExtensions, type)) return type;
+  const extension = file.name.split(".").at(-1)?.toLowerCase() ?? "";
+  return Object.hasOwn(audioTypes, extension) ? audioTypes[extension] : undefined;
+}
+
 type TimedWord = { word: string; start: number; end: number };
 
 function fillerEvents(words?: TimedWord[]) {
@@ -26,24 +43,30 @@ function fillerEvents(words?: TimedWord[]) {
   }).sort((a, b) => a.startMs - b.startMs);
 }
 
-async function transcribeDeepgram(audio: File, key: string, signal: AbortSignal): Promise<Transcription> {
+async function transcribeDeepgram(audio: File, audioType: string, key: string, signal: AbortSignal): Promise<RecordingAnalysis> {
   const response = await fetch("https://api.deepgram.com/v1/listen?model=nova-3&language=en&filler_words=true", {
     method: "POST",
-    headers: { Authorization: `Token ${key}`, "Content-Type": audio.type },
+    headers: { Authorization: `Token ${key}`, "Content-Type": audioType },
     body: audio,
     signal,
   });
   if (!response.ok) throw new Error("Deepgram transcription failed");
   const data = await response.json() as {
+    metadata?: { duration?: number };
     results?: { channels?: { alternatives?: { transcript?: string; words?: TimedWord[] }[] }[] };
   };
   const result = data.results?.channels?.[0]?.alternatives?.[0];
-  return { transcript: result?.transcript?.trim() ?? "", events: fillerEvents(result?.words) };
+  const duration = data.metadata?.duration;
+  return {
+    transcript: result?.transcript?.trim() ?? "",
+    events: fillerEvents(result?.words),
+    durationSeconds: typeof duration === "number" && Number.isFinite(duration) && duration > 0 ? duration : undefined,
+  };
 }
 
-async function transcribeOpenAI(audio: File, extension: string, key: string, signal: AbortSignal): Promise<Transcription> {
+async function transcribeOpenAI(audio: File, type: string, key: string, signal: AbortSignal): Promise<RecordingAnalysis> {
   const form = new FormData();
-  form.set("file", audio, `pitch.${extension}`);
+  form.set("file", new Blob([audio], { type }), `recording.${audioExtensions[type]}`);
   form.set("model", "gpt-4o-transcribe");
   form.set("language", "en");
   form.set("prompt", "Transcribe speech exactly as spoken, preserving audible fillers, hesitations, repeated words, and false starts. Return an empty transcript if there is no speech.");
@@ -91,12 +114,14 @@ export async function POST(request: Request) {
   const provider = deepgramKey ? "deepgram" : openAIKey ? "openai" : "none";
   let transcriptionMs: number | undefined;
   let coachingMs: number | undefined;
+  let mode = "practice";
 
-  function reply(body: Feedback | { error: string }, status: number, failedStage?: string) {
+  function reply(body: Feedback | RecordingAnalysis | { error: string }, status: number, failedStage?: string) {
     console.info(JSON.stringify({
       event: "practice.completed",
       requestId,
       provider,
+      mode,
       status,
       outcome: status >= 400 ? "error" : failedStage ? "degraded" : "ok",
       failedStage,
@@ -117,13 +142,14 @@ export async function POST(request: Request) {
   }
 
   const input = await request.formData().catch(() => null);
+  if (input?.get("mode") === "analysis") mode = "analysis";
   const audio = input?.get("audio");
   if (!(audio instanceof File) || audio.size === 0) {
     return reply({ error: "Record a take before asking for feedback." }, 400, "validation");
   }
-  const audioType = audio.type.split(";")[0];
-  if (!Object.hasOwn(audioExtensions, audioType)) {
-    return reply({ error: "This recording format is unsupported. Try Chrome." }, 415, "validation");
+  const audioType = audioTypeFor(audio);
+  if (!audioType) {
+    return reply({ error: "Choose an M4A, MP3, WAV, WebM, or Ogg recording." }, 415, "validation");
   }
   if (audio.size > MAX_AUDIO_BYTES) {
     return reply({ error: "The recording is too large. Try a shorter take." }, 413, "validation");
@@ -132,14 +158,14 @@ export async function POST(request: Request) {
     return reply({ error: "Live transcription is unavailable. You can still watch the sample." }, 503, "configuration");
   }
 
-  const deadline = AbortSignal.any([request.signal, AbortSignal.timeout(9_000)]);
-  const transcriptionSignal = AbortSignal.any([deadline, AbortSignal.timeout(7_000)]);
-  let result: Transcription;
+  const deadline = AbortSignal.any([request.signal, AbortSignal.timeout(mode === "analysis" ? 22_000 : 9_000)]);
+  const transcriptionSignal = mode === "analysis" ? deadline : AbortSignal.any([deadline, AbortSignal.timeout(7_000)]);
+  let result: RecordingAnalysis;
   const transcriptionStartedAt = performance.now();
   try {
     result = deepgramKey
-      ? await transcribeDeepgram(audio, deepgramKey, transcriptionSignal)
-      : await transcribeOpenAI(audio, audioExtensions[audioType], openAIKey!, transcriptionSignal);
+      ? await transcribeDeepgram(audio, audioType, deepgramKey, transcriptionSignal)
+      : await transcribeOpenAI(audio, audioType, openAIKey!, transcriptionSignal);
   } catch {
     transcriptionMs = Math.round(performance.now() - transcriptionStartedAt);
     return reply({ error: "Transcription didn't finish. Try again or watch the sample." }, 502, "transcription");
@@ -148,6 +174,8 @@ export async function POST(request: Request) {
   if (!result.transcript) {
     return reply({ error: "We couldn't hear a clear answer. Try speaking closer to the mic." }, 422, "transcription");
   }
+  if (mode === "analysis") return reply(result, 200);
+
   const rule = result.events ? chooseRule(result.events) : undefined;
   let suggestion = stockCue(rule);
   let failedStage: string | undefined;
@@ -163,5 +191,5 @@ export async function POST(request: Request) {
     failedStage = "coaching_configuration";
   }
 
-  return reply({ ...result, suggestion }, 200, failedStage);
+  return reply({ transcript: result.transcript, events: result.events, suggestion }, 200, failedStage);
 }

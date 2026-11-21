@@ -617,3 +617,8 @@ button:disabled { cursor: default; opacity: .58; }
 
 .filler-clips { max-height: 156px; overflow: auto; padding: 4px; }
 .secondary[aria-pressed="true"] { background: var(--color-lavender); }
+
+@media (width < 630px) {
+  .workspace-header .header-inner { flex-wrap: wrap; padding-block: 8px; }
+  .workspace-header nav { flex-wrap: wrap; }
+}

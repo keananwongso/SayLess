@@ -6,6 +6,10 @@ SayLess is an AI communication coach for students and early-career professionals
 
 [Try SayLess](https://sayless-nine.vercel.app)
 
+- [Use the app](https://sayless-nine.vercel.app/app) to analyze your own recording or practice a pitch.
+- [Watch Jade’s demo](https://sayless-nine.vercel.app/demo) for a guided walkthrough with prerecorded audio.
+- [Explore the architecture](https://sayless-nine.vercel.app/architecture) to see how the analysis works.
+
 ## How it works
 
 - **Discover your habits.** Communication Wrapped shows repeated words, signature phrases, and how often you ask questions in chat. Start with a sample or import a CSV of messages you have permission to use.

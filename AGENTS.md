@@ -20,7 +20,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Demo and code map
 
 - The two-minute demo shows Communication Wrapped, one project-pitch prompt, and feedback comparing two takes. See the [rehearsal steps](docs/demo-rehearsal.md).
-- `src/app/page.tsx` is the landing page, `/demo` is the guided walkthrough, and `src/app/practice/page.tsx` connects the full app screens. `src/components/` contains the Wrapped, Practice, and Results views. `src/lib/` holds CSV parsing, metrics, and sample data.
+- `/` is the landing page, `/demo` is Jade’s guided walkthrough, `/architecture` explains the pipeline, and `/app` is the working product. `src/components/` contains the Analyze, Wrapped, Practice, and Results views.
 - `POST /api/practice` accepts recorded audio in the multipart `audio` field and returns `{ transcript, suggestion, events? }` on success or `{ error }` on failure. See the [practice API and tracing guide](docs/voice-api.md). Keep the offline sample replay usable when the live route fails.
 - Use synthetic data in the repo. Keep imported chats in the browser and put `OPENAI_API_KEY` in a local environment file or Vercel's server-side settings.
 

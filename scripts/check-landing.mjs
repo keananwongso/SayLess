@@ -28,8 +28,12 @@ assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
 assert.match(html, /Synthetic sample/);
 assert.match(html, /aria-controls="preview-content"/);
-assert.match(html, /href="\/practice#practice"/);
-for (const path of ["/demo", "/practice", "/landing/sayless-coaching-collage.png"]) {
+assert.match(html, /href="\/app#practice"/);
+assert.match(html, /href="\/architecture"/);
+for (const path of ["/demo", "/app", "/architecture", "/landing/sayless-coaching-collage.png"]) {
   assert.equal((await fetch(new URL(path, base))).status, 200, path);
 }
-console.log("PASS: landing styles, responsive rules, artwork, demo, and practice routes");
+const legacy = await fetch(new URL("/practice", base), { redirect: "manual" });
+assert.equal(legacy.status, 307);
+assert.equal(legacy.headers.get("location"), "/app#practice");
+console.log("PASS: landing styles, artwork, demo, app, architecture, and practice redirect");

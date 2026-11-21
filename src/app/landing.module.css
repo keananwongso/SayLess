@@ -112,3 +112,8 @@
   .art { max-width: 320px; width: 100%; margin-inline: auto; }
   .footer { flex-wrap: wrap; gap: 8px 16px; }
 }
+
+@media (width < 380px) {
+  .navigation { gap: 8px; }
+  .demoLink { padding-inline: 10px; white-space: nowrap; }
+}

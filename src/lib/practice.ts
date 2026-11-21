@@ -11,11 +11,13 @@ export type FillerEvent = {
   text: Filler;
 };
 
-export type Feedback = {
+export type RecordingAnalysis = {
   transcript: string;
-  suggestion: string;
   events?: FillerEvent[];
+  durationSeconds?: number;
 };
+
+export type Feedback = Omit<RecordingAnalysis, "durationSeconds"> & { suggestion: string };
 
 export type Take = Feedback & {
   seconds: number;
