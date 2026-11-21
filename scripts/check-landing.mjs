@@ -39,6 +39,11 @@ assert.ok(navbar, "The landing page must include the site navbar");
 for (const path of ["/architecture", "/demo", "/app"]) {
   assert.ok(navbar.includes(`href="${path}"`), `Navbar must link to ${path}`);
 }
+assert.doesNotMatch(html, /<audio\b/);
+assert.match(html, /data-reveal/);
+assert.match(html, /60-second takes/);
+assert.match(html, /<mark>Um<\/mark>/);
+assert.match(html, /75/);
 for (const path of ["/demo", "/app", "/architecture"]) {
   const page = await fetch(new URL(path, base));
   assert.equal(page.status, 200, path);

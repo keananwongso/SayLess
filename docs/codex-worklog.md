@@ -35,6 +35,13 @@ Lint, typecheck, production build, and the served landing check passed. Chrome c
 ## Steady landing navigation — November 21, 2026
 
 On `codex/steady-landing-nav`, pinned the landing navbar at its original desktop and mobile insets and removed the "Use SayLess" hover lift. In-page targets clear the bar. Lint, typecheck, build, and the served landing check passed. Chrome verified the bar and button positions at 320px and 1440px and confirmed the preview anchor stays visible.
+## Transcript preview and scroll motion — November 21, 2026
+
+- Branch `codex/landing-transcript-motion`, based on latest main (`9c89c9c`). Landing-only changes; the app, guided demo, audio assets, and practice API are unchanged.
+- Replaced landing audio players with a selectable six-segment transcript graph, first/retry controls, highlighted fillers, and a comparison chart. Authored equal 60-second synthetic fixtures with 8 and 2 whole-word um/uh occurrences; the displayed 75% reduction is derived, explicitly illustrative, and never presented as a customer average or research finding. Source and caveats: [metric notes](landing-preview-metrics.md).
+- Added once-per-section intersection-based reveals, staggered dots/cards, animated comparison bars, and panel transitions. Keeps standard scrolling and focus, preserves dot rotations, cancels motion when reduced motion is enabled, and leaves content visible without JS.
+- Sites presentation guidance informed concise copy, concrete examples, and separation of sample claims from evidence. No new hosting or dependencies.
+- Verified: three fixture tests, lint, typecheck, production build, diff whitespace check, and final HTTP/CSS regression including highlight markup, no landing audio, all product routes, and legacy redirect. Browser visual/mobile/interaction QA is unverified because isolated IAB is unavailable. Local final-build preview at port 3000; no deployment or merge performed.
 
 ## Landing polish merge — November 21, 2026
 
