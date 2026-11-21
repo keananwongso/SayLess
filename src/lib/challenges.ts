@@ -1,5 +1,3 @@
-import { pitchMetrics, type Take } from "@/lib/practice";
-
 export const DAILY_XP = 40;
 
 export const dailyChallenge = {
@@ -8,6 +6,8 @@ export const dailyChallenge = {
   prompt: "Make your project pitch in 20 seconds with two or fewer filler sounds.",
   xp: DAILY_XP,
 };
+
+export type ChallengeTake = { seconds: number; fillerCount: number };
 
 export type ChallengeProgress = {
   completedDates: string[];
@@ -18,14 +18,13 @@ export function localDay(date = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-export function qualifiesForDailyChallenge(take?: Take) {
+export function qualifiesForDailyChallenge(take?: ChallengeTake) {
   if (!take) return false;
-  const { fillers } = pitchMetrics(take);
-  return take.seconds <= 20 && fillers.length <= 2;
+  return take.seconds <= 20 && take.fillerCount <= 2;
 }
 
-export function fillerJarCount(takes: Take[]) {
-  return takes.reduce((total, take) => total + pitchMetrics(take).fillers.length, 0);
+export function fillerJarCount(takes: ChallengeTake[]) {
+  return takes.reduce((total, take) => total + take.fillerCount, 0);
 }
 
 export function currentStreak(completedDates: string[], today = new Date()) {
@@ -39,9 +38,9 @@ export function currentStreak(completedDates: string[], today = new Date()) {
   return streak;
 }
 
-export function improvementScore(takes: Take[]) {
+export function improvementScore(takes: ChallengeTake[]) {
   if (takes.length < 2) return 0;
-  const first = pitchMetrics(takes[0]).fillers.length;
-  const latest = pitchMetrics(takes.at(-1)!).fillers.length;
+  const first = takes[0].fillerCount;
+  const latest = takes[takes.length - 1].fillerCount;
   return Math.max(0, first - latest) * 20;
 }

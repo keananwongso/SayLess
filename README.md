@@ -15,4 +15,4 @@ SayLess is an AI communication coach for students and early-career professionals
 
 ## Privacy
 
-Imported chats are analyzed in your browser. Practice audio and its transcript are sent to OpenAI to generate feedback. Your results are held in the current tab and clear when you refresh.
+Imported chats are analyzed in your browser. Practice audio is sent to the configured transcription provider. OpenAI receives the transcript and measured coaching focus when live coaching is enabled. SayLess holds the recording and results in the current tab for replay and clears them when you refresh.

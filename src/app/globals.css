@@ -596,7 +596,10 @@ button:disabled { cursor: default; opacity: .58; }
   .site-header nav button { padding-inline: 8px; }
 }
 
-@media (width < 360px) {
+@media (width < 470px) {
   .header-inner { flex-wrap: wrap; padding-block: 8px; }
   .site-header nav { flex-wrap: wrap; }
 }
+
+.filler-clips { max-height: 156px; overflow: auto; padding: 4px; }
+.secondary[aria-pressed="true"] { background: var(--color-lilac); }

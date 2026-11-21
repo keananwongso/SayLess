@@ -5,16 +5,20 @@ import { Challenges } from "@/components/challenges";
 import { Practice } from "@/components/practice";
 import { Results } from "@/components/results";
 import { Wrapped } from "@/components/wrapped";
-import type { Take } from "@/lib/practice";
-import { samplePitches } from "@/lib/sample-pitches";
+import type { ChallengeTake } from "@/lib/challenges";
+import { nextTake, pitchMetrics, type PracticeSession, type Take } from "@/lib/practice";
+import { sampleProfiles } from "@/lib/sample-pitches";
+import { loadTakeAudio } from "@/lib/take-audio";
 import { stopSpeech } from "@/lib/speech";
 
 type Step = "wrapped" | "practice" | "results" | "sample" | "challenges";
 
 export default function Home() {
   const [step, setStep] = useState<Step>("wrapped");
-  const [takes, setTakes] = useState<[Take, Take?]>();
-  const [practiceHistory, setPracticeHistory] = useState<Take[]>([]);
+  const [session, setSession] = useState<PracticeSession>();
+  const [practiceHistory, setPracticeHistory] = useState<ChallengeTake[]>([]);
+  const [sampleIndex, setSampleIndex] = useState(0);
+  const sample = sampleProfiles[sampleIndex];
   const main = useRef<HTMLElement>(null);
   const previousStep = useRef(step);
 
@@ -24,14 +28,23 @@ export default function Home() {
     main.current?.querySelector<HTMLElement>("div:not([hidden]) > section h1")?.focus();
   }, [step]);
 
+  useEffect(() => {
+    for (const profile of sampleProfiles) {
+      for (const take of profile.takes) {
+        if (take.audio) void loadTakeAudio(take.audio).catch(() => undefined);
+      }
+    }
+  }, []);
+
   function go(next: Step) {
     stopSpeech();
     setStep(next);
   }
 
   function save(result: Take) {
-    setTakes((current) => current ? [current[0], result] : [result]);
-    setPracticeHistory((current) => [...current, result]);
+    const summary = { seconds: result.seconds, fillerCount: pitchMetrics(result).fillers.length };
+    setSession((current) => nextTake(current, result));
+    setPracticeHistory((current) => [...current, summary]);
     setStep("results");
   }
 
@@ -53,7 +66,7 @@ export default function Home() {
             <button aria-current={step === "challenges" ? "page" : undefined} onClick={() => go("challenges")}>
               Challenges
             </button>
-            {takes && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
+            {session && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
           </nav>
         </div>
       </header>
@@ -62,21 +75,28 @@ export default function Home() {
           <Wrapped onPractice={() => go("practice")} />
         </div>
         {step === "practice" && (
-          <div><Practice attempt={takes ? 2 : 1} onResult={save} onSample={() => go("sample")} /></div>
+          <div>
+            <Practice attempt={(session?.attempt ?? 0) + 1} rule={session?.nextRule} onResult={save} onSample={() => go("sample")} />
+          </div>
         )}
         {step === "sample" && (
           <div>
-            <Results sample takes={samplePitches} onRetry={() => go("practice")} onRestart={() => go("practice")} />
+            <Results
+              key={sample.name}
+              session={nextTake(nextTake(undefined, sample.takes[0]), sample.takes[1])}
+              sample={{ names: sampleProfiles.map(({ name }) => name), selected: sampleIndex, onSelect: setSampleIndex }}
+              onRetry={() => go("practice")}
+            />
           </div>
         )}
         {step === "challenges" && <Challenges takes={practiceHistory} onPractice={() => go("practice")} />}
-        {step === "results" && takes && (
+        {step === "results" && session && (
           <div>
             <Results
-              takes={takes}
+              session={session}
               onRetry={() => go("practice")}
               onRestart={() => {
-                setTakes(undefined);
+                setSession(undefined);
                 go("practice");
               }}
             />

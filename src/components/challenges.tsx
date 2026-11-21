@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState, useSyncExternalStore } from "react";
-import { currentStreak, dailyChallenge, DAILY_XP, fillerJarCount, improvementScore, localDay, qualifiesForDailyChallenge, type ChallengeProgress } from "@/lib/challenges";
-import { pitchMetrics, type Take } from "@/lib/practice";
+import { currentStreak, dailyChallenge, DAILY_XP, fillerJarCount, improvementScore, localDay, qualifiesForDailyChallenge, type ChallengeProgress, type ChallengeTake } from "@/lib/challenges";
 
 const STORAGE_KEY = "sayless-challenge-progress-v1";
 const PROGRESS_CHANGE_EVENT = "sayless-challenge-progress-change";
@@ -46,7 +45,7 @@ async function copyText(value: string) {
   await navigator.clipboard.writeText(value);
 }
 
-export function Challenges({ takes, onPractice }: { takes: Take[]; onPractice: () => void }) {
+export function Challenges({ takes, onPractice }: { takes: ChallengeTake[]; onPractice: () => void }) {
   const progress = useSyncExternalStore(subscribeToProgress, readProgress, () => defaultProgress);
   const [notice, setNotice] = useState("");
   const today = localDay();
@@ -56,7 +55,7 @@ export function Challenges({ takes, onPractice }: { takes: Take[]; onPractice: (
   const jarCount = fillerJarCount(takes);
   const streak = currentStreak(progress.completedDates);
   const improvement = improvementScore(takes);
-  const latestFillers = latestTake ? pitchMetrics(latestTake).fillers.length : null;
+  const latestFillers = latestTake?.fillerCount;
 
   function claimChallenge() {
     if (!canClaim) return;
