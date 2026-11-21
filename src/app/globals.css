@@ -301,6 +301,93 @@ button:disabled { cursor: default; opacity: .58; }
   font-weight: 760;
 }
 
+.profile-grid, .challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.communication-profile, .habit-panel {
+  min-height: 280px;
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid var(--color-divider);
+}
+
+.communication-profile { background: var(--color-surface); }
+.habit-panel { background: var(--color-butter); }
+.communication-profile h2, .habit-panel h2, .daily-challenge h2, .conversation-stub h2, .accountability h2 {
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.06;
+  font-weight: 780;
+  letter-spacing: -.045em;
+}
+
+.profile-list, .habit-list {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-list li, .habit-list li {
+  padding-left: 20px;
+  position: relative;
+}
+
+.profile-list li::before, .habit-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .55em;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-lime);
+}
+
+.habit-list li { display: grid; gap: 2px; }
+.habit-list span { color: var(--color-muted); font-size: 14px; }
+.profile-focus { margin-top: auto; padding-top: 8px; }
+
+.progress-panel, .conversation-stub, .daily-challenge, .accountability {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: var(--card-radius);
+  overflow-wrap: anywhere;
+}
+
+.progress-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+}
+
+.progress-panel > div:first-child, .conversation-stub > div, .daily-challenge > div, .accountability > div { flex: 1 1 30rem; min-width: 0; }
+.progress-panel h2, .conversation-stub h2, .daily-challenge h2, .accountability h2 { margin-block: 4px 8px; }
+.progress-action, .challenge-actions { display: grid; justify-items: start; gap: 8px; }
+.metric-pill, .streak-pill, .complete-pill {
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-pill { background: var(--color-sky); }
+
+.conversation-stub {
+  align-items: start;
+  background: var(--color-surface);
+  border: 2px dashed var(--color-control-border);
+}
+
+.stub-label { background: var(--color-butter); width: fit-content; padding: 5px 12px; border-radius: 999px; }
+.scenario-list { display: flex; flex-wrap: wrap; gap: 8px; max-width: 24rem; }
+.scenario-list li { padding: 8px 12px; border: 1px solid var(--color-control-border); border-radius: 999px; font-size: 14px; font-weight: 650; background: var(--color-canvas); }
+
 .dataset-controls {
   display: flex;
   flex-wrap: wrap;
@@ -473,10 +560,32 @@ button:disabled { cursor: default; opacity: .58; }
 .coaching > div { flex: 1 1 26rem; min-width: 0; }
 .coaching p { margin-top: 4px; }
 
+.challenge-label { width: fit-content; padding: 5px 12px; border-radius: 999px; background: var(--color-lime); }
+.results-heading h1 em { font-style: normal; }
+.streak-pill { background: var(--color-lilac); border: 1px solid var(--color-control-border); }
+
+.daily-challenge {
+  align-items: center;
+  background: var(--color-sky);
+  border: 2px solid var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+.daily-challenge .footnote { margin-top: 8px; }
+.complete-pill { background: var(--color-lime); border: 1px solid var(--color-ink); }
+.filler-jar { background: var(--color-peach); }
+.duel-card { background: var(--color-lilac); }
+.filler-jar h2 { font-size: clamp(44px, 7vw, 72px); line-height: .95; font-weight: 800; letter-spacing: -.06em; }
+.filler-jar h2 span { display: inline-block; transform: rotate(180deg); font-size: .76em; }
+.duel-card h2 { font-size: clamp(24px, 3vw, 32px); line-height: 1.06; font-weight: 780; letter-spacing: -.045em; }
+
+.accountability { background: var(--color-surface); border: 1px solid var(--color-divider); }
+.status-note { padding: 10px 12px; border-radius: var(--control-radius); background: var(--color-lime); width: fit-content; }
+
 @media (width < 700px) {
   :root { --gutter: 16px; }
   .header-inner { min-height: 68px; }
-  .spread, .stat-grid { grid-template-columns: minmax(0, 1fr); }
+  .spread, .stat-grid, .profile-grid, .challenge-grid { grid-template-columns: minmax(0, 1fr); }
   .wrapped-card { min-height: 204px; }
 }
 

@@ -1,8 +1,55 @@
 "use client";
 
 import * as Select from "@radix-ui/react-select";
-import { useRef, useState, type ChangeEvent } from "react";
-import { analyzeMessages, MAX_CSV_BYTES, parseMessages, sampleMessages } from "@/lib/wrapped";
+import { useRef, useState, useSyncExternalStore, type ChangeEvent } from "react";
+import { analyzeMessages, habitRate, makeWrappedSnapshot, MAX_CSV_BYTES, parseMessages, sampleMessages, type WrappedSnapshot } from "@/lib/wrapped";
+
+const SNAPSHOT_STORAGE_KEY = "sayless-wrapped-snapshots-v1";
+const SNAPSHOT_CHANGE_EVENT = "sayless-wrapped-snapshots-change";
+const emptySnapshots: WrappedSnapshot[] = [];
+let cachedSnapshotValue: string | null | undefined;
+let cachedSnapshots: WrappedSnapshot[] = emptySnapshots;
+
+function subscribeToSnapshots(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(SNAPSHOT_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(SNAPSHOT_CHANGE_EVENT, callback);
+  };
+}
+
+function readSnapshots(): WrappedSnapshot[] {
+  try {
+    const stored = window.localStorage.getItem(SNAPSHOT_STORAGE_KEY);
+    if (stored === cachedSnapshotValue) return cachedSnapshots;
+    cachedSnapshotValue = stored;
+    if (!stored) {
+      cachedSnapshots = emptySnapshots;
+      return cachedSnapshots;
+    }
+    const parsed = JSON.parse(stored) as unknown;
+    if (!Array.isArray(parsed)) {
+      cachedSnapshots = emptySnapshots;
+      return cachedSnapshots;
+    }
+    cachedSnapshots = parsed.filter((snapshot): snapshot is WrappedSnapshot => {
+      if (!snapshot || typeof snapshot !== "object") return false;
+      const candidate = snapshot as Partial<WrappedSnapshot>;
+      return typeof candidate.capturedAt === "number"
+        && typeof candidate.speaker === "string"
+        && typeof candidate.messages === "number"
+        && typeof candidate.words === "number"
+        && typeof candidate.fillerLikeWords === "number"
+        && typeof candidate.hedgePhrases === "number"
+        && typeof candidate.apologies === "number";
+    });
+    return cachedSnapshots;
+  } catch {
+    cachedSnapshots = emptySnapshots;
+    return cachedSnapshots;
+  }
+}
 
 export function Wrapped({ onPractice }: { onPractice: () => void }) {
   const [messages, setMessages] = useState(sampleMessages);
@@ -10,12 +57,18 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const snapshots = useSyncExternalStore(subscribeToSnapshots, readSnapshots, () => emptySnapshots);
   const fileInput = useRef<HTMLInputElement>(null);
   const isSample = messages === sampleMessages;
   const speakers = Array.from(new Set(messages.map((message) => message.speaker)));
   const insight = analyzeMessages(messages, speaker);
   const format = (count: number) => count.toLocaleString("en-US");
   const messageCount = `${format(insight.total)} ${insight.total === 1 ? "message" : "messages"}`;
+  const speakerSnapshots = snapshots.filter((snapshot) => snapshot.speaker === speaker);
+  const previousSnapshot = speakerSnapshots.at(-1);
+  const fillerHabit = insight.habits.find((habit) => habit.id === "fillers");
+  const fillerRate = habitRate(fillerHabit?.count ?? 0, insight.wordCount);
+  const previousFillerRate = previousSnapshot ? habitRate(previousSnapshot.fillerLikeWords, previousSnapshot.words) : null;
 
   async function importFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -40,6 +93,12 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
     setSpeaker("Alex");
     setConsent(false);
     setError("");
+  }
+
+  function saveSnapshot() {
+    const next = [...snapshots, makeWrappedSnapshot(insight, speaker)].slice(-12);
+    window.localStorage.setItem(SNAPSHOT_STORAGE_KEY, JSON.stringify(next));
+    window.dispatchEvent(new Event(SNAPSHOT_CHANGE_EVENT));
   }
 
   return (
@@ -87,6 +146,55 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
           <p>{insight.questions ? "Curious or confused?" : "Keeping it declarative."}</p>
         </article>
       </div>
+
+      <div className="profile-grid">
+        <article className="panel communication-profile" aria-labelledby="profile-title">
+          <div>
+            <p className="eyebrow">Communication profile</p>
+            <h2 id="profile-title">What this chat shows</h2>
+          </div>
+          <ul className="profile-list">
+            {insight.profile.strengths.map((strength) => <li key={strength}>{strength}</li>)}
+          </ul>
+          <p className="profile-focus"><strong>Practice cue:</strong> {insight.profile.focus}</p>
+        </article>
+
+        <article className="panel habit-panel" aria-labelledby="habits-title">
+          <div>
+            <p className="eyebrow">Text habits</p>
+            <h2 id="habits-title">Patterns worth noticing</h2>
+          </div>
+          <ul className="habit-list">
+            {insight.habits.filter((habit) => habit.count > 0).map((habit) => (
+              <li key={habit.id}>
+                <strong>{habit.count} · {habit.label}</strong>
+                <span>{habit.detail}</span>
+              </li>
+            ))}
+            {!insight.habits.some((habit) => habit.count > 0) && <li>No repeated text pattern stands out in this sample yet.</li>}
+          </ul>
+          <p className="footnote">These are written-message patterns, not claims about how you speak.</p>
+        </article>
+      </div>
+
+      <article className="progress-panel" aria-labelledby="progress-title">
+        <div>
+          <p className="eyebrow">Progress tracking</p>
+          <h2 id="progress-title">Keep a private baseline.</h2>
+          {previousSnapshot ? (
+            <p>
+              Filler-like wording is {fillerRate} per 100 words now, compared with {previousFillerRate} in your last saved snapshot.
+            </p>
+          ) : (
+            <p>Save this analysis, then compare measurable text habits the next time you import a chat.</p>
+          )}
+        </div>
+        <div className="progress-action">
+          <p className="metric-pill">{fillerRate} filler-like words / 100</p>
+          <button className="secondary" onClick={saveSnapshot}>Save private snapshot</button>
+        </div>
+        <p className="footnote">Snapshots store only counts, not your messages, and stay in this browser.</p>
+      </article>
 
       <div className="dataset-controls">
         <div className="speaker-field">

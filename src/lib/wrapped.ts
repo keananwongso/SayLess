@@ -3,6 +3,25 @@ import Papa from "papaparse";
 export type Message = { speaker: string; message: string };
 export const MAX_CSV_BYTES = 1_000_000;
 
+export type RepeatedText = { text: string; count: number };
+
+export type TextHabit = {
+  id: "fillers" | "hedges" | "apologies" | "repetition";
+  label: string;
+  count: number;
+  detail: string;
+};
+
+export type WrappedSnapshot = {
+  capturedAt: number;
+  speaker: string;
+  messages: number;
+  words: number;
+  fillerLikeWords: number;
+  hedgePhrases: number;
+  apologies: number;
+};
+
 export const sampleMessages: Message[] = [
   { speaker: "Alex", message: "Wait, actually, can we open with the demo?" },
   { speaker: "Sam", message: "Sure. Can you run through your opening?" },
@@ -45,7 +64,7 @@ const common = new Set(
 );
 
 function topRepeated(counts: Map<string, number>) {
-  return Array.from(counts, ([text, count]) => ({ text, count }))
+  return Array.from(counts, ([text, count]): RepeatedText => ({ text, count }))
     .filter(({ count }) => count > 1)
     .sort((a, b) => b.count - a.count || a.text.localeCompare(b.text))[0];
 }
@@ -54,14 +73,54 @@ function countPhrase(counts: Map<string, number>, phrase: string) {
   counts.set(phrase, (counts.get(phrase) ?? 0) + 1);
 }
 
+function countSequences(sentences: string[][], targets: string[][]) {
+  return sentences.reduce((total, tokens) => total + targets.reduce((matches, target) => {
+    for (let start = 0; start <= tokens.length - target.length; start += 1) {
+      if (target.every((word, index) => tokens[start + index] === word)) matches += 1;
+    }
+    return matches;
+  }, 0), 0);
+}
+
+function countTerms(tokens: string[], terms: Set<string>) {
+  return tokens.filter((token) => terms.has(token)).length;
+}
+
+const fillerLikeTerms = new Set(["um", "uh", "like", "actually", "literally", "basically", "hmm", "well"]);
+const hedgeTerms = new Set(["maybe", "probably", "perhaps", "just"]);
+const apologyTerms = new Set(["sorry", "apologize", "apologies"]);
+const hedgePhrases = [["i", "think"], ["i", "guess"], ["kind", "of"], ["sort", "of"]];
+const apologyPhrases = [["my", "bad"]];
+
+export function habitRate(count: number, words: number) {
+  return words ? Math.round((count * 1000) / words) / 10 : 0;
+}
+
+export function makeWrappedSnapshot(analysis: ReturnType<typeof analyzeMessages>, speaker: string): WrappedSnapshot {
+  const byId = Object.fromEntries(analysis.habits.map((habit) => [habit.id, habit.count]));
+  return {
+    capturedAt: Date.now(),
+    speaker,
+    messages: analysis.total,
+    words: analysis.wordCount,
+    fillerLikeWords: byId.fillers ?? 0,
+    hedgePhrases: byId.hedges ?? 0,
+    apologies: byId.apologies ?? 0,
+  };
+}
+
 export function analyzeMessages(messages: Message[], speaker: string) {
   const selected = messages.filter((entry) => entry.speaker === speaker);
   const words = new Map<string, number>();
   const phrases = new Map<string, number>();
+  const tokenizedSentences: string[][] = [];
+  const allTokens: string[] = [];
 
   for (const { message } of selected) {
     for (const sentence of message.toLowerCase().replaceAll("’", "'").split(/[.!?\n]+/)) {
       const tokens = sentence.match(/\p{L}+(?:'\p{L}+)*/gu) ?? [];
+      tokenizedSentences.push(tokens);
+      allTokens.push(...tokens);
       for (const [index, token] of tokens.entries()) {
         if (!common.has(token)) countPhrase(words, token);
         const next = tokens[index + 1];
@@ -72,10 +131,61 @@ export function analyzeMessages(messages: Message[], speaker: string) {
     }
   }
 
+  const word = topRepeated(words);
+  const phrase = topRepeated(phrases);
+  const fillerLikeWords = countTerms(allTokens, fillerLikeTerms);
+  const hedgeCount = countTerms(allTokens, hedgeTerms) + countSequences(tokenizedSentences, hedgePhrases);
+  const apologyCount = countTerms(allTokens, apologyTerms) + countSequences(tokenizedSentences, apologyPhrases);
+  const habits: TextHabit[] = [
+    {
+      id: "fillers",
+      label: "Filler-like wording",
+      count: fillerLikeWords,
+      detail: "Text markers such as “actually,” “like,” or “well.”",
+    },
+    {
+      id: "hedges",
+      label: "Hedging",
+      count: hedgeCount,
+      detail: "Softening phrases such as “maybe” or “I think.”",
+    },
+    {
+      id: "apologies",
+      label: "Apologies",
+      count: apologyCount,
+      detail: "Written apologies, including “sorry.”",
+    },
+    {
+      id: "repetition",
+      label: "Repeated language",
+      count: Math.max(word?.count ?? 0, phrase?.count ?? 0),
+      detail: phrase ? `“${phrase.text}” shows up ${phrase.count} times.` : word ? `“${word.text}” shows up ${word.count} times.` : "No repeated word or phrase stands out yet.",
+    },
+  ];
+  const questions = selected.filter(({ message }) => message.includes("?")).length;
+  const strengths = [
+    questions
+      ? `${questions} question${questions === 1 ? "" : "s"} invite${questions === 1 ? "s" : ""} a reply.`
+      : "This sample is mostly statements, so the message style reads direct.",
+    selected.length > 1
+      ? `${selected.length} messages give SayLess a useful starting snapshot.`
+      : "Add a few more messages for a richer profile.",
+  ];
+  const leadingHabit = habits.filter((habit) => habit.count > 0)
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))[0];
+
   return {
     total: selected.length,
-    questions: selected.filter(({ message }) => message.includes("?")).length,
-    word: topRepeated(words),
-    phrase: topRepeated(phrases),
+    wordCount: allTokens.length,
+    questions,
+    word,
+    phrase,
+    habits,
+    profile: {
+      strengths,
+      focus: leadingHabit
+        ? `Notice ${leadingHabit.label.toLowerCase()} in your next chat or practice take.`
+        : "Keep collecting examples to reveal a clearer text pattern.",
+    },
   };
 }

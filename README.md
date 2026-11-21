@@ -11,6 +11,7 @@ SayLess is an AI communication coach for students and early-career professionals
 - **Discover your habits.** Communication Wrapped shows repeated words, signature phrases, and how often you ask questions in chat. Start with a sample or import a CSV of messages you have permission to use.
 - **Practice out loud.** Record a short answer to a project-pitch prompt. SayLess transcribes what you said, estimates your pace, counts fillers such as “um” and “uh,” and gives you one specific suggestion for the next take.
 - **Try again and compare.** Answer the same prompt and see both takes side by side. You can also explore a sample comparison without using your microphone.
+- **Build momentum.** Save private, count-only Wrapped snapshots, take a daily clear-pitch challenge, collect local XP and streaks, and use the Filler Jar as a cue to notice practice patterns. The friend duel is a transparent local demo until accounts and shared challenges are connected.
 
 ## Privacy
 

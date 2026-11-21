@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ConversationStub } from "@/components/conversation-stub";
 import { MAX_AUDIO_BYTES, MAX_RECORDING_SECONDS, PITCH_PROMPT, type Feedback, type Take } from "@/lib/practice";
 import { speak, stopSpeech } from "@/lib/speech";
 
@@ -204,6 +205,7 @@ export function Practice({ attempt, onResult, onSample }: {
       <div className="action-row">
         <button className="secondary" onClick={onSample}>Watch sample replay</button>
       </div>
+      <ConversationStub />
     </section>
   );
 }
