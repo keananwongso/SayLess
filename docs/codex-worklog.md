@@ -1,5 +1,13 @@
 # Codex work log
 
+## Landing styling repair — November 21, 2026
+
+- Branch: `codex/fix-landing-styles`, based on latest `origin/main` (`a6d3d67`). Brings forward the landing page and illustration from `codex/landing-demo-dots` without replacing the newer guided demo.
+- Restricted the Tailwind loader to `globals.css`: the previous `*.css` rule with `as: "*.css"` broke CSS Module scoping. Landing layout now keeps its scoped styles, bounded illustration, responsive grid, title, and Demo navigation using DESIGN.md tokens.
+- Routes: `/` landing, `/demo` guided walkthrough, `/practice` existing full app. Updated the guided demo's Open app link; practice API unchanged.
+- Added `node scripts/check-landing.mjs [base-url]` to check actual served CSS class mappings, responsive rules, artwork, and destination routes. Lint, typecheck, build, and production HTTP checks pass.
+- Browser visual/mobile and interactive replay checks remain unverified: native Chrome access was blocked to avoid exposing unrelated private tabs, and isolated Chrome is unavailable. No claim of visual verification.
+
 Use this file to share what Codex helped build, what the team verified, and what another teammate needs to pick up. Add a short entry when a task ships, an experiment changes the approach, or a branch needs a handoff. Put longer analysis in a linked file under `docs/`.
 
 Each entry should include the date and branch or commit, the change or decision, the verification, and any open work. Use synthetic examples in the repo.
