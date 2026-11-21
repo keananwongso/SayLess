@@ -13,7 +13,7 @@ Open `/demo` in Chrome before the pitch.
 
 - **0–6s** — Introduce Jade and click **Simulate upload**. SayLess opens Yap Recap automatically.
 - **6–13s** — Point out “wait” at about 40 uses across all speakers. Click **See the two-week goal**.
-- **13–20s** — Show the goal of 24 uses in a comparable conversation. Click **Use SayLess** to open Home.
+- **13–20s** — Point to the flat recap baseline of about 40 and the dashed practice targets of 32 and 24. Click **Use SayLess** to open Home.
 - **20–29s** — Show the dashboard and **Do daily quest**, which opens Practice.
 - **29–40s** — Open **Friends**, roll a topic, and select **See sample progress**. Show Jade’s 8 → 3 and Riley’s 6 → 2.
 

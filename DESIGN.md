@@ -48,6 +48,7 @@ Use the shared sticky site navbar on every page. On desktop, use the same handse
 | Analyze | Start with one recording picker. Show the analysis action after a file is selected, then display the report beneath it. |
 | Wrapped | Lead with a single Ink card and large Lavender type for the most repeated word. Show its source and count. Use neutral rows for secondary stats and disclosures for detailed insights. |
 | Demo Yap Recap | Highlight the top expression in large Ink type on Lavender. Label the conversation as simulated and show the estimated counts in compact rows with bars. |
+| Demo two-week goal | Pair the recap baseline and two-week target. Use a flat reference line for the baseline and a dashed Mint line for the practice targets. |
 | Home | Lead with weekly check-ins, then show XP, the daily quest, and a Friends preview. |
 | Friends sample check-in | Give both friends the same prompt. Use original dot avatars and show each person’s weekly change from their own starting count. Use labeled solid and dashed lines to distinguish the two series. |
 | Practice | Put the prompt on a pale Azure fill inside a single card. Keep recording as the primary action. Show the timer, processing state, or error beside the control and keep sample replay reachable. |

@@ -20,11 +20,16 @@ const simulatedExpressions = [
   { expression: "I mean", count: 2 },
 ] as const;
 const [topExpression] = simulatedExpressions;
+const chartBottom = 138;
+const countToY = (count: number) => chartBottom - count * 2.8;
 const projection = [
-  { label: "Today", count: topExpression.count, x: 42 },
-  { label: "Week 1", count: Math.round(topExpression.count * 0.8), x: 150 },
-  { label: "Week 2", count: Math.round(topExpression.count * 0.6), x: 258 },
-].map((point) => ({ ...point, y: 134 - point.count * 2.4 }));
+  { label: "Today", count: topExpression.count, x: 36 },
+  { label: "Week 1", count: Math.round(topExpression.count * 0.8), x: 155 },
+  { label: "Week 2", count: Math.round(topExpression.count * 0.6), x: 274 },
+].map((point) => ({ ...point, y: countToY(point.count) }));
+const [baseline, weekOne, weekTwo] = projection;
+const goalReduction = Math.round(100 * (baseline.count - weekTwo.count) / baseline.count);
+const targetPath = projection.map(({ x, y }) => `${x},${y}`).join(" ");
 
 export function GuidedDemo() {
   const [index, setIndex] = useState(0);
@@ -130,26 +135,43 @@ export function GuidedDemo() {
             {step.id === "projection" && (
               <>
                 <h1 id="demo-title" className="demo-goal-title" tabIndex={-1}>
-                  <span className="demo-goal-number">{projection[2].count}</span>
-                  <span>“{topExpression.expression}”s in two weeks.</span>
+                  aim for {goalReduction}% fewer “{topExpression.expression}”s.
                 </h1>
-                <figure className="demo-projection demo-goal-chart">
+                <dl className="demo-goal-summary">
+                  <div>
+                    <dt>Recap baseline</dt>
+                    <dd><span className="demo-goal-approx">≈</span>{baseline.count}</dd>
+                  </div>
+                  <div>
+                    <dt>Week 2 target</dt>
+                    <dd>{weekTwo.count}</dd>
+                  </div>
+                </dl>
+                <figure className="demo-goal-chart">
                   <figcaption>Per 2:23 group conversation</figcaption>
-                  <svg viewBox="0 0 300 168" role="img" aria-labelledby="projection-description">
-                    <title id="projection-description">{projection.map(({ label, count }) => `${label}: ${count}`).join(". ")}. Week one and week two are goals.</title>
-                    {[0, 20, 40].map((value) => (
-                      <line className="demo-projection-grid" key={value} x1="18" x2="282" y1={134 - value * 2.4} y2={134 - value * 2.4} />
+                  <svg viewBox="0 0 310 168" role="img" aria-labelledby="projection-description">
+                    <title id="projection-description">The recap baseline is about {baseline.count} uses of “{topExpression.expression}” and stays flat as a comparison. The practice targets are {weekOne.count} in week one and {weekTwo.count} in week two.</title>
+                    {[0, 20, baseline.count].map((value) => (
+                      <g key={value}>
+                        <text className="demo-projection-label" x="24" y={countToY(value)} textAnchor="end" dominantBaseline="central">{value}</text>
+                        {value !== baseline.count && <line className="demo-projection-grid" x1={baseline.x} x2={weekTwo.x} y1={countToY(value)} y2={countToY(value)} />}
+                      </g>
                     ))}
-                    <polygon className="demo-goal-area" points={`42,134 ${projection.map(({ x, y }) => `${x},${y}`).join(" ")} 258,134`} />
-                    <polyline className="demo-projection-line" points={projection.map(({ x, y }) => `${x},${y}`).join(" ")} />
+                    <polygon className="demo-goal-area" points={`${targetPath} ${weekTwo.x},${baseline.y}`} />
+                    <line className="demo-projection-baseline" x1={baseline.x} x2={weekTwo.x} y1={baseline.y} y2={baseline.y} />
+                    <polyline className="demo-projection-line" points={targetPath} />
                     {projection.map(({ label, count, x, y }, position) => (
                       <g key={label} textAnchor="middle">
-                        <circle cx={x} cy={y} r="5" className={position === 0 ? "demo-projection-point" : "demo-projection-target"} />
-                        <text x={x} y={y - 12} className="demo-projection-value">{count}</text>
-                        <text x={x} y="155" className="demo-projection-label">{position === 2 ? "Week 2 goal" : label}</text>
+                        <circle cx={x} cy={y} r="4.5" className={position === 0 ? "demo-projection-point" : "demo-projection-target"} />
+                        {position > 0 && <text x={x} y={y + 23} className="demo-projection-value">{count}</text>}
+                        <text x={x} y="160" className="demo-projection-label">{label}</text>
                       </g>
                     ))}
                   </svg>
+                  <ul className="demo-goal-key" aria-hidden="true">
+                    <li>Recap baseline</li>
+                    <li>Practice targets</li>
+                  </ul>
                 </figure>
               </>
             )}

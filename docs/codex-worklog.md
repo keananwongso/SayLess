@@ -1,5 +1,11 @@
 # Codex work log
 
+## Shared handset and two-week comparison — November 21, 2026
+
+On `main`, gave `/app` the same desktop handset as `/demo` and kept both edge to edge on phones. Removed the public architecture route and its links. The two-week goal now compares the flat recap baseline of about 40 uses of “wait” with dashed practice targets of 32 and 24. Included Evan’s landing preview changes from PR #2.
+
+Lint, typecheck, build, seven landing fixtures, and served route checks passed. Chrome checked the graph, Back, the handoff to the app, all four tabs, the daily quest, and sample replay at 320px, 390px, and 1440px. The demo and sample replay sent zero requests to the practice API.
+
 ## Three-step onboarding and app Home — November 21, 2026
 
 On `codex/social-phone-demo`, added short directional transitions with a reduced-motion fallback, simplified the two-week goal screen, and ended onboarding at step 3. **Use SayLess** opens Home. The working app uses Home, Stats, Friends, and Profile tabs. Home shows browser-saved quest progress and opens live Practice, Stats contains Analyze and Wrapped, and Friends retains the topic reel and sample comparison.

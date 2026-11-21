@@ -47,7 +47,7 @@ export default function DocsPage() {
 
       <section className={styles.section} aria-labelledby="demo-data">
         <h2 id="demo-data">what the demo simulates</h2>
-        <p>The three-screen onboarding demo simulates uploading Jade’s sample conversation in the browser. Yap Recap shows estimated counts across all speakers in that 2:23 conversation. The two-week graph shows example targets for comparable conversations. Select <strong>Use SayLess</strong> to continue to Home.</p>
+        <p>The three-screen onboarding demo simulates uploading Jade’s sample conversation in the browser. Yap Recap shows estimated counts across all speakers in that 2:23 conversation. The two-week graph compares the recap baseline with example targets for comparable conversations. Select <strong>Use SayLess</strong> to continue to Home.</p>
       </section>
 
       <section className={styles.section} aria-labelledby="data-handling">
