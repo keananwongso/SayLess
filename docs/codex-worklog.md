@@ -1,5 +1,9 @@
 # Codex work log
 
+## Product guide refresh — November 21, 2026
+
+On `main`, organized `/docs` around the four app tabs and documented daily quest XP, the distinction between personal takes and Jade’s demo data, and the three-step onboarding. The guide reads Jade’s baseline and example targets from the same fixture as the app.
+
 ## Workspace motion, Stats, and Friends — November 21, 2026
 
 On `main`, added staggered Home cards, a mascot hop, app screen transitions, and a sliding tab highlight with reduced-motion support. Stats uses the same demo fixture and projection chart as Jade’s onboarding and shows personal practice takes separately when available. Friends now leads with Jade and Riley’s topic roll and keeps quest sharing below it.

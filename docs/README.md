@@ -1,6 +1,6 @@
 # SayLess docs
 
-Open [the product guide](https://sayless-nine.vercel.app/docs) for instructions on Analyze, Wrapped, Practice, Challenges, and Profile. It also covers simulated data, browser storage, and features still to build.
+The public product guide covers the daily quest and Practice in Home, personal takes and Jade’s demo data in Stats, quest sharing in Friends, and Profile. It also explains the three-step demo and how SayLess handles audio and browser data. [Product guide](https://sayless-nine.vercel.app/docs)
 
 | Guide | What it covers |
 | --- | --- |
