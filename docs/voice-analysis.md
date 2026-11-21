@@ -8,6 +8,32 @@ The first milestone is one known mic recording in and a count backed by a clicka
 
 The browser records one mic take and checks for audible input. `POST /api/practice` sends the audio for transcription and requests a coaching suggestion. Results calculate filler count and estimated pace from the transcript and recording duration. The results show aggregate counts and transcript text today.
 
+## How the learning feeds back
+
+```mermaid
+flowchart LR
+    A["Record a take"] --> B["Deepgram<br/>Words + timestamps"]
+    B --> C
+    subgraph S["SayLess code"]
+        direction LR
+        C["Find and count fillers"] --> D["Apply the active rule<br/>Compare both takes"]
+    end
+    D -->|After each take| E["Speaker learnings<br/>Evidence + next filler to track"]
+    E -->|Load the rule on the next take| D
+    E --> F["Show one coaching cue"]
+    F -->|Speaker retries| A
+    C -.-> G["Vercel logs<br/>Request ID, timings, event count"]
+
+    classDef voice fill:#BBDDFC,stroke:#756889,color:#201B2C
+    classDef analysis fill:#CBF58C,stroke:#756889,color:#201B2C
+    classDef learning fill:#DEC5FF,stroke:#756889,color:#201B2C
+    class A,B voice
+    class C,D analysis
+    class E,F learning
+```
+
+On the first take, SayLess automatically chooses the most frequent filler that appears at least twice. If that is “um,” the learnings store the target and its baseline evidence. On the retry, the analyzer still counts every supported filler, and the saved rule tells the comparison to show “um: 3 → 1.” SayLess then uses the newest evidence to select the next focus. The same counting rules apply to every take.
+
 ## Proposed pipeline
 
 1. **Capture and decode.** Keep the original recorded audio in browser memory for playback. Use elapsed time from the recording start as the shared clock for playback and analysis.
