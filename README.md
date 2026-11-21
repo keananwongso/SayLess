@@ -22,3 +22,7 @@ Wrapped analyzes the built-in synthetic chat by default. To import consented dat
 - **1:50–2:00** — Close with “Say less. Mean more.”
 
 Run `npm run lint`, `npm run typecheck`, and `npm run build` before deploying.
+
+## Team kickoff
+
+The [hackathon kickoff prompt](docs/hackathon-kickoff-prompt.md) is the original template. It still contains placeholders for team roles, branch ownership, and the schedule.
