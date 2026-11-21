@@ -43,7 +43,8 @@ export default function DocsPage() {
 
       <section className={styles.section} aria-labelledby="demo-data">
         <h2 id="demo-data">what the demo simulates</h2>
-        <p>Jade is a fictional speaker. Yap Recap shows illustrative estimates across all speakers in a simulated 2:23 conversation. The two-week graph shows example practice targets. The pitch steps replay two prerecorded takes, and the demo XP stays inside the walkthrough.</p>
+        <p>The demo simulates uploading Jade’s sample conversation in the browser. Yap Recap shows estimated counts across all speakers in that 2:23 conversation. The two-week graph shows example targets for comparable conversations.</p>
+        <p>Jade and Riley are fictional friends. The check-in picks a shared prompt from 20 demo topics, then shows a simulated week of filler counts per 20-second check-in. Each friend’s improvement uses their own starting count.</p>
       </section>
 
       <section className={styles.section} aria-labelledby="data-handling">

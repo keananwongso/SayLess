@@ -1,5 +1,11 @@
 # Codex work log
 
+## Five-screen social demo — November 21, 2026
+
+On `codex/social-phone-demo`, replaced the guided pitch replay with a simulated sample upload, Yap Recap, the two-week goal, a daily topic reel with 20 prompts, and a friend progress screen. The weekly chart shows mock check-ins from separate Jade and Riley baselines. The final action opens live Practice, where the sample replay remains available.
+
+Lint, typecheck, build, and served landing checks passed. Chrome walked all five steps at 320px, 390px, and 1440px. Verified Back, Restart, reduced motion, the Practice handoff and sample replay, and zero requests for sample audio or to the practice API during the demo.
+
 ## Two-week demo goal — November 21, 2026
 
 Added step 3 between Yap Recap and Practice. The dashed graph uses the simulated baseline of 40 “wait” uses and example targets of 32 at week one and 24 at week two for comparable conversations. The guide and rehearsal describe the six-step flow.

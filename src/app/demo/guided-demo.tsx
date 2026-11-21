@@ -3,23 +3,38 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { SayLessDot } from "@/components/sayless-dot";
-import { useTakePlayback } from "@/components/use-take-playback";
-import { dailyChallenge, fillerJarCount, improvementScore, qualifiesForDailyChallenge } from "@/lib/challenges";
-import { chooseRule, pitchMetrics, PITCH_PROMPT, type Filler, type FillerEvent, type Take } from "@/lib/practice";
-import { sampleProfiles } from "@/lib/sample-pitches";
-import { speak, stopSpeech } from "@/lib/speech";
-import { loadTakeAudio } from "@/lib/take-audio";
 
 const steps = [
-  { id: "setup", label: "Meet Jade", action: "See Jade’s Yap Recap" },
+  { id: "setup", label: "Sample upload" },
   { id: "wrapped", label: "Yap Recap", action: "See the two-week goal" },
-  { id: "projection", label: "Two-week goal", action: "Start practice" },
-  { id: "practice", label: "Practice", action: "Hear the retry" },
-  { id: "compare", label: "Compare", action: "Finish the challenge" },
-  { id: "finish", label: "Finish" },
+  { id: "projection", label: "Two-week goal", action: "Try a daily check-in" },
+  { id: "check-in", label: "Daily check-in" },
+  { id: "finish", label: "Friend progress" },
 ] as const;
 
-const jadeTakes = sampleProfiles[0].takes;
+const dailyTopics = [
+  "Describe a tiny win from today.",
+  "Pitch an app that should exist.",
+  "Recommend something you watched.",
+  "Explain a hobby to a beginner.",
+  "Tell the story of an unexpected detour.",
+  "Give your best study tip.",
+  "Describe your ideal Saturday.",
+  "Pitch a better morning routine.",
+  "Tell us about a mistake you learned from.",
+  "Make a case for your favorite snack.",
+  "Describe a skill you want to learn.",
+  "Explain how you solved a small problem.",
+  "Suggest a weekend plan for a friend.",
+  "Describe a place everyone should visit.",
+  "Share advice you actually use.",
+  "Talk about a person who inspires you.",
+  "Pitch a fun idea for your team.",
+  "Describe the best part of your week.",
+  "Explain a feature you wish your phone had.",
+  "Tell us about something worth celebrating.",
+] as const;
+
 const simulatedExpressions = [
   { expression: "wait", count: 40 },
   { expression: "like", count: 35 },
@@ -36,43 +51,72 @@ const projection = [
   { label: "Week 2", count: Math.round(topExpression.count * 0.6), x: 258 },
 ].map((point) => ({ ...point, y: 134 - point.count * 2.4 }));
 
-function FillerClip({ take, target, label, playing, onPlay }: {
-  take: Take;
-  target: Filler | undefined;
-  label: string;
-  playing?: Take | FillerEvent;
-  onPlay: (take: Take, event: FillerEvent) => void;
-}) {
-  const event = take.events?.find(({ text }) => text === target);
-  if (!event) return null;
+const friends = [
+  { name: "Jade", mood: "curious", color: "lavender", counts: [8, 7, 6, 5, 5, 4, 3] },
+  { name: "Riley", mood: "bright", color: "azure", counts: [6, 6, 5, 5, 4, 3, 2] },
+] as const;
+
+function FriendProgress() {
+  const summary = friends.map(({ name, counts }) => `${name}: ${counts.join(", ")}`).join(". ");
 
   return (
-    <button className="secondary" aria-pressed={playing === event} onClick={() => onPlay(take, event)}>
-      <span aria-hidden="true">▶</span> {label}
-    </button>
+    <>
+      <ul className="demo-friend-results" aria-label="Improvement from each person's baseline">
+        {friends.map(({ name, mood, color, counts }) => {
+          const start = counts[0];
+          const end = counts[6];
+          return (
+            <li key={name}>
+              <SayLessDot className="demo-friend-avatar" mood={mood} color={color} />
+              <div>
+                <strong>{name}</strong>
+                <p><b>{start} → {end}</b> · {start - end} fewer</p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <figure className="demo-projection demo-friend-chart">
+        <figcaption>Filler sounds per 20-second check-in</figcaption>
+        <svg viewBox="0 0 300 132" role="img" aria-labelledby="friend-progress-data">
+          <title id="friend-progress-data">Simulated daily counts from day 1 through day 7. {summary}.</title>
+          {[0, 4, 8].map((value) => (
+            <g key={value}>
+              <line className="demo-projection-grid" x1="27" x2="280" y1={107 - value * 11} y2={107 - value * 11} />
+              <text x="19" y={111 - value * 11} textAnchor="end" className="demo-projection-label">{value}</text>
+            </g>
+          ))}
+          {friends.map(({ name, counts }) => {
+            const points = counts.map((count, day) => ({ x: 29 + day * 41, y: 107 - count * 11 }));
+            return (
+              <g key={name} className={name === "Jade" ? "demo-jade-series" : "demo-riley-series"}>
+                <polyline points={points.map(({ x, y }) => `${x},${y}`).join(" ")} />
+                {points.map(({ x, y }) => <circle key={x} cx={x} cy={y} r="3" />)}
+              </g>
+            );
+          })}
+          <text x="29" y="127" className="demo-projection-label">Day 1</text>
+          <text x="275" y="127" textAnchor="end" className="demo-projection-label">Day 7</text>
+        </svg>
+        <div className="demo-friend-legend" aria-hidden="true"><span>Jade</span><span>Riley</span></div>
+      </figure>
+    </>
   );
 }
 
 export function GuidedDemo() {
   const [index, setIndex] = useState(0);
-  const { playing, playbackError, playClip, stopClip } = useTakePlayback();
+  const [uploaded, setUploaded] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [topic, setTopic] = useState<string>();
+  const [reel, setReel] = useState<string[]>([]);
+  const pending = useRef<number | undefined>(undefined);
   const screen = useRef<HTMLElement>(null);
   const title = useRef<HTMLHeadingElement>(null);
   const previousIndex = useRef(0);
-
   const step = steps[index];
-  const [first, retry] = jadeTakes;
-  const rule = chooseRule(first.events ?? []);
-  const after = retry.events?.filter(({ text }) => text === rule?.target).length ?? 0;
-  const counts = jadeTakes.map((take) => ({ seconds: take.seconds, fillerCount: pitchMetrics(take).fillers.length }));
-  const earned = qualifiesForDailyChallenge(counts[1]) ? dailyChallenge.xp : 0;
 
-  useEffect(() => {
-    for (const { audio } of jadeTakes) {
-      if (audio) void loadTakeAudio(audio).catch(() => undefined);
-    }
-    return stopSpeech;
-  }, []);
+  useEffect(() => () => window.clearTimeout(pending.current), []);
 
   useEffect(() => {
     if (previousIndex.current === index) return;
@@ -81,11 +125,63 @@ export function GuidedDemo() {
     screen.current?.scrollTo({ top: 0 });
   }, [index]);
 
-  function move(next: number) {
-    stopClip();
-    stopSpeech();
-    setIndex(next);
+  function simulate(delay: number, finish: () => void, start?: () => void) {
+    if (pending.current !== undefined) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      finish();
+      return;
+    }
+
+    setBusy(true);
+    start?.();
+    pending.current = window.setTimeout(() => {
+      pending.current = undefined;
+      setBusy(false);
+      finish();
+    }, delay);
   }
+
+  function simulateUpload() {
+    simulate(650, () => {
+      setUploaded(true);
+      setIndex(1);
+    });
+  }
+
+  function rollTopic() {
+    const selected = Math.floor(Math.random() * dailyTopics.length);
+    simulate(640, () => {
+      setTopic(dailyTopics[selected]);
+      setReel([]);
+    }, () => {
+      setReel(Array.from({ length: 5 }, (_, turn) => (
+        dailyTopics[(selected + dailyTopics.length + turn - 4) % dailyTopics.length]
+      )));
+    });
+  }
+
+  function restart() {
+    setUploaded(false);
+    setTopic(undefined);
+    setReel([]);
+    setIndex(0);
+  }
+
+  function advance() {
+    if (step.id === "setup" && !uploaded) {
+      simulateUpload();
+    } else if (step.id === "check-in" && !topic) {
+      rollTopic();
+    } else {
+      setIndex(index + 1);
+    }
+  }
+
+  const action = step.id === "setup"
+    ? uploaded ? "See Yap Recap" : busy ? "Processing…" : "Simulate upload"
+    : step.id === "check-in"
+      ? topic ? "Check in together" : busy ? "Rolling…" : "Roll a topic"
+      : "action" in step ? step.action : undefined;
 
   return (
     <div className="app-surface demo-onboarding" data-step={step.id}>
@@ -101,8 +197,14 @@ export function GuidedDemo() {
               <>
                 <SayLessDot className="demo-avatar" mood="curious" color="lavender" />
                 <h1 id="demo-title" ref={title} tabIndex={-1}>meet <span className="demo-story-name">jade.</span></h1>
-                <p className="demo-copy">Jade built a tool for students who get nervous presenting. Follow her first SayLess session as she rehearses her project pitch.</p>
-                <p className="demo-note">Fictional story with prerecorded audio.</p>
+                <p className="demo-copy">See what SayLess finds in Jade’s sample conversation.</p>
+                <div className="demo-file">
+                  <span className="demo-file-icon" aria-hidden="true">♫</span>
+                  <div><strong>conversation.m4a</strong><p>2:23 · Sample audio</p></div>
+                </div>
+                <p className="demo-note" role="status">
+                  {busy ? "Analyzing the sample…" : uploaded ? "Sample ready." : "This demo runs with a simulated upload."}
+                </p>
               </>
             )}
 
@@ -159,67 +261,38 @@ export function GuidedDemo() {
               </>
             )}
 
-            {step.id === "practice" && (
+            {step.id === "check-in" && (
               <>
-                <h1 id="demo-title" ref={title} tabIndex={-1}>jade tries a pitch.</h1>
-                <p className="demo-copy">{PITCH_PROMPT}</p>
-                <div className="action-row">
-                  <FillerClip take={first} target={rule?.target} label="Hear the first take’s filler" playing={playing} onPlay={(take, event) => void playClip(take, event)} />
-                  <button className="demo-text-link" onClick={() => { stopClip(); speak(PITCH_PROMPT); }}>Hear the prompt</button>
-                </div>
-                <div className="demo-callout">
-                  <p className="eyebrow">{rule ? `The coach heard “${rule.target}” ${rule.baselineCount} times` : "Coach’s cue"}</p>
-                  <p>{first.suggestion}</p>
-                </div>
-              </>
-            )}
-
-            {step.id === "compare" && (
-              <>
-                <h1 id="demo-title" ref={title} tabIndex={-1}>hear what changed.</h1>
-                {rule && (
-                  <>
-                    <p className="demo-count" aria-label={`${rule.target}, from ${rule.baselineCount} to ${after}`}><span>“{rule.target}”</span> {rule.baselineCount} → {after}</p>
-                    <p className="demo-copy">Jade answered the same prompt again. Hear the moment in each take.</p>
-                  </>
-                )}
-                <div className="action-row">
-                  <FillerClip take={first} target={rule?.target} label="Hear first take" playing={playing} onPlay={(take, event) => void playClip(take, event)} />
-                  <FillerClip take={retry} target={rule?.target} label="Hear retry" playing={playing} onPlay={(take, event) => void playClip(take, event)} />
-                </div>
-                <details className="demo-details">
-                  <summary>See the transcripts</summary>
-                  {jadeTakes.map((take, takeIndex) => {
-                    const label = takeIndex === 0 ? "First take" : "Retry";
-                    return (
-                      <div className="demo-transcript" key={label}>
-                        <p><strong>{label}</strong> · {take.seconds.toFixed(1)}s · {pitchMetrics(take).pace} words/min</p>
-                        <p>“{take.transcript}”</p>
-                        <button className="demo-text-link" aria-pressed={playing === take} onClick={() => void playClip(take)}>Play {label.toLowerCase()} in full</button>
+                <h1 id="demo-title" ref={title} tabIndex={-1}>daily check-in.</h1>
+                <ul className="demo-friend-pair" aria-label="Check-in partners">
+                  {friends.map(({ name, mood, color }) => (
+                    <li key={name}><SayLessDot className="demo-friend-avatar" mood={mood} color={color} /><strong>{name}</strong></li>
+                  ))}
+                </ul>
+                <p className="demo-copy">Jade and Riley each get 20 seconds on the same topic.</p>
+                <div className="demo-topic">
+                  <p className="eyebrow">Today’s prompt</p>
+                  <div className="demo-topic-window">
+                    {reel.length > 0 && (
+                      <div className="demo-topic-reel" aria-hidden="true">
+                        {reel.map((prompt) => <p key={prompt}>{prompt}</p>)}
                       </div>
-                    );
-                  })}
-                </details>
+                    )}
+                    <p role="status" className={busy ? "sr-only" : "demo-topic-result"}>{topic}</p>
+                    {!topic && !busy && <p className="demo-topic-placeholder">Roll to reveal it.</p>}
+                  </div>
+                </div>
               </>
             )}
 
             {step.id === "finish" && (
               <>
-                <SayLessDot className="demo-celebration" mood="bright" color="mint" />
-                <h1 id="demo-title" ref={title} tabIndex={-1}>one small win.</h1>
-                <p className="demo-reward"><strong>+{earned}</strong> demo XP</p>
-                <p className="demo-copy">Jade completed the clear-pitch challenge with {counts[1].fillerCount} filler sound in {retry.seconds.toFixed(1)}s.</p>
-                <details className="demo-details">
-                  <summary>See challenge details</summary>
-                  <p>{dailyChallenge.prompt}</p>
-                  <dl>
-                    <div><dt>Filler Jar · both takes</dt><dd>{fillerJarCount(counts)}</dd></div>
-                    <div><dt>Simulated duel points</dt><dd>{improvementScore(counts)}</dd></div>
-                  </dl>
-                </details>
+                <h1 id="demo-title" ref={title} tabIndex={-1}>better together.</h1>
+                <p className="demo-copy">Today’s prompt <strong>{topic}</strong></p>
+                <FriendProgress />
+                <p className="demo-note">Simulated week · each friend improves from their own baseline.</p>
               </>
             )}
-            {playbackError && <p className="alert" role="alert">{playbackError}</p>}
           </div>
         </section>
       </main>
@@ -228,14 +301,14 @@ export function GuidedDemo() {
           <>
             <Link href="/app#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
             <div className="demo-finish-links">
-              <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>
-              <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
+              <button className="demo-text-link" onClick={() => setIndex(index - 1)}>Back</button>
+              <button className="demo-text-link" onClick={restart}>Restart demo</button>
             </div>
           </>
         ) : (
           <>
-            {index > 0 && <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>}
-            <button className="primary" onClick={() => move(index + 1)}>{step.action} <span aria-hidden="true">→</span></button>
+            {index > 0 && <button className="demo-text-link" disabled={busy} onClick={() => setIndex(index - 1)}>Back</button>}
+            <button className="primary" disabled={busy} onClick={advance}>{action}{!busy && <span aria-hidden="true">→</span>}</button>
           </>
         )}
       </footer>
