@@ -9,7 +9,7 @@ import { jadeConversationDuration, jadeExpressions, jadeGoal, jadeTopExpression 
 const steps = [
   { id: "setup", label: "Sample upload" },
   { id: "wrapped", label: "Yap Recap" },
-  { id: "projection", label: "Two-week goal" },
+  { id: "projection", label: "Practice outlook" },
 ] as const;
 
 const [baseline, , weekTwo] = jadeGoal;
@@ -119,8 +119,9 @@ export function GuidedDemo() {
             {step.id === "projection" && (
               <>
                 <h1 id="demo-title" className="demo-goal-title" tabIndex={-1}>
-                  aim for {goalReduction}% fewer “{jadeTopExpression.expression}”s.
+                  where you could be.
                 </h1>
+                <p className="demo-copy">In this example, Jade aims for {goalReduction}% fewer uses of “{jadeTopExpression.expression}” after two weeks of practice.</p>
                 <dl className="demo-goal-summary">
                   <div>
                     <dt>Recap baseline</dt>
@@ -147,7 +148,7 @@ export function GuidedDemo() {
           </button>
         )}
         {step.id === "wrapped" && (
-          <button className="primary" onClick={() => goTo(2)}>See the two-week goal <span aria-hidden="true">→</span></button>
+          <button className="primary" onClick={() => goTo(2)}>See what’s possible <span aria-hidden="true">→</span></button>
         )}
         {step.id === "projection" && (
           <Link href="/app" className="primary">Use SayLess <span aria-hidden="true">→</span></Link>

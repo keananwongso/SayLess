@@ -176,14 +176,14 @@ export function Practice({ attempt, rule, onResult, onSample, onPreviousResults 
   return (
     <section aria-labelledby="practice-title" className="flow">
       <div className={styles.heading}>
-        <h1 id="practice-title" tabIndex={-1}>practice your pitch.</h1>
-        <p>Take {attempt} · Aim for about 10 seconds.</p>
+        <h1 id="practice-title" tabIndex={-1}>pitch practice.</h1>
+        <p>Take {attempt} · About 10 seconds</p>
       </div>
-      <div className={styles.card}>
-        <div className={styles.question}>
-          <p>{PITCH_PROMPT}</p>
-          <button className={styles.textAction} disabled={status !== "idle"} onClick={() => speak(PITCH_PROMPT)}>Hear prompt</button>
-        </div>
+      <div className={styles.question}>
+        <p>{PITCH_PROMPT}</p>
+        <button className={`secondary ${styles.hear}`} disabled={status !== "idle"} onClick={() => speak(PITCH_PROMPT)}>Hear prompt</button>
+      </div>
+      <div className={styles.capture}>
         {rule && <p className="footnote"><strong>Focus on “{rule.target}.”</strong> Try a brief pause in its place.</p>}
         <div className="record-controls">
           {status === "recording" ? (
@@ -197,13 +197,13 @@ export function Practice({ attempt, rule, onResult, onSample, onPreviousResults 
           {status === "recording" && <span className="rec-timer" aria-label="Seconds recorded">0:{String(elapsed).padStart(2, "0")}</span>}
         </div>
         {error && <p className="alert" role="alert">{error}</p>}
-        <p className="footnote" role="status">
-          {status === "processing" ? "Transcribing your pitch and finding one improvement." : "We send your recording for transcription and keep it in this tab for replay."}
+        <p className={styles.note} role="status">
+          {status === "processing" ? "Transcribing your pitch and finding one improvement." : "Audio is sent for transcription and stays in this tab for replay."}
         </p>
       </div>
-      <div className="action-row">
-        <button className={styles.textAction} onClick={onSample}>Watch sample replay</button>
-        {onPreviousResults && <button className={styles.textAction} onClick={onPreviousResults}>View last results</button>}
+      <div className={styles.replay}>
+        <button className="secondary" onClick={onSample}>Watch sample replay</button>
+        {onPreviousResults && <button className="secondary" onClick={onPreviousResults}>View last results</button>}
       </div>
     </section>
   );
