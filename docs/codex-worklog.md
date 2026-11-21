@@ -194,3 +194,7 @@ Simplified Practice to one Azure prompt card and a separate recording action. Th
 ## Public homepage spacing
 
 Aligned the three-step section, pitch action, and footer to the preview width. Reduced vertical gaps and made the steps compact rows on mobile. Lint, typecheck, build, and the landing smoke test passed. Chrome checked alignment and overflow at 1440, 390, and 320 pixels.
+
+## Pitch opening slide
+
+Both pitch URLs now open on the first content slide. Presenters can still start with the blank slide at `/pitch#blank`. Chrome verified both URLs, the blank opener, Right Arrow and Home. Lint, typecheck and build passed.

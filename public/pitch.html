@@ -248,9 +248,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <symbol id="dot-curious" viewBox="0 0 120 120"><circle cx="60" cy="60" r="57" fill="var(--dot-fill)" stroke="var(--ink)" stroke-width="2"/><circle cx="60" cy="60" r="50" stroke="var(--ink)" stroke-opacity=".18"/><g stroke="var(--ink)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="42" cy="53" rx="6" ry="9"/><ellipse cx="78" cy="53" rx="6" ry="9"/><path d="M49 80q11-7 22 0"/></g></symbol>
   </svg>
   <main aria-label="SayLess pitch slides">
-    <section class="slide" tabindex="-1" aria-label="Blank slide"></section>
+    <section class="slide" tabindex="-1" aria-label="Blank slide" hidden></section>
 
-    <section class="slide hook" tabindex="-1" aria-labelledby="hook" hidden>
+    <section class="slide hook" tabindex="-1" aria-labelledby="hook">
       <div class="mast"><span class="wordmark"><svg fill="none" viewBox="0 0 120 120" aria-hidden="true" focusable="false" style="--dot-fill:var(--lavender)"><use href="#dot-pause"/></svg>SayLess</span><span class="section-label">How we speak</span></div>
       <div class="content split">
         <div>
@@ -334,7 +334,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   </main>
 <script>
   const slides = Array.from(document.querySelectorAll("main .slide"));
-  let current = 0;
+  const firstContentSlide = 1;
+  let current = firstContentSlide;
 
   function showSlide(index) {
     current = Math.min(Math.max(index, 0), slides.length - 1);
@@ -345,12 +346,14 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     window.scrollTo(0, 0);
   }
 
+  if (window.location.hash === "#blank") showSlide(0);
+
   document.addEventListener("keydown", (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     if (event.code === "Space" && event.target.closest("button, a")) return;
     const destinations = {
       ArrowRight: current + 1, PageDown: current + 1, Space: current + 1,
-      ArrowLeft: current - 1, PageUp: current - 1, Home: 0, End: slides.length - 1,
+      ArrowLeft: current - 1, PageUp: current - 1, Home: firstContentSlide, End: slides.length - 1,
     };
     if (Object.hasOwn(destinations, event.code)) {
       event.preventDefault();
