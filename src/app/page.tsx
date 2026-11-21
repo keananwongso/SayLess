@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Challenges } from "@/components/challenges";
 import { Practice } from "@/components/practice";
@@ -67,6 +68,7 @@ export default function Home() {
               Challenges
             </button>
             {session && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
+            <Link href="/demo">Demo</Link>
           </nav>
         </div>
       </header>

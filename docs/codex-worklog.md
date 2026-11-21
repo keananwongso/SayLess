@@ -19,3 +19,7 @@ Each entry should include the date and branch or commit, the change or decision,
 | Palette and typography | Applied the six reference colors across SayLess, set display titles in lowercase, and emphasized “REAL MOMENTUM.” with a Jonquil highlight. | Checked palette contrast and exercised Wrapped, Challenges, and sample replay in Chrome at desktop and mobile widths. |
 
 See the [voice analysis architecture](voice-analysis.md), [practice API and tracing guide](voice-api.md), and [demo rehearsal notes](demo-rehearsal.md).
+
+## Guided demo
+
+`feat/guided-demo` adds `/demo` with sample onboarding, analyzed chat insights, original voice clips, a retry comparison, and simulated Challenges rewards. It reuses Wrapped analysis, voice replay, and challenge scoring. See the [guided rehearsal steps](demo-rehearsal.md#guided-40-second-walkthrough).

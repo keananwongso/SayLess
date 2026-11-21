@@ -1,0 +1,140 @@
+.guided-demo {
+  gap: 24px;
+  padding-top: clamp(24px, 3vw, 32px);
+}
+
+.demo-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.demo-steps {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.demo-steps li {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--color-muted);
+}
+
+.demo-steps li[aria-current] {
+  background: var(--color-ink);
+  color: var(--color-surface);
+}
+
+.demo-intro {
+  padding-block: clamp(24px, 4vw, 40px);
+}
+
+.demo-intro h1 {
+  max-width: 14ch;
+}
+
+.demo-reveal {
+  align-content: center;
+  gap: 12px;
+  background: var(--color-jonquil);
+}
+
+.demo-reveal h2,
+.demo-profile h2,
+.demo-take h2,
+.demo-jar h2 {
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.demo-big {
+  font-size: clamp(52px, 10vw, 116px);
+  line-height: .96;
+  font-weight: 850;
+  letter-spacing: -.07em;
+}
+
+.demo-signature {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: var(--control-radius);
+  background: var(--color-lavender);
+}
+
+.demo-profile {
+  background: var(--color-lavender);
+}
+
+.demo-habits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.demo-habits div,
+.demo-metrics div {
+  display: grid;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: var(--control-radius);
+  background: var(--color-dune);
+}
+
+.demo-habits dt,
+.demo-metrics dt {
+  font-size: 14px;
+}
+
+.demo-habits dd,
+.demo-metrics dd {
+  font-size: clamp(21px, 3vw, 30px);
+  line-height: 1;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.demo-take {
+  gap: 12px;
+}
+
+.demo-take blockquote {
+  border-top: 1px solid var(--color-divider);
+  padding-top: 12px;
+}
+
+.demo-cue {
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -.045em;
+  font-weight: 750;
+}
+
+.demo-jar {
+  background: var(--color-melon);
+}
+
+.demo-actions {
+  padding-bottom: 8px;
+}
+
+@media (width < 700px) {
+  .guided-demo { gap: 16px; }
+  .demo-topline { justify-content: flex-start; }
+}

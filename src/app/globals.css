@@ -68,7 +68,7 @@ button:disabled { cursor: default; opacity: .58; }
   letter-spacing: -.045em;
 }
 
-.wordmark, .site-header nav button, .shell h1 { text-transform: lowercase; }
+.wordmark, .site-header nav :is(button, a), .shell h1 { text-transform: lowercase; }
 
 .brand-mark {
   display: grid;
@@ -99,16 +99,18 @@ button:disabled { cursor: default; opacity: .58; }
   font-weight: 650;
 }
 
-.site-header nav button {
+.site-header nav :is(button, a) {
+  display: inline-flex;
+  align-items: center;
   min-height: 44px;
   padding-inline: 16px;
   border-radius: inherit;
   color: var(--color-muted);
 }
 
-.site-header nav button:hover { color: var(--color-ink); }
+.site-header nav :is(button, a):hover { color: var(--color-ink); }
 
-.site-header nav button[aria-current] {
+.site-header nav :is(button, a)[aria-current] {
   background: var(--color-surface);
   color: var(--color-ink);
   box-shadow: 0 1px 4px color-mix(in srgb, var(--color-ink) 14%, transparent);
@@ -605,7 +607,7 @@ button:disabled { cursor: default; opacity: .58; }
   .wordmark { font-size: 21px; }
   .brand-mark { width: 24px; height: 24px; border-radius: 8px; }
   .brand-mark::before { width: 13px; height: 10px; }
-  .site-header nav button { padding-inline: 8px; }
+  .site-header nav :is(button, a) { padding-inline: 8px; }
 }
 
 @media (width < 470px) {
