@@ -41,7 +41,7 @@ export function TranscriptGraph() {
 
   return <div ref={root} className={styles.waveCard}>
     <div className={styles.heading}>
-      <div><h4>Catch the little words.</h4><p>Notice it. Leave a little space.</p></div>
+      <h3>Catch the little words.</h3>
       <div className={styles.switcher} role="group" aria-label="Transcript take">
         {(["first", "retry"] as const).map(value => <button key={value} type="button" aria-pressed={take === value} onClick={() => { setTake(value); setTime(0); }}>{value === "first" ? "First take" : "Retry"}</button>)}
       </div>
@@ -80,8 +80,7 @@ export function PracticeProjection() {
   const py = (value: number) => 210 - value * 19;
   const points = values.map((value, index) => `${px(index)},${py(value)}`);
   return <div className={styles.goalCard}>
-    <div className={styles.heading}><div><h4>Progress has its pauses.</h4><p>A few retries. A new direction.</p></div><div className={styles.goalStat}><strong>{values.at(-1)}</strong><span>goal / min</span></div></div>
-    <div className={styles.switcher} role="group" aria-label="Choose illustrative reduction goal">{[25, 50, 75].map(value => <button type="button" key={value} aria-pressed={target === value} onClick={() => setTarget(value)}>{value}% fewer</button>)}</div>
+    <div className={styles.heading}><h3>A little progress, over time.</h3><span className={styles.goalStat}>{values.at(-1)}/min goal</span></div>
     <div className={styles.goalScroll} tabIndex={0} role="region" aria-label="Scrollable example progress chart">
       <svg className={styles.goalGraph} viewBox="0 0 600 260" role="img" aria-label={`Illustrative progress with 13 checkpoints, plateaus and setbacks. Five synthetic sample points followed by eight projected goal points, ending at ${values.at(-1)} fillers per minute.`}>
         <rect x={px(4)} y="24" width={px(12) - px(4)} height="186" rx="12" className={styles.projectedZone} />
@@ -95,8 +94,11 @@ export function PracticeProjection() {
         {[0, 3, 6, 9, 12].map((index, week) => <text key={index} x={px(index)} y="246" textAnchor="middle">{week ? `W${week}` : "Start"}</text>)}
       </svg>
     </div>
-    <div className={styles.checkpointSummary} aria-live="polite"><strong>{values[checkpoint]} fillers/min</strong><span>{checkpoint > 4 ? "Projected checkpoint" : "Synthetic example take"} {checkpoint + 1}{checkpoint === 4 ? " · A pause before the next step" : checkpoint === 2 ? " · A small setback" : ""}</span></div>
+    <details className={styles.values}><summary>Explore checkpoints &amp; goals</summary>
+    <div className={styles.switcher} role="group" aria-label="Choose illustrative reduction goal">{[25, 50, 75].map(value => <button type="button" key={value} aria-pressed={target === value} onClick={() => setTarget(value)}>{value}% fewer</button>)}</div>
+    <div className={styles.checkpointSummary} aria-live="polite"><strong>{values[checkpoint]} fillers/min</strong><span>{checkpoint > 4 ? "Projected checkpoint" : "Synthetic example take"} {checkpoint + 1}</span></div>
     <div className={styles.checkpoints} role="group" aria-label="Inspect progress checkpoints">{values.map((value, index) => <button key={index} type="button" aria-pressed={checkpoint === index} aria-label={`${index > 4 ? "Projected checkpoint" : "Example take"} ${index + 1}: ${value} fillers per minute`} onClick={() => setCheckpoint(index)}>{index + 1}</button>)}</div>
-    <p className={styles.note}>Solid: synthetic examples. Dashed: an illustrative path to your goal, not a forecast or a guaranteed result. Fillers per minute.</p>
+    </details>
+    <p className={styles.note}>Synthetic examples &amp; illustrative goals—not a forecast.</p>
   </div>;
 }

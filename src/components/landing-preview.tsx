@@ -41,36 +41,28 @@ export function LandingPreview() {
             <blockquote className={styles.transcript}><HighlightedTranscript text={landingSample.first[0]} /></blockquote>
             <div className={styles.coach}><span aria-hidden="true">✳</span><div><strong>Give the next thought a beat.</strong><p>Try a brief pause where you would normally say “um.”</p></div></div>
           </>}
-          {screen === "Practice" && <>
-            <div className={styles.contentHeading}><h3>See exactly where you hesitate.</h3><span>Interactive transcript</span></div>
-            <TranscriptGraph />
-          </>}
-          {screen === "Compare" && <>
-            <div className={styles.contentHeading}><h3>Same idea. More breathing room.</h3><span>Equal 60-second samples</span></div>
+          {screen === "Practice" && <TranscriptGraph />}
+          {screen === "Compare" && <div className={styles.compareLayout}>
             <div className={styles.improvement}>
-              <span>After one illustrative retry</span>
+              <span>One illustrative retry</span>
               <strong>{reductionPercent}<span>%</span></strong>
               <h4>fewer filler words</h4>
-              <p>{firstTotal} down to {retryTotal} in this synthetic example.</p>
-              <SayLessDot mood="calm" color="mint" className={styles.resultDot} />
-            </div>
-            <div className={styles.compareChart}>
-              <h4>Fillers per minute</h4>
               {[{ label: "First take", value: firstTotal }, { label: "Retry", value: retryTotal }].map(({ label, value }, index) => (
                 <div className={styles.compareRow} key={label}>
                   <div><span>{label}</span><strong>{value}</strong></div>
                   <div className={styles.compareTrack}><span className={index ? styles.retryBar : styles.firstBar} style={{ width: `${value / firstTotal * 100}%` }} /></div>
                 </div>
               ))}
-              <p>Reduction = ({firstTotal} − {retryTotal}) ÷ {firstTotal}. Not a user average or a promised outcome.</p>
+              <p>Fillers/min · synthetic 60s takes.</p>
             </div>
             <PracticeProjection />
-          </>}
+          </div>}
         </div>
         <details className={styles.methodNote}>
           <summary>About this sample &amp; the coaching approach</summary>
           <p>Transcripts, waveform, and timestamps are authored examples, not recorded audio. The four-week chart uses synthetic takes and illustrative projected goals, not predicted results. “Um,” “uh,” “like,” “wait,” and “well” are deliberately used as hesitations in this example; they are not always fillers. Normal speech is not a flaw, and fewer fillers alone do not measure speaking quality.</p>
           <p>The coaching approach follows <a href="https://www.toastmasters.org/magazine/magazine-issues/2019/feb/sidebars/three-ways-to-make-ah-counting-count-for-more" target="_blank" rel="noreferrer">Toastmasters guidance on noticing recurring fillers and practicing pauses</a>. The {reductionPercent}% sample reduction is calculated from our fixture, not that source or a study.</p>
+          <p>Sample reduction = ({firstTotal} − {retryTotal}) ÷ {firstTotal} × 100. Not a user average or a promised outcome.</p>
         </details>
       </div>
     </section>

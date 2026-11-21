@@ -62,3 +62,14 @@ test("autoplay retains pause and reduced-motion safeguards without a seek contro
   assert.match(component, /clearInterval/);
   assert.match(component, /"Resume" : "Pause"/);
 });
+
+test("landing previews use compact layouts without hiding core charts", () => {
+  const layout = readFileSync(new URL("../src/app/landing.module.css", import.meta.url), "utf8");
+  const graphs = readFileSync(new URL("../src/components/landing-graphs.module.css", import.meta.url), "utf8");
+  const component = readFileSync(new URL("../src/components/landing-graphs.tsx", import.meta.url), "utf8");
+  assert.match(layout, /grid-template-columns: 200px minmax\(0, 1fr\)/);
+  assert.doesNotMatch(layout, /min-height: 5[12]0px/);
+  assert.match(graphs, /height: 48px/);
+  assert.match(graphs, /height: 210px/);
+  assert.match(component, /<summary>Explore checkpoints &amp; goals<\/summary>/);
+});

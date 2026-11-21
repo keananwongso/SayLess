@@ -1,5 +1,12 @@
 # Codex work log
 
+## Landing-sized previews — November 21, 2026
+
+- `codex/landing-compact-preview` starts from `origin/main` (`b0c482f`) and carries forward the unmerged landing graph work; unrelated app/demo/pitch changes remain intact.
+- Capped the outer preview at 960px, removed duplicate Practice/Compare headings, large minimum heights, and the nested Practice card frame. Practice now caps at 600px with a 48px waveform and tighter spacing, preserving 16px body text and 44px controls.
+- Compare now places a compact 75%/before-after summary beside the 210px-high chart. Goal controls and all 13 checkpoints remain available under a disclosure. Mobile stacks naturally without clipping content or scaling text down. Sites guidance informed the reduction in visible controls and repeated copy.
+- Autoplay, reduced-motion support, fixture math, and projections remain unchanged. Lint, typecheck, seven fixture/layout source tests, production build, and whitespace checks pass. Browser visual verification is pending; no merge/deployment.
+
 ## Edge-to-edge pitch on load — November 21, 2026
 
 On `codex/pitch-edge-to-edge`, made the deck fill the browser viewport from the first slide and removed the presentation toolbar. Lint, typecheck, and build passed. Chrome verified the layout on load and forward and backward keyboard navigation at desktop and mobile viewport sizes.
