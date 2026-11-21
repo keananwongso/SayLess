@@ -1,5 +1,11 @@
 # Codex work log
 
+## Three-step onboarding and app Home — November 21, 2026
+
+On `codex/social-phone-demo`, added short directional transitions with a reduced-motion fallback, simplified the two-week goal screen, and ended onboarding at step 3. **Use SayLess** opens Home. The working app uses Home, Stats, Friends, and Profile tabs. Home shows browser-saved quest progress and opens live Practice, Stats contains Analyze and Wrapped, and Friends retains the topic reel and sample comparison.
+
+Lint, typecheck, build, and served landing checks passed. Chrome verified forward and back transitions, reduced motion, the app handoff, all four tabs, sample replay, and saved XP at 320px, 390px, and desktop widths. Onboarding and the sample friend comparison sent zero requests to the practice API.
+
 ## Five-screen social demo — November 21, 2026
 
 On `codex/social-phone-demo`, replaced the guided pitch replay with a simulated sample upload, Yap Recap, the two-week goal, a daily topic reel with 20 prompts, and a friend progress screen. The weekly chart shows mock check-ins from separate Jade and Riley baselines. The final action opens live Practice, where the sample replay remains available.

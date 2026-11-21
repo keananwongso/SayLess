@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnalyzeRecording } from "@/components/analyze-recording";
-import { Challenges } from "@/components/challenges";
+import { WorkspaceFriends } from "@/components/workspace-friends";
+import { WorkspaceHome, WorkspaceStats } from "@/components/workspace-home";
 import { Profile } from "@/components/profile";
 import { Practice } from "@/components/practice";
 import { Results } from "@/components/results";
@@ -14,7 +15,13 @@ import { sampleProfiles } from "@/lib/sample-pitches";
 import { loadTakeAudio } from "@/lib/take-audio";
 import { stopSpeech } from "@/lib/speech";
 
-type Step = "analyze" | "wrapped" | "practice" | "results" | "sample" | "challenges" | "profile";
+type Step = "home" | "stats" | "friends" | "profile" | "analyze" | "wrapped" | "practice" | "results" | "sample";
+
+const workspaceTabs = {
+  home: "home", practice: "home", results: "home", sample: "home",
+  stats: "stats", analyze: "stats", wrapped: "stats",
+  friends: "friends", profile: "profile",
+} as const;
 
 function subscribeToHash(onChange: () => void) {
   window.addEventListener("hashchange", onChange);
@@ -28,7 +35,7 @@ function currentHash() {
 export default function Workspace() {
   const hash = useSyncExternalStore(subscribeToHash, currentHash, () => "");
   const [selectedStep, setStep] = useState<Step>();
-  const step = selectedStep ?? (hash === "#practice" ? "practice" : hash === "#wrapped" ? "wrapped" : "analyze");
+  const step = selectedStep ?? (hash === "#practice" ? "practice" : hash === "#wrapped" ? "wrapped" : "home");
   const [session, setSession] = useState<PracticeSession>();
   const [practiceHistory, setPracticeHistory] = useState<ChallengeTake[]>([]);
   const [sampleIndex, setSampleIndex] = useState(0);
@@ -66,6 +73,9 @@ export default function Workspace() {
   return (
     <div className="app-surface">
       <main className="app-screen workspace-screen" id="main" ref={main} tabIndex={-1}>
+        {step === "home" && <WorkspaceHome takes={practiceHistory} onPractice={() => go("practice")} onFriends={() => go("friends")} />}
+        {step === "stats" && <WorkspaceStats takes={practiceHistory} onAnalyze={() => go("analyze")} onWrapped={() => go("wrapped")} />}
+        {step === "friends" && <WorkspaceFriends />}
         {step === "analyze" && <div><AnalyzeRecording onPractice={() => go("practice")} /></div>}
         <div hidden={step !== "wrapped"}>
           <Wrapped onPractice={() => go("practice")} />
@@ -85,7 +95,6 @@ export default function Workspace() {
             />
           </div>
         )}
-        {step === "challenges" && <Challenges takes={practiceHistory} onPractice={() => go("practice")} />}
         {step === "profile" && <Profile takes={practiceHistory} onPractice={() => go("practice")} />}
         {step === "results" && session && (
           <div>
@@ -100,7 +109,7 @@ export default function Workspace() {
           </div>
         )}
       </main>
-      <WorkspaceNav active={step === "sample" || step === "results" ? "practice" : step} onSelect={go} />
+      <WorkspaceNav active={workspaceTabs[step]} onSelect={go} />
     </div>
   );
 }

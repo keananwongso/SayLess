@@ -23,28 +23,31 @@ export default function DocsPage() {
         <h2 id="using-sayless">using sayless</h2>
         <dl className={styles.features}>
           <div>
-            <dt>Analyze</dt>
+            <dt>Analyze · Stats</dt>
             <dd>Upload an M4A, MP3, WAV, WebM, or Ogg recording up to 4 MB. The report counts fillers and repeated phrases across the full recording. When timestamps are available, play the moment a filler occurred.</dd>
           </div>
           <div>
-            <dt>Wrapped</dt>
+            <dt>Wrapped · Stats</dt>
             <dd>Explore the sample chat or import a CSV up to 1 MB with <code>speaker</code> and <code>message</code> columns. Pick a speaker to see their writing patterns and save a count-only snapshot for later comparison.</dd>
           </div>
           <div>
-            <dt>Practice</dt>
+            <dt>Practice · Home</dt>
             <dd>Record a short project pitch, get a coaching cue, then try the same prompt again. Compare your two takes or open <strong>Watch sample replay</strong> to try the comparison with prerecorded audio.</dd>
           </div>
           <div>
-            <dt>Challenges and Profile</dt>
-            <dd>Complete the daily clear-pitch challenge, claim XP, and see your streak and recent activity. Profile shows saved challenge progress and practice totals for the current tab. Friend duels use a simulated opponent.</dd>
+            <dt>Home and Profile</dt>
+            <dd>Complete the daily clear-pitch quest, claim XP, and see your streak and recent activity. Profile shows saved quest progress and practice totals for the current tab.</dd>
+          </div>
+          <div>
+            <dt>Friends</dt>
+            <dd>Copy today’s quest prompt to share it. Jade and Riley’s sample check-in shows how friends can compare a week of progress against their own starting counts.</dd>
           </div>
         </dl>
       </section>
 
       <section className={styles.section} aria-labelledby="demo-data">
         <h2 id="demo-data">what the demo simulates</h2>
-        <p>The demo simulates uploading Jade’s sample conversation in the browser. Yap Recap shows estimated counts across all speakers in that 2:23 conversation. The two-week graph shows example targets for comparable conversations.</p>
-        <p>Jade and Riley are fictional friends. The check-in picks a shared prompt from 20 demo topics, then shows a simulated week of filler counts per 20-second check-in. Each friend’s improvement uses their own starting count.</p>
+        <p>The three-screen onboarding demo simulates uploading Jade’s sample conversation in the browser. Yap Recap shows estimated counts across all speakers in that 2:23 conversation. The two-week graph shows example targets for comparable conversations. Select <strong>Use SayLess</strong> to continue to Home.</p>
       </section>
 
       <section className={styles.section} aria-labelledby="data-handling">

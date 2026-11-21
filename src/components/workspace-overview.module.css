@@ -1,0 +1,24 @@
+.greeting { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.greeting p { padding: 6px 12px; border-radius: 999px; background: var(--color-surface); font-size: 13px; font-weight: 700; }
+.week, .metrics > div, .card, .friendsPreview { min-width: 0; padding: 16px; border: 1px solid var(--color-divider); border-radius: var(--card-radius); }
+.week { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; background: color-mix(in srgb, var(--color-jonquil) 23%, var(--color-surface)); }
+.week strong, .metrics dd { font-weight: 800; line-height: 1; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.week strong { font-size: 48px; }
+.week strong span { font-size: .55em; color: var(--color-muted); }
+.week p { margin-top: 4px; font-size: 14px; }
+.ring { display: grid; flex: none; place-items: center; width: 70px; height: 70px; border-radius: 50%; }
+.ring .avatar { padding: 5px; width: 56px; height: 56px; border-radius: 50%; background: var(--color-surface); }
+.metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.metrics > div { display: flex; flex-direction: column-reverse; justify-content: start; gap: 6px; background: var(--color-surface); }
+.metrics dd { font-size: 28px; }
+.metrics dt { font-size: 13px; color: var(--color-muted); }
+.card { display: grid; gap: 12px; background: var(--color-surface); overflow-wrap: anywhere; }
+.card h2 { font-size: 22px; line-height: 1.15; font-weight: 750; letter-spacing: -.035em; }
+.friendsPreview { display: grid; align-items: center; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; background: var(--color-surface); text-align: start; }
+.friendsPreview strong, .friendsPreview span span { display: block; }
+.friendsPreview span span { font-size: 13px; color: var(--color-muted); }
+.avatar { width: 36px; height: 36px; flex: none; }
+.practiceCounts { display: grid; gap: 10px; }
+.practiceCounts li { display: grid; grid-template-columns: minmax(90px, auto) minmax(0, 1fr) 2.4ch; align-items: center; gap: 8px; font-size: 13px; }
+.takeBar { height: 8px; border-radius: 999px; overflow: hidden; background: var(--color-dune); }
+.takeBar span { display: block; height: 100%; border-radius: inherit; background: var(--color-azure); }

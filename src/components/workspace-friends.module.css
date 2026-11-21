@@ -1,0 +1,31 @@
+.pair { display: flex; gap: 16px; }
+.pair li { display: grid; justify-items: center; gap: 4px; font-size: 13px; }
+.avatar { width: 36px; height: 36px; flex: none; }
+.topic { padding: 12px; border-radius: var(--control-radius); background: color-mix(in srgb, var(--color-azure) 12%, var(--color-surface)); }
+.window { overflow: hidden; }
+.window[data-rolling="true"] { height: 56px; }
+.reel { animation: topic-roll 600ms cubic-bezier(.18, .65, .2, 1) both; }
+.reel p, .result { display: flex; align-items: center; font-weight: 650; }
+.reel p { height: 56px; }
+.result:not(:empty) { min-height: 44px; }
+@keyframes topic-roll { to { transform: translateY(-80%); } }
+@media (prefers-reduced-motion: reduce) { .reel { animation: none; transform: translateY(-80%); } }
+
+.results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.results li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px; border-radius: var(--control-radius); background: color-mix(in srgb, var(--color-lavender) 24%, var(--color-surface)); font-size: 13px; }
+.results li:last-child { background: color-mix(in srgb, var(--color-azure) 12%, var(--color-surface)); }
+.results .avatar { width: 28px; height: 28px; }
+.chart { display: grid; gap: 6px; padding: 12px; border-radius: var(--control-radius); background: color-mix(in srgb, var(--color-dune) 38%, var(--color-surface)); }
+.chart figcaption { font-size: 13px; font-weight: 650; }
+.chart svg { display: block; width: 100%; }
+.gridLine { stroke: var(--color-divider); }
+.chartLabel { fill: var(--color-muted); font-size: 13px; }
+.jade { color: var(--color-ink); }
+.riley { color: var(--color-azure); }
+.chart polyline { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.chart circle { fill: currentColor; }
+.riley polyline { stroke-dasharray: 4 3; }
+.legend { display: flex; justify-content: center; gap: 16px; font-size: 12px; font-weight: 650; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend span::before { content: ""; width: 14px; border-top: 2px solid var(--color-ink); }
+.legend span:last-child::before { border-top: 2px dashed var(--color-azure); }
