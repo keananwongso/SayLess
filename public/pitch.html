@@ -109,15 +109,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   body,h1,h2,h3,p,blockquote,dl,dd { margin:0 }
   [hidden] { display:none!important }
   :focus-visible { outline:3px solid var(--focus); outline-offset:4px }
-  .shell { width:min(100%,1330px); margin:auto; padding:16px }
   .slide {
     position:relative; isolation:isolate; display:grid; grid-template-rows:auto 1fr auto;
-    min-height:min(740px,calc(100svh - 104px)); padding:clamp(24px,4.5vw,62px);
-    gap:clamp(20px,3vw,38px); border:1px solid var(--divider); border-radius:24px; background:var(--surface);
-    box-shadow:0 14px 46px #29221716; overflow:hidden;
+    min-height:100vh; min-height:100dvh; padding:clamp(24px,4.5vw,62px);
+    gap:clamp(20px,3vw,38px); background:var(--surface); overflow:hidden;
   }
   .slide:focus { outline:none }
-  .mast,.slide-footer,.toolbar,.controls { display:flex; align-items:center; justify-content:space-between; gap:12px }
+  .mast,.slide-footer { display:flex; align-items:center; justify-content:space-between; gap:12px }
   .wordmark { font-size:clamp(22px,3vw,35px); font-weight:800; letter-spacing:-.09em; line-height:1 }
   .wordmark { display:inline-flex; align-items:center; gap:8px }
   .wordmark svg { width:clamp(23px,3vw,34px); height:auto }
@@ -197,16 +195,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     font-size:clamp(82px,17vw,220px); line-height:.97; letter-spacing:-.085em;
   }
   .demo-title .sticker { z-index:0 }
-  .toolbar { margin-top:10px }
-  .controls { justify-content:flex-start; flex-wrap:wrap; gap:8px }
-  .button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 14px; border:1px solid var(--control-border); border-radius:40px; background:white; font:650 14px Geist,system-ui,sans-serif; color:var(--ink); cursor:pointer; text-decoration:none }
-  .button:hover { background:var(--lavender) }
-  .primary { background:var(--ink); border-color:var(--ink); color:white }
-  .primary:hover { background:var(--focus) }
-  .button:disabled { opacity:.4; cursor:default }
   @media(max-width:760px) {
-    .shell { padding:8px }
-    .slide { min-height:72svh; padding:24px 20px }
+    .slide { padding:24px 20px }
     .split { grid-template-columns:minmax(0,1fr) }
     .hook-art { min-height:225px }
     .hook-art .icon-hook { left:65% }
@@ -220,20 +210,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     .chat-thread { grid-area:2/1/4/2 }
     .chat-excerpt { grid-area:2/2/3/3 }
     .chat-replies { grid-area:3/2/4/3 }
-    .toolbar { align-items:flex-start }
-    .toolbar .controls:last-child { justify-content:flex-end }
-  }
-  @media screen {
-    .presenting .shell { width:100%; padding:0 }
-    .presenting .toolbar { display:none }
-    .presenting .slide { min-height:100dvh; border:0; border-radius:0; box-shadow:none }
   }
   @media print {
     @page { size:landscape; margin:0 }
     body { print-color-adjust:exact; -webkit-print-color-adjust:exact }
-    .shell { max-width:none; padding:0 }
-    .toolbar { display:none!important }
-    main .slide { display:grid!important; min-height:100vh; break-after:page; border-radius:0; box-shadow:none }
+    main .slide { display:grid!important; min-height:100vh; break-after:page }
     main .slide:last-child { break-after:auto }
   }
 </style>
@@ -246,7 +227,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <symbol id="dot-calm" viewBox="0 0 120 120"><circle cx="60" cy="60" r="57" fill="var(--dot-fill)" stroke="var(--ink)" stroke-width="2"/><circle cx="60" cy="60" r="50" stroke="var(--ink)" stroke-opacity=".18"/><g stroke="var(--ink)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 53q10 12 20 0m16 0q10 12 20 0M43 76q17 14 34 0"/></g></symbol>
     <symbol id="dot-curious" viewBox="0 0 120 120"><circle cx="60" cy="60" r="57" fill="var(--dot-fill)" stroke="var(--ink)" stroke-width="2"/><circle cx="60" cy="60" r="50" stroke="var(--ink)" stroke-opacity=".18"/><g stroke="var(--ink)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="42" cy="53" rx="6" ry="9"/><ellipse cx="78" cy="53" rx="6" ry="9"/><path d="M49 80q11-7 22 0"/></g></symbol>
   </svg>
-<div class="shell">
   <main aria-label="SayLess pitch slides">
     <section class="slide hook" tabindex="-1" aria-labelledby="hook">
       <div class="mast"><span class="wordmark"><svg fill="none" viewBox="0 0 120 120" aria-hidden="true" focusable="false" style="--dot-fill:var(--lavender)"><use href="#dot-pause"/></svg>sayless</span><span class="section-label">The next generation of work</span></div>
@@ -319,65 +299,21 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <svg class="sticker floating" viewBox="0 0 120 120" aria-hidden="true" focusable="false" style="--dot-fill:var(--mint);--x:74%;--y:68%;--size:clamp(58px,10vw,125px);--tilt:15deg"><use href="#dot-calm"/></svg>
     </section>
   </main>
-  <div class="toolbar" aria-label="Presentation controls">
-    <div class="controls">
-      <button class="button" type="button" id="fullscreen" title="Use the arrow keys to change slides and Esc to exit">Fullscreen</button>
-    </div>
-    <div class="controls">
-      <button class="button" type="button" id="previous" aria-label="Previous slide" disabled>←</button>
-      <button class="button primary" type="button" id="next">Next →</button>
-    </div>
-  </div>
-
-</div>
 <script>
   const slides = Array.from(document.querySelectorAll("main .slide"));
-  const screen = document.documentElement;
-  const fullscreen = document.querySelector("#fullscreen");
-  const previous = document.querySelector("#previous");
-  const next = document.querySelector("#next");
   let current = 0;
 
-  function showSlide(index, focusSlide = true) {
+  function showSlide(index) {
     current = Math.min(Math.max(index, 0), slides.length - 1);
     slides.forEach((slide, position) => {
       slide.hidden = position !== current;
     });
-    previous.disabled = current === 0;
-    next.disabled = current === slides.length - 1;
-    if (focusSlide) {
-      slides[current].focus({ preventScroll: true });
-      window.scrollTo(0, 0);
-    }
+    slides[current].focus({ preventScroll: true });
+    window.scrollTo(0, 0);
   }
-
-  function exitPresentation() {
-    screen.classList.remove("presenting");
-    fullscreen.focus({ preventScroll: true });
-  }
-
-  previous.addEventListener("click", () => showSlide(current - 1));
-  next.addEventListener("click", () => showSlide(current + 1));
-  fullscreen.addEventListener("click", async () => {
-    screen.classList.add("presenting");
-    showSlide(current);
-    try {
-      await screen.requestFullscreen?.();
-    } catch {
-      // Keep the slide expanded when the browser blocks native fullscreen.
-    }
-  });
-
-  document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement) exitPresentation();
-  });
 
   document.addEventListener("keydown", (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-    if (event.code === "Escape" && !document.fullscreenElement && screen.classList.contains("presenting")) {
-      exitPresentation();
-      return;
-    }
     if (event.code === "Space" && event.target.closest("button, a")) return;
     const destinations = {
       ArrowRight: current + 1, PageDown: current + 1, Space: current + 1,
@@ -389,7 +325,6 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     }
   });
 
-  showSlide(0, false);
 </script>
 </body>
 </html>

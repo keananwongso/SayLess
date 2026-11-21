@@ -1,5 +1,9 @@
 # Codex work log
 
+## Edge-to-edge pitch on load — November 21, 2026
+
+On `codex/pitch-edge-to-edge`, made the deck fill the browser viewport from the first slide and removed the presentation toolbar. Lint, typecheck, and build passed. Chrome verified the layout on load and forward and backward keyboard navigation at desktop and mobile viewport sizes.
+
 ## Fullscreen pitch deck — November 21, 2026
 
 On `codex/pitch-fullscreen`, expanded the active slide to the screen edges in fullscreen, hid the toolbar while presenting, and removed speaker notes. The deck fills the browser viewport when native fullscreen is blocked. Lint, typecheck, and build passed. Chrome verified native fullscreen, hidden controls, keyboard navigation through all six slides, and exiting native and viewport fullscreen.
