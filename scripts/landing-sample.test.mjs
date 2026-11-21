@@ -24,8 +24,8 @@ test("filler counting uses whole words, ignores case, and handles zero", () => {
 test("landing preview has no audio player or audio fixture dependency", () => {
   const component = readFileSync(new URL("../src/components/landing-preview.tsx", import.meta.url), "utf8");
   assert.doesNotMatch(component, /<audio|sample-pitches|voice-samples/);
-  assert.match(component, /Synthetic sample/);
-  assert.match(component, /not that source or a study/);
+  assert.match(component, /Illustrative sample/);
+  assert.doesNotMatch(component, /<details|<summary/);
 });
 
 test("authored timestamps match filler order, counts, and equal timeline windows", () => {
@@ -67,9 +67,10 @@ test("landing previews use compact layouts without hiding core charts", () => {
   const layout = readFileSync(new URL("../src/app/landing.module.css", import.meta.url), "utf8");
   const graphs = readFileSync(new URL("../src/components/landing-graphs.module.css", import.meta.url), "utf8");
   const component = readFileSync(new URL("../src/components/landing-graphs.tsx", import.meta.url), "utf8");
-  assert.match(layout, /grid-template-columns: 200px minmax\(0, 1fr\)/);
   assert.doesNotMatch(layout, /min-height: 5[12]0px/);
   assert.match(graphs, /height: 48px/);
-  assert.match(graphs, /height: 210px/);
-  assert.match(component, /<summary>Explore checkpoints &amp; goals<\/summary>/);
+  assert.match(graphs, /\.mobileChart/);
+  assert.match(component, /Illustrative goal/);
+  assert.doesNotMatch(component, /<details|<summary|type="range"/);
+  assert.match(component, /Math.min\(60, value \+ .3\)/);
 });

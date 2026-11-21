@@ -26,7 +26,7 @@ assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
 assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
-assert.match(html, /Synthetic sample ·/);
+assert.match(html, /Illustrative sample/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/app"/);
 assert.match(html, /href="\/app#practice"/);
@@ -41,9 +41,8 @@ for (const path of ["/architecture", "/demo", "/app"]) {
 }
 assert.doesNotMatch(html, /<audio\b/);
 assert.match(html, /data-reveal/);
-assert.match(html, /60-second takes/);
+assert.doesNotMatch(html, /<details/);
 assert.match(html, /<mark>Um<\/mark>/);
-assert.match(html, /75/);
 for (const path of ["/demo", "/app", "/architecture"]) {
   const page = await fetch(new URL(path, base));
   assert.equal(page.status, 200, path);

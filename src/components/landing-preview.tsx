@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SayLessDot } from "./sayless-dot";
-import { landingSample, firstTotal, retryTotal, reductionPercent } from "@/lib/landing-sample";
+import { landingSample, firstTotal } from "@/lib/landing-sample";
 import { TranscriptGraph, PracticeProjection } from "./landing-graphs";
 import styles from "@/app/landing.module.css";
 
@@ -18,10 +18,6 @@ export function LandingPreview() {
   const [screen, setScreen] = useState<(typeof screens)[number]>("Discover");
   return (
     <section className={styles.preview} id="preview" aria-label="Interactive product preview" data-reveal>
-      <div className={styles.previewHeader}>
-        <span className={styles.previewTitle}>Your communication, unpacked.</span>
-        <span className={styles.sampleBadge}>Synthetic sample · {landingSample.name} · 60-second takes</span>
-      </div>
       <div className={styles.previewBody}>
         <aside className={styles.previewSidebar}>
           <div className={styles.screenButtons} role="group" aria-label="Preview screens">
@@ -29,7 +25,7 @@ export function LandingPreview() {
               <button key={name} type="button" aria-pressed={screen === name} aria-controls="preview-content" onClick={() => setScreen(name)}>{name}</button>
             ))}
           </div>
-          <Link href="/demo" className={styles.textLink}>Full demo</Link>
+          <Link href="/demo" className={styles.textLink}><span className={styles.fullLabel}>Full&nbsp;</span>demo</Link>
         </aside>
         <div className={styles.previewContent} id="preview-content" key={screen}>
           {screen === "Discover" && <>
@@ -42,28 +38,9 @@ export function LandingPreview() {
             <div className={styles.coach}><span aria-hidden="true">✳</span><div><strong>Give the next thought a beat.</strong><p>Try a brief pause where you would normally say “um.”</p></div></div>
           </>}
           {screen === "Practice" && <TranscriptGraph />}
-          {screen === "Compare" && <div className={styles.compareLayout}>
-            <div className={styles.improvement}>
-              <span>One illustrative retry</span>
-              <strong>{reductionPercent}<span>%</span></strong>
-              <h4>fewer filler words</h4>
-              {[{ label: "First take", value: firstTotal }, { label: "Retry", value: retryTotal }].map(({ label, value }, index) => (
-                <div className={styles.compareRow} key={label}>
-                  <div><span>{label}</span><strong>{value}</strong></div>
-                  <div className={styles.compareTrack}><span className={index ? styles.retryBar : styles.firstBar} style={{ width: `${value / firstTotal * 100}%` }} /></div>
-                </div>
-              ))}
-              <p>Fillers/min · synthetic 60s takes.</p>
-            </div>
-            <PracticeProjection />
-          </div>}
+          {screen === "Compare" && <PracticeProjection />}
         </div>
-        <details className={styles.methodNote}>
-          <summary>About this sample &amp; the coaching approach</summary>
-          <p>Transcripts, waveform, and timestamps are authored examples, not recorded audio. The four-week chart uses synthetic takes and illustrative projected goals, not predicted results. “Um,” “uh,” “like,” “wait,” and “well” are deliberately used as hesitations in this example; they are not always fillers. Normal speech is not a flaw, and fewer fillers alone do not measure speaking quality.</p>
-          <p>The coaching approach follows <a href="https://www.toastmasters.org/magazine/magazine-issues/2019/feb/sidebars/three-ways-to-make-ah-counting-count-for-more" target="_blank" rel="noreferrer">Toastmasters guidance on noticing recurring fillers and practicing pauses</a>. The {reductionPercent}% sample reduction is calculated from our fixture, not that source or a study.</p>
-          <p>Sample reduction = ({firstTotal} − {retryTotal}) ÷ {firstTotal} × 100. Not a user average or a promised outcome.</p>
-        </details>
+        <p className={styles.sampleLabel}>Illustrative sample</p>
       </div>
     </section>
   );

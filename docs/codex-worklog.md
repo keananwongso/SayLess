@@ -1,5 +1,13 @@
 # Codex work log
 
+## Visual-first landing preview — November 21, 2026
+
+- Branch `codex/landing-visual-first` starts at latest `origin/main` (`b0c482f`) and carries forward the unmerged landing changes. No app/demo/API changes.
+- Applied the Fermata browser review: one navigation row, no duplicate preview heading, no dropdowns or explanation blocks, and one short illustrative label. Practice shows inline timestamped words beneath the progressively filled waveform with one pause/resume/replay control. Plays once and holds; reduced motion is static. Compare replaces the large stat card with an inline badge, annotations, and a 550ms graph reveal with a clearly distinguished illustrative goal.
+- Responsive chart variants avoid horizontal scrolling. Retains SayLess palette, dot artwork, readable text and 44px controls. Sites presentation guidance informed the simpler hierarchy; source/method notes remain in `docs/landing-preview-metrics.md` rather than marketing copy.
+- Isolated Chrome (Puppeteer, explicitly authorized by user) checked 1440, 390, and 320px widths: no horizontal overflow or dropdowns. Captured and inspected Practice/Compare screenshots; tested autoplay advancement, pause/resume, finished hold/replay, reduced-motion static output, and no browser errors. Practice at 390px is about 490px tall versus the previous ~767px. Lint, typecheck, seven tests, production build, and HTTP/CSS/routes checks pass; final punctuation adjustment rechecked before handoff.
+- No merge or deployment. Local preview stays on port 3000.
+
 ## Landing-sized previews — November 21, 2026
 
 - `codex/landing-compact-preview` starts from `origin/main` (`b0c482f`) and carries forward the unmerged landing graph work; unrelated app/demo/pitch changes remain intact.
