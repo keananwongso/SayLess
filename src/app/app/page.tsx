@@ -64,7 +64,7 @@ export default function Workspace() {
   }
 
   return (
-    <div className="app-surface">
+    <div className="app-surface workspace-surface">
       <main className="app-screen workspace-screen" id="main" ref={main} tabIndex={-1}>
         {step === "analyze" && <div><AnalyzeRecording onPractice={() => go("practice")} /></div>}
         <div hidden={step !== "wrapped"}>

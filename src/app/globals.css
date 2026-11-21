@@ -63,10 +63,11 @@ button:disabled { cursor: default; opacity: .58; }
 .wordmark, .shell h1 { text-transform: lowercase; }
 
 .app-surface {
+  --app-frame-height: max(320px, calc(100dvh - 130px));
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   width: min(480px, calc(100% - 2 * var(--gutter)));
-  max-height: max(320px, calc(100dvh - 130px));
+  max-height: var(--app-frame-height);
   margin: 18px auto;
   overflow: hidden;
   border: 1px solid var(--color-divider);
@@ -74,6 +75,8 @@ button:disabled { cursor: default; opacity: .58; }
   background: var(--color-surface);
   box-shadow: 0 12px 32px color-mix(in srgb, var(--color-ink) 8%, transparent);
 }
+
+.workspace-surface { height: var(--app-frame-height); }
 
 .app-screen {
   min-width: 0;

@@ -96,3 +96,7 @@ See the [voice analysis architecture](voice-analysis.md), [practice API and trac
 ## Product routes
 
 The landing, Jade’s demo, working app, and architecture now have separate routes. The Analyze tab accepts a consented recording and shows whole-recording filler counts, repeated language, transcript, and playable timestamps. It uses the existing Deepgram pipeline in analysis mode.
+
+## Workspace frame — November 21, 2026
+
+Branch `fix/consistent-workspace-frame` gives the workspace a viewport-based height across tabs, with content scrolling above the bottom navigation. Chrome verified the demo exit, all five tabs, sample replay, and Results with mocked coaching at desktop and phone sizes. Lint, typecheck, and the production build passed.
