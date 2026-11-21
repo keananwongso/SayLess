@@ -1,5 +1,11 @@
 # Codex work log
 
+## Workspace motion, Stats, and Friends — November 21, 2026
+
+On `main`, added staggered Home cards, a mascot hop, app screen transitions, and a sliding tab highlight with reduced-motion support. Stats uses the same demo fixture and projection chart as Jade’s onboarding and shows personal practice takes separately when available. Friends now leads with Jade and Riley’s topic roll and keeps quest sharing below it.
+
+Lint, typecheck, production build, seven landing fixtures, and served route checks passed. Chrome checked the demo handoff, tab alignment, the fixed handset and dock, Stats, the Friends reel and progress, and sample replay at 320px, 390px, and 1440px. A mocked recording and coaching response verified that Stats lists the new take alongside Jade’s recap.
+
 ## Shared handset and two-week comparison — November 21, 2026
 
 On `main`, gave `/app` the same desktop handset as `/demo` and kept both edge to edge on phones. Removed the public architecture route and its links. The two-week goal now compares the flat recap baseline of about 40 uses of “wait” with dashed practice targets of 32 and 24. Included Evan’s landing preview changes from PR #2.
