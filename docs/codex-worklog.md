@@ -25,6 +25,12 @@ Lint, typecheck, build, and served landing checks passed. Chrome verified scroll
 ## Pitch deck URL — November 21, 2026
 
 On `codex/pitch-route`, added a Next.js rewrite so `/pitch` serves Allison’s existing deck and keeps the short URL in the address bar. Lint, typecheck, and production build passed. The production server returned HTTP 200 and identical HTML from `/pitch` and `/pitch.html`.
+## Timestamped waveform and practice goals — November 21, 2026
+
+- Branch `codex/landing-waveform-goals` starts at latest `origin/main` (`9b9a440`) and carries forward the transcript feature, preserving main's shared header and phone-first demo changes. No API or demo-flow changes.
+- Replaced segment bars with an original SVG waveform, highlighted um/uh regions, exact authored timestamp controls, silent user-initiated playhead, seek slider, first/retry switch, and same-duration proposed-pause preview. Mobile waveform scrolls without compressing labels; motion preferences disable playback animation.
+- Added Duolingo-inspired goal chart with 25/50/75% target controls, baseline, weekly milestones, accessible numeric disclosure, and explicit non-predictive labeling. Sites guidance informed the separation of illustrative goals from evidence; no new hosting or dependencies.
+- Lint, typecheck, production build, and served HTML/CSS/navigation checks pass; five fixture tests cover counts, timing/token alignment, and goal math. Isolated browser unavailable, so visual and interactive browser QA remains unverified. No merge or deployment.
 
 ## Shared navigation and phone-first demo — November 21, 2026
 

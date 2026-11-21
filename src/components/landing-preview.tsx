@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SayLessDot } from "./sayless-dot";
-import { landingSample, firstCounts, retryCounts, firstTotal, retryTotal, reductionPercent } from "@/lib/landing-sample";
+import { landingSample, firstTotal, retryTotal, reductionPercent } from "@/lib/landing-sample";
+import { TranscriptGraph, PracticeProjection } from "./landing-graphs";
 import styles from "@/app/landing.module.css";
 
 const screens = ["Discover", "Practice", "Compare"] as const;
@@ -11,39 +12,6 @@ const screens = ["Discover", "Practice", "Compare"] as const;
 function HighlightedTranscript({ text }: { text: string }) {
   return <>{text.split(/(\b(?:um|uh)\b)/gi).map((part, index) =>
     /^(um|uh)$/i.test(part) ? <mark key={index}>{part}</mark> : part)}</>;
-}
-
-function TranscriptGraph() {
-  const [take, setTake] = useState<"first" | "retry">("first");
-  const [segment, setSegment] = useState(0);
-  const counts = take === "first" ? firstCounts : retryCounts;
-  return (
-    <div className={styles.transcriptGraph}>
-      <div className={styles.graphHeading}>
-        <h4>Transcript timeline</h4>
-        <div className={styles.takeSwitch} role="group" aria-label="Transcript take">
-          <button type="button" aria-pressed={take === "first"} onClick={() => setTake("first")}>First take</button>
-          <button type="button" aria-pressed={take === "retry"} onClick={() => setTake("retry")}>Retry</button>
-        </div>
-      </div>
-      <p className={styles.graphHint}>Filler words per 10 seconds · select a segment</p>
-      <div className={styles.graphBars} role="group" aria-label="Transcript segments">
-        {counts.map((count, index) => (
-          <button type="button" key={index} aria-pressed={segment === index} aria-controls="transcript-excerpt"
-            aria-label={`${index * 10} to ${(index + 1) * 10} seconds: ${count} filler words`}
-            onClick={() => setSegment(index)}>
-            <span className={styles.barValue}>{count}</span>
-            <span className={styles.barTrack} aria-hidden="true"><span className={take === "retry" ? styles.retryBar : styles.firstBar} style={{ height: `${count / 2 * 100}%` }} /></span>
-            <span className={styles.barTime}>{index * 10}s</span>
-          </button>
-        ))}
-      </div>
-      <div className={styles.excerpt} id="transcript-excerpt" aria-live="polite" key={`${take}-${segment}`}>
-        <span>{segment * 10}–{(segment + 1) * 10}s · {counts[segment]} fillers</span>
-        <p><HighlightedTranscript text={landingSample[take][segment]} /></p>
-      </div>
-    </div>
-  );
 }
 
 export function LandingPreview() {
@@ -63,7 +31,7 @@ export function LandingPreview() {
           </div>
           <Link href="/demo" className={styles.textLink}>Full demo</Link>
         </aside>
-        <div className={styles.previewContent} id="preview-content" key={screen} aria-live="polite">
+        <div className={styles.previewContent} id="preview-content" key={screen}>
           {screen === "Discover" && <>
             <div className={styles.contentHeading}><h3>Small words. A visible pattern.</h3><span>First take · 60 seconds</span></div>
             <div className={styles.insight}>
@@ -96,11 +64,12 @@ export function LandingPreview() {
               ))}
               <p>Reduction = ({firstTotal} − {retryTotal}) ÷ {firstTotal}. Not a user average or a promised outcome.</p>
             </div>
+            <PracticeProjection />
           </>}
         </div>
         <details className={styles.methodNote}>
           <summary>About this sample &amp; the coaching approach</summary>
-          <p>Both transcripts and their 10-second segments are illustrative, not recorded audio. We count only “um” and “uh” here; normal speech is not a flaw, and fewer fillers alone do not measure speaking quality.</p>
+          <p>Transcripts, waveform, and timestamps are authored examples, not recorded audio. The four-week chart shows adjustable goals, not predicted results. We count only “um” and “uh” here; normal speech is not a flaw, and fewer fillers alone do not measure speaking quality.</p>
           <p>The coaching approach follows <a href="https://www.toastmasters.org/magazine/magazine-issues/2019/feb/sidebars/three-ways-to-make-ah-counting-count-for-more" target="_blank" rel="noreferrer">Toastmasters guidance on noticing recurring fillers and practicing pauses</a>. The {reductionPercent}% sample reduction is calculated from our fixture, not that source or a study.</p>
         </details>
       </div>

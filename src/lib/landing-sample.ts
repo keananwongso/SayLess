@@ -30,3 +30,19 @@ export const retryCounts = landingSample.retry.map(countLandingFillers);
 export const firstTotal = firstCounts.reduce((sum, count) => sum + count, 0);
 export const retryTotal = retryCounts.reduce((sum, count) => sum + count, 0);
 export const reductionPercent = Math.round((1 - retryTotal / firstTotal) * 100);
+
+// Authored timing, not an alignment result. Each event matches its transcript segment.
+export const fillerEvents = {
+  first: [
+    { word: "um", start: 0.8, end: 1.5 }, { word: "uh", start: 6.4, end: 7 },
+    { word: "um", start: 15.2, end: 16 }, { word: "um", start: 20.6, end: 21.3 },
+    { word: "uh", start: 26.1, end: 26.8 }, { word: "um", start: 34.4, end: 35.1 },
+    { word: "um", start: 45.2, end: 46 }, { word: "um", start: 54.3, end: 55.1 },
+  ],
+  retry: [{ word: "um", start: 23.2, end: 23.8 }, { word: "um", start: 55.1, end: 55.7 }],
+} as const;
+
+export function practiceGoal(reduction: number) {
+  // Linear goal milestones, deliberately not a predictive model.
+  return Array.from({ length: 5 }, (_, week) => firstTotal * (1 - reduction / 100 * week / 4));
+}

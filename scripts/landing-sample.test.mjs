@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { landingSample, countLandingFillers, firstCounts, retryCounts, firstTotal, retryTotal, reductionPercent } from "../src/lib/landing-sample.ts";
+import { landingSample, countLandingFillers, firstCounts, retryCounts, firstTotal, retryTotal, reductionPercent, fillerEvents, practiceGoal } from "../src/lib/landing-sample.ts";
 
 test("sample figures are derived from equal-length, explicitly synthetic transcripts", () => {
   assert.equal(landingSample.seconds, 60);
@@ -25,4 +25,28 @@ test("landing preview has no audio player or audio fixture dependency", () => {
   assert.doesNotMatch(component, /<audio|sample-pitches|voice-samples/);
   assert.match(component, /Synthetic sample/);
   assert.match(component, /not that source or a study/);
+});
+
+test("authored timestamps match filler order, counts, and equal timeline windows", () => {
+  for (const take of ["first", "retry"]) {
+    const events = fillerEvents[take];
+    let previous = -1;
+    for (const event of events) {
+      assert.ok(event.start > previous && event.end > event.start && event.end <= 60);
+      previous = event.end;
+    }
+    landingSample[take].forEach((segment, index) => {
+      assert.deepEqual(events.filter(event => Math.floor(event.start / 10) === index).map(event => event.word), segment.toLowerCase().match(/\b(?:um|uh)\b/g) ?? []);
+    });
+  }
+});
+
+test("goal milestones use the selected reduction, not invented performance data", () => {
+  for (const target of [25, 50, 75]) {
+    const values = practiceGoal(target);
+    assert.equal(values.length, 5);
+    assert.equal(values[0], 8);
+    assert.equal(values[4], 8 * (1 - target / 100));
+    assert.ok(values.every((value, index) => index === 0 || value <= values[index - 1]));
+  }
 });

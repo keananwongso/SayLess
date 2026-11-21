@@ -26,7 +26,7 @@ assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
 assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
-assert.match(html, /Sample ·/);
+assert.match(html, /Synthetic sample ·/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/app"/);
 assert.match(html, /href="\/app#practice"/);
