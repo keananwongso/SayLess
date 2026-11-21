@@ -1,33 +1,62 @@
-.heading { display: grid; gap: 8px; }
-.heading p { color: var(--color-muted); }
-
-.card {
+.heading {
   display: grid;
-  gap: 16px;
-  padding: clamp(16px, 4vw, 24px);
-  background: var(--color-surface);
-  border: 1px solid var(--color-divider);
-  border-radius: var(--card-radius);
+  gap: 4px;
+}
+
+/* The route moves focus here to announce the screen change. */
+.heading h1:focus-visible {
+  outline: none;
+}
+
+.heading p {
+  color: var(--color-muted);
+  font-size: 14px;
 }
 
 .question {
   display: grid;
   justify-items: start;
-  gap: 4px;
-  padding: 16px 16px 4px;
+  gap: 16px;
+  padding: clamp(16px, 5vw, 24px);
   background: color-mix(in srgb, var(--color-azure) 12%, var(--color-surface));
-  border-radius: var(--control-radius);
+  border-radius: var(--card-radius);
 }
 
-.question p { font-size: clamp(20px, 5vw, 26px); font-weight: 700; line-height: 1.2; letter-spacing: -.03em; }
-.card :global(.record-controls) { align-items: center; }
-.card :global(.primary) { flex: 1; justify-content: center; }
+.question p {
+  font-size: clamp(22px, 6vw, 26px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.03em;
+  text-wrap: pretty;
+}
 
-.textAction {
-  justify-self: start;
-  min-height: 44px;
+.hear {
+  background: transparent;
+}
+
+.capture {
+  display: grid;
+  gap: 8px;
+}
+
+.capture :global(.primary) {
+  flex: 1;
+}
+
+.note {
+  color: var(--color-muted);
   font-size: 14px;
-  font-weight: 650;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-align: center;
+}
+
+.replay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-divider);
+}
+
+.replay button {
+  flex: 1 0 auto;
 }

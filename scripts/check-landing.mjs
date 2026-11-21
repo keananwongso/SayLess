@@ -30,7 +30,7 @@ assert.match(html, /id="how-it-works"/);
 assert.doesNotMatch(html, /Illustrative sample|Small words\. A visible pattern\.|First take · 60 seconds|60s take · silent 3× preview/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/app"/);
-assert.match(html, /href="\/app#practice"/);
+assert.doesNotMatch(html, /id="closing-title"/);
 assert.doesNotMatch(html, /href="\/architecture"/);
 assert.match(html, /viewBox="0 0 120 120"/);
 assert.match(css, /prefers-reduced-motion/);

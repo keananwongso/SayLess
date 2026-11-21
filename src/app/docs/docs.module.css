@@ -1,11 +1,12 @@
 .page { max-width: 800px; gap: 20px; }
 .intro { display: grid; gap: 16px; padding-block: 12px; }
 .intro h1 { font-size: clamp(40px, 8vw, 64px); line-height: 1; font-weight: 800; letter-spacing: -.065em; }
-.intro p, .section p, .features dd { color: var(--color-muted); }
+.intro p, .section p, .steps { color: var(--color-muted); }
 .section { display: grid; gap: 12px; padding: clamp(16px, 4vw, 24px); background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--card-radius); }
 .section h2 { font-size: clamp(24px, 5vw, 30px); line-height: 1.15; font-weight: 760; letter-spacing: -.035em; }
-.features > div { display: grid; gap: 4px; padding-block: 12px; }
-.features > div + div { border-top: 1px solid var(--color-divider); }
-.features dt { font-weight: 700; }
+.features > section { display: grid; gap: 8px; padding-block: 12px; }
+.features > section + section { border-top: 1px solid var(--color-divider); }
+.features h3 { font-size: 18px; font-weight: 700; }
 .features code { font-size: .9em; overflow-wrap: anywhere; }
+.steps { display: grid; gap: 8px; list-style: decimal; padding-inline-start: 22px; }
 .gaps { display: grid; gap: 8px; list-style: disc; padding-inline-start: 20px; color: var(--color-muted); }

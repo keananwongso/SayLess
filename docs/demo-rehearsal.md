@@ -12,9 +12,9 @@
 Open `/demo` in Chrome before the pitch.
 
 - **0–6s** — Introduce Jade and click **Simulate upload**. SayLess opens Yap Recap automatically.
-- **6–13s** — Point out “wait” at about 40 uses across all speakers. Click **See the two-week goal**.
+- **6–13s** — Point out “wait” at about 40 uses across all speakers. Click **See what’s possible**.
 - **13–20s** — Point to the flat recap baseline of about 40 and the dashed practice targets of 32 and 24. Click **Use SayLess** to open Home.
-- **20–29s** — Show the dashboard and **Do daily quest**, which opens Practice.
-- **29–40s** — Open **Friends**, roll a topic, and select **See sample progress**. Show Jade’s 8 → 3 and Riley’s 6 → 2.
+- **20–29s** — On Home, select **Roll daily quest**, then **Start recording** to show the 20-second preview. Close it once the timer starts.
+- **29–40s** — Open **Friends** to show the sample streaks and **Copy quest prompt**.
 
-The guided route uses fictional people and sample counts. The upload and check-in run locally in the browser.
+The guided route uses fictional people and sample counts. The upload and quest preview run locally in the browser. For live coaching, open **Practice your pitch** from Profile.

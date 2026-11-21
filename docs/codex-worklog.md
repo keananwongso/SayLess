@@ -1,5 +1,9 @@
 # Codex work log
 
+## Product guide refresh — November 21, 2026
+
+On `main`, organized `/docs` around the four app tabs and documented daily quest XP, the distinction between personal takes and Jade’s demo data, and the three-step onboarding. The guide reads Jade’s baseline and example targets from the same fixture as the app.
+
 ## Workspace motion, Stats, and Friends — November 21, 2026
 
 On `main`, added staggered Home cards, a mascot hop, app screen transitions, and a sliding tab highlight with reduced-motion support. Stats uses the same demo fixture and projection chart as Jade’s onboarding and shows personal practice takes separately when available. Friends now leads with Jade and Riley’s topic roll and keeps quest sharing below it.
@@ -178,3 +182,15 @@ See the [voice analysis architecture](voice-analysis.md), [practice API and trac
 ## Product routes
 
 The landing, Jade’s demo, working app, and architecture now have separate routes. The Analyze tab accepts a consented recording and shows whole-recording filler counts, repeated language, transcript, and playable timestamps. It uses the existing Deepgram pipeline in analysis mode.
+
+## Workspace friends and daily quest
+
+On `main`, replaced the sample friend quest with four synthetic profiles and practice streaks. Home now rolls for a speaking prompt and opens a 20-second recording preview. The preview uses local UI state with no audio capture or XP award. Live pitch practice remains available from Profile. Lint, typecheck, and build passed. Chrome verified the popup, countdown, stop, retry, Escape focus return, and the four friends.
+
+## Practice screen and onboarding outlook
+
+Simplified Practice to one Azure prompt card and a separate recording action. The last onboarding step now frames Jade’s two-week targets as an example. Home reuses the landing page’s compact progress chart for new sessions and shows fillers per minute after a recorded take. Lint, typecheck, and build passed. Chrome verified mobile Home, the onboarding walkthrough, Wrapped → Practice → Results with synthetic audio and mocked coaching, and the sample replay screen.
+
+## Public homepage spacing
+
+Aligned the three-step section, pitch action, and footer to the preview width. Reduced vertical gaps and made the steps compact rows on mobile. Lint, typecheck, build, and the landing smoke test passed. Chrome checked alignment and overflow at 1440, 390, and 320 pixels.
