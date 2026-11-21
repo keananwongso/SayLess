@@ -68,6 +68,8 @@ button:disabled { cursor: default; opacity: .58; }
   letter-spacing: -.045em;
 }
 
+.wordmark, .site-header nav button, .shell h1 { text-transform: lowercase; }
+
 .brand-mark {
   display: grid;
   flex: none;
@@ -562,6 +564,16 @@ button:disabled { cursor: default; opacity: .58; }
 
 .challenge-label { width: fit-content; padding: 5px 12px; border-radius: 999px; background: var(--color-mint); }
 .results-heading h1 em { font-style: normal; }
+.results-heading .challenge-heading { line-height: 1.06; }
+.challenge-heading em {
+  font-size: clamp(29px, 6.4vw, 76px);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  text-transform: uppercase;
+  padding-inline: 0.05em;
+  background: linear-gradient(transparent 62%, var(--color-jonquil) 62%);
+  box-decoration-break: clone;
+}
 .streak-pill { background: var(--color-lavender); border: 1px solid var(--color-control-border); }
 
 .daily-challenge {

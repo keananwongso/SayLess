@@ -29,7 +29,7 @@ Use this system across SayLess screens, shared components, and product visuals. 
 ## Type and layout
 
 - Use Geist Sans with a system sans-serif fallback. Use tabular numerals for metrics and timers.
-- Use 40–64px for page titles, 24–32px for section titles, 16px for body copy, and 14px for supporting labels. Use bold headings, sentence case, and short metric labels.
+- Use 40–64px for page titles, 24–32px for section titles, 16px for body copy, and 14px for supporting labels. Set the wordmark, top navigation, and page titles in lowercase. Use uppercase with a Jonquil highlight for the emphasized line of the Challenges title. Use sentence case for supporting text.
 - Use a 4px spacing grid. Start with 16px mobile gutters, 24px desktop gutters, 16–24px card padding, and a 1120px content cap. Stack cards below 700px and let long transcripts wrap.
 - Use 24px card corners, 12px corners on inputs and secondary controls, and pill shapes for primary actions and compact labels. Give interactive controls a minimum 44px hit area and support reduced motion.
 

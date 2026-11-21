@@ -99,7 +99,7 @@ export function Challenges({ takes, onPractice }: { takes: ChallengeTake[]; onPr
       <div className="results-heading">
         <div>
           <p className="eyebrow challenge-label">Challenges</p>
-          <h1 id="challenges-title" tabIndex={-1}>Small reps.<br /><em>Real momentum.</em></h1>
+          <h1 id="challenges-title" className="challenge-heading" tabIndex={-1}>small reps.<br /><em>real momentum.</em></h1>
         </div>
         <p className="streak-pill">{streak}-day streak · {progress.xp} XP</p>
       </div>
