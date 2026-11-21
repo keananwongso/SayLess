@@ -1,5 +1,9 @@
 # Codex work log
 
+## Pitch deck URL — November 21, 2026
+
+On `codex/pitch-route`, added a Next.js rewrite so `/pitch` serves Allison’s existing deck and keeps the short URL in the address bar. Lint, typecheck, and production build passed. The production server returned HTTP 200 and identical HTML from `/pitch` and `/pitch.html`.
+
 ## Shared navigation and phone-first demo — November 21, 2026
 
 On `codex/shared-site-navigation`, moved the landing navbar into the root layout and kept workspace tabs inside the app. Capped the workspace and Jade’s demo at 600px. Analyze starts with a recording picker, Wrapped leads with one insight, and Practice prioritizes recording. Challenges and results stack in a single column. Shortened the landing preview label to “Sample.”
