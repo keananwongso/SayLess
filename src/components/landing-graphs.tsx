@@ -38,7 +38,7 @@ export function TranscriptGraph() {
   }, [paused, reduced, complete]);
 
   return <div ref={root} className={styles.waveCard}>
-    <div className={styles.heading}><h3>Catch the little words.</h3><span>60s take · silent 3× preview</span></div>
+    <div className={styles.heading}><h3>Catch the little words.</h3></div>
     <div className={styles.wavePanel}>
       <div className={styles.waveBars} role="img" aria-label="Illustrative waveform fills as the example plays. Highlighted transcript words include their authored timestamps.">
         {Array.from({ length: 80 }, (_, index) => {

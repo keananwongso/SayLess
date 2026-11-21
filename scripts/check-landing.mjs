@@ -26,7 +26,7 @@ assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
 assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
-assert.match(html, /Illustrative sample/);
+assert.doesNotMatch(html, /Illustrative sample|Small words\. A visible pattern\.|First take · 60 seconds|60s take · silent 3× preview/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/app"/);
 assert.match(html, /href="\/app#practice"/);

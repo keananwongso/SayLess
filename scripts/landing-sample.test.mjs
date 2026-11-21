@@ -24,7 +24,7 @@ test("filler counting uses whole words, ignores case, and handles zero", () => {
 test("landing preview has no audio player or audio fixture dependency", () => {
   const component = readFileSync(new URL("../src/components/landing-preview.tsx", import.meta.url), "utf8");
   assert.doesNotMatch(component, /<audio|sample-pitches|voice-samples/);
-  assert.match(component, /Illustrative sample/);
+  assert.doesNotMatch(component, /Illustrative sample|Small words\. A visible pattern\.|First take · 60 seconds/);
   assert.doesNotMatch(component, /<details|<summary/);
 });
 
@@ -57,6 +57,7 @@ test("goal milestones use the selected reduction, not invented performance data"
 test("autoplay retains pause and reduced-motion safeguards without a seek control", () => {
   const component = readFileSync(new URL("../src/components/landing-graphs.tsx", import.meta.url), "utf8");
   assert.doesNotMatch(component, /type="range"|<audio|playhead/);
+  assert.doesNotMatch(component, /60s take · silent 3× preview/);
   assert.match(component, /prefers-reduced-motion/);
   assert.match(component, /document.hidden/);
   assert.match(component, /clearInterval/);

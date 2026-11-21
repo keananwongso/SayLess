@@ -1,5 +1,11 @@
 # Codex work log
 
+## Minimal landing labels — November 21, 2026
+
+- Branch `codex/landing-minimal-copy` starts from `origin/main` (`b0c482f`) and carries forward the unmerged visual-first landing work.
+- Removed the four requested Discover/Practice labels and the unused sample-footer spacing. Kept chart behavior, sample-qualified metrics, and illustrative goal labeling unchanged. No app/demo/API changes.
+- Verified lint, typecheck, seven fixture tests, production build, HTTP/CSS checks, and all three preview tabs in isolated Chrome at 1440, 390, and 320px: removed labels absent, no horizontal overflow. No merge or deployment.
+
 ## Visual-first landing preview — November 21, 2026
 
 - Branch `codex/landing-visual-first` starts at latest `origin/main` (`b0c482f`) and carries forward the unmerged landing changes. No app/demo/API changes.

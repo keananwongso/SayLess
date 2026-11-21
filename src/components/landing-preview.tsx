@@ -29,7 +29,6 @@ export function LandingPreview() {
         </aside>
         <div className={styles.previewContent} id="preview-content" key={screen}>
           {screen === "Discover" && <>
-            <div className={styles.contentHeading}><h3>Small words. A visible pattern.</h3><span>First take · 60 seconds</span></div>
             <div className={styles.insight}>
               <div><p>Filler words in this sample</p><strong>{firstTotal}</strong><p>Five example word types · {firstTotal} per minute</p></div>
               <SayLessDot mood="curious" color="jonquil" className={styles.insightFace} />
@@ -40,7 +39,6 @@ export function LandingPreview() {
           {screen === "Practice" && <TranscriptGraph />}
           {screen === "Compare" && <PracticeProjection />}
         </div>
-        <p className={styles.sampleLabel}>Illustrative sample</p>
       </div>
     </section>
   );
