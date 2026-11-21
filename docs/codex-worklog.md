@@ -1,5 +1,11 @@
 # Codex work log
 
+## Two-week demo goal — November 21, 2026
+
+Added step 3 between Yap Recap and Practice. The dashed graph uses the simulated baseline of 40 “wait” uses and example targets of 32 at week one and 24 at week two for comparable conversations. The guide and rehearsal describe the six-step flow.
+
+Lint, typecheck, build, and served landing checks passed. Chrome verified the graph, Docs link, back navigation, and sample replay at 320px, 390px, and 1440px.
+
 ## Public product docs — November 21, 2026
 
 On `codex/product-docs`, added `/docs` for setup, demo data, browser storage, and unshipped features. Linked the guide from the landing footer and README, indexed the engineering docs, and updated rehearsal steps for the current Yap Recap.

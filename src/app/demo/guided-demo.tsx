@@ -12,7 +12,8 @@ import { loadTakeAudio } from "@/lib/take-audio";
 
 const steps = [
   { id: "setup", label: "Meet Jade", action: "See Jade’s Yap Recap" },
-  { id: "wrapped", label: "Yap Recap", action: "Start practice" },
+  { id: "wrapped", label: "Yap Recap", action: "See the two-week goal" },
+  { id: "projection", label: "Two-week goal", action: "Start practice" },
   { id: "practice", label: "Practice", action: "Hear the retry" },
   { id: "compare", label: "Compare", action: "Finish the challenge" },
   { id: "finish", label: "Finish" },
@@ -29,6 +30,11 @@ const simulatedExpressions = [
   { expression: "I mean", count: 2 },
 ] as const;
 const [topExpression] = simulatedExpressions;
+const projection = [
+  { label: "Today", count: topExpression.count, x: 42 },
+  { label: "Week 1", count: Math.round(topExpression.count * 0.8), x: 150 },
+  { label: "Week 2", count: Math.round(topExpression.count * 0.6), x: 258 },
+].map((point) => ({ ...point, y: 134 - point.count * 2.4 }));
 
 function FillerClip({ take, target, label, playing, onPlay }: {
   take: Take;
@@ -126,6 +132,31 @@ export function GuidedDemo() {
                   </dl>
                 </div>
               </div>
+            )}
+
+            {step.id === "projection" && (
+              <>
+                <h1 id="demo-title" ref={title} tabIndex={-1}>where you could be in 2 weeks.</h1>
+                <p className="demo-copy">One goal for Jade’s group is to pause before saying “{topExpression.expression}.”</p>
+                <figure className="demo-projection">
+                  <figcaption>Uses of “{topExpression.expression}” per 2:23 conversation</figcaption>
+                  <svg viewBox="0 0 300 160" role="img" aria-labelledby="projection-description">
+                    <title id="projection-description">{projection.map(({ label, count }) => `${label}: ${count}`).join(". ")}. Illustrative practice goal.</title>
+                    {[0, 20, 40].map((value) => (
+                      <line className="demo-projection-grid" key={value} x1="26" x2="274" y1={134 - value * 2.4} y2={134 - value * 2.4} />
+                    ))}
+                    <polyline className="demo-projection-line" points={projection.map(({ x, y }) => `${x},${y}`).join(" ")} />
+                    {projection.map(({ label, count, x, y }) => (
+                      <g key={label} textAnchor="middle">
+                        <circle cx={x} cy={y} r="4.5" className="demo-projection-point" />
+                        <text x={x} y={y - 12} className="demo-projection-value">{count}</text>
+                        <text x={x} y="155" className="demo-projection-label">{label}</text>
+                      </g>
+                    ))}
+                  </svg>
+                </figure>
+                <p className="demo-note">Simulated baseline and example targets with daily practice.</p>
+              </>
             )}
 
             {step.id === "practice" && (

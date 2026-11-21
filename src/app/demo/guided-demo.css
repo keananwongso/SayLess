@@ -6,6 +6,10 @@
 .demo-onboarding[data-step="wrapped"] {
   --demo-screen: color-mix(in srgb, var(--color-lavender) 33%, var(--color-surface));
 }
+.demo-onboarding[data-step="projection"] {
+  --demo-accent: var(--color-mint);
+  --demo-screen: color-mix(in srgb, var(--color-mint) 18%, var(--color-surface));
+}
 .demo-onboarding[data-step="practice"] { --demo-accent: var(--color-azure); }
 .demo-onboarding[data-step="compare"] { --demo-accent: var(--color-mint); }
 .demo-onboarding[data-step="finish"] { --demo-accent: var(--color-jonquil); }
@@ -246,6 +250,22 @@
 .demo-recap-breakdown dd { display: grid; grid-template-columns: minmax(0, 1fr) 2ch; align-items: center; gap: 8px; text-align: right; font-variant-numeric: tabular-nums; }
 .demo-recap-track { height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--color-ink) 11%, transparent); }
 .demo-recap-track > span { display: block; height: 100%; border-radius: inherit; background: var(--color-ink); }
+
+.demo-projection {
+  display: grid;
+  width: 100%;
+  gap: 4px;
+  padding: 12px;
+  border-radius: var(--control-radius);
+  background: color-mix(in srgb, var(--color-mint) 14%, var(--color-surface));
+}
+.demo-projection figcaption { font-size: 13px; font-weight: 650; }
+.demo-projection svg { display: block; width: 100%; height: auto; }
+.demo-projection-grid { stroke: color-mix(in srgb, var(--color-ink) 18%, transparent); }
+.demo-projection-line { fill: none; stroke: var(--color-ink); stroke-width: 2.5; stroke-dasharray: 5 4; stroke-linecap: round; }
+.demo-projection-point { fill: var(--color-ink); }
+.demo-projection-value { fill: var(--color-ink); font-size: 14px; font-weight: 750; }
+.demo-projection-label { fill: var(--color-muted); font-size: 13px; }
 
 .demo-onboarding[data-step="finish"] .demo-content { justify-items: center; text-align: center; padding: 20px 0; }
 .demo-onboarding[data-step="finish"] .demo-details { text-align: start; }

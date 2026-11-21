@@ -12,8 +12,9 @@
 Open `/demo` in Chrome before the pitch. It preloads Jade’s prerecorded takes.
 
 - **0–5s** — Introduce Jade and click **See Jade’s Yap Recap**.
-- **5–12s** — Show “wait” at about 40 uses in the simulated conversation. Click **Start practice**.
-- **12–23s** — Read the prompt, play the first filler clip, and give the coaching cue. Click **Hear the retry**.
+- **5–11s** — Show “wait” at about 40 uses in the simulated conversation. Click **See the two-week goal**.
+- **11–16s** — Show the illustrative goal of 24 uses in a comparable conversation after two weeks. Click **Start practice**.
+- **16–23s** — Read the prompt, play the first filler clip, and give the coaching cue. Click **Hear the retry**.
 - **23–34s** — Show “um” going from 3 to 1 and play the retry clip. Click **Finish the challenge**.
 - **34–40s** — Show the demo XP. **Restart demo** resets the walkthrough and **Try it with your voice** opens live Practice.
 

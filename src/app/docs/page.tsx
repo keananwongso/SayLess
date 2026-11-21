@@ -43,7 +43,7 @@ export default function DocsPage() {
 
       <section className={styles.section} aria-labelledby="demo-data">
         <h2 id="demo-data">what the demo simulates</h2>
-        <p>Jade is a fictional speaker. Yap Recap shows illustrative estimates across all speakers in a simulated 2:23 conversation. The pitch steps replay two prerecorded takes, and the demo XP stays inside the walkthrough.</p>
+        <p>Jade is a fictional speaker. Yap Recap shows illustrative estimates across all speakers in a simulated 2:23 conversation. The two-week graph shows example practice targets. The pitch steps replay two prerecorded takes, and the demo XP stays inside the walkthrough.</p>
       </section>
 
       <section className={styles.section} aria-labelledby="data-handling">
