@@ -94,3 +94,11 @@ input[type="checkbox"] { accent-color: var(--accent); }
   .spread { grid-template-columns: 1fr; }
   .wrapped-card { min-height: 14rem; }
 }
+
+.practice-panel { justify-items: start; align-content: center; gap: .85rem; padding: clamp(1.2rem, 4vw, 2.25rem); }
+.practice-panel .prompt { color: var(--text); font-size: clamp(1.4rem, 3.5vw, 2.25rem); font-weight: 750; letter-spacing: -.045em; line-height: 1.12; }
+.record-controls { display: flex; align-items: center; flex-wrap: wrap; gap: .7rem; margin-top: .4rem; }
+.record-dot { display: block; flex: 0 0 .7rem; width: .7rem; height: .7rem; border-radius: 50%; background: currentColor; }
+.rec-timer { font: 700 .85rem ui-monospace, monospace; }
+.footnote { font-size: .85rem; }
+.panel > .alert { color: #ffb8a8; }
