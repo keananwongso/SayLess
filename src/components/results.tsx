@@ -3,7 +3,12 @@
 import { pitchMetrics, type Take } from "@/lib/practice";
 import { speak } from "@/lib/speech";
 
-function TakeCard({ take, label, sample }: { take: Take; label: string; sample: boolean }) {
+function TakeCard({ take, label, sample, baseline = false }: {
+  take: Take;
+  label: string;
+  sample: boolean;
+  baseline?: boolean;
+}) {
   const { fillers, pace } = pitchMetrics(take);
   const fillerBreakdown = Array.from(new Set(fillers)).map((word) => {
     const count = fillers.filter((filler) => filler === word).length;
@@ -11,7 +16,7 @@ function TakeCard({ take, label, sample }: { take: Take; label: string; sample: 
   }).join(" · ");
 
   return (
-    <article className="panel take-card">
+    <article className={baseline ? "panel take-card take-baseline" : "panel take-card"}>
       <h2 className="eyebrow">{label}</h2>
       <dl className="take-metrics">
         <div><dt>Fillers</dt><dd>{fillers.length}</dd></div>
@@ -47,13 +52,13 @@ export function Results({
     <section className="flow" aria-labelledby="results-title">
       <div className="results-heading">
         <div>
-          <p className="eyebrow">{sample ? "Sample replay" : retry ? "Side by side" : "Take 1 complete"}</p>
+          {sample && <p className="eyebrow sample-label">Sample replay</p>}
           <h1 id="results-title" tabIndex={-1}>{retry ? "Two takes." : "First take."}</h1>
         </div>
-        {retry && <p className="change">{change}</p>}
+        {retry && <p className={delta < 0 ? "change change-positive" : "change"}>{change}</p>}
       </div>
       <div className={retry ? "stat-grid take-grid" : "take-grid"}>
-        <TakeCard take={first} label="First take" sample={sample} />
+        <TakeCard take={first} label="First take" sample={sample} baseline />
         {retry && <TakeCard take={retry} label="Retry" sample={sample} />}
       </div>
       <div className="coaching">

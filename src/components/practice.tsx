@@ -178,12 +178,14 @@ export function Practice({ attempt, onResult, onSample }: {
           <p className="lede">Give yourself about 10 seconds to pitch your project.</p>
         </div>
         <div className="panel practice-panel">
-          <p className="eyebrow">Your coach asks</p>
+          <h2 className="eyebrow prompt-label">
+            <span className="sound-wave" aria-hidden="true"><span /><span /><span /><span /></span>
+            Your coach asks
+          </h2>
           <p className="prompt">{PITCH_PROMPT}</p>
-          <button className="secondary" disabled={status !== "idle"} onClick={() => speak(PITCH_PROMPT)}>Hear prompt</button>
           <div className="record-controls">
             {status === "recording" ? (
-              <button className="primary" onClick={stopRecording}><span className="record-dot" aria-hidden="true" />Stop &amp; get feedback</button>
+              <button className="primary is-recording" onClick={stopRecording}><span className="record-dot" aria-hidden="true" />Stop &amp; get feedback</button>
             ) : (
               <button className="primary" disabled={status !== "idle"} onClick={startRecording}>
                 <span className="record-dot" aria-hidden="true" />
@@ -191,6 +193,7 @@ export function Practice({ attempt, onResult, onSample }: {
               </button>
             )}
             {status === "recording" && <span className="rec-timer" aria-label="Seconds recorded">0:{String(elapsed).padStart(2, "0")}</span>}
+            <button className="secondary" disabled={status !== "idle"} onClick={() => speak(PITCH_PROMPT)}>Hear prompt</button>
           </div>
           {error && <p className="alert" role="alert">{error}</p>}
           <p className="footnote" role="status">

@@ -51,29 +51,36 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
           <button className="primary" onClick={onPractice}>Practice your pitch <span aria-hidden="true">↗</span></button>
         </div>
         <article className="wrapped-card" aria-labelledby="word-title">
-          <p className="eyebrow" id="word-title">Most repeated word</p>
-          {insight.word ? (
-            <>
-              <p className={insight.word.text.length > 8 ? "feature-word feature-word-small" : "feature-word"}>
-                “{insight.word.text}”
-              </p>
-              <p><strong>{format(insight.word.count)} times</strong> in {messageCount}</p>
-            </>
-          ) : (
-            <p className="empty-word">No standout word in {messageCount}.</p>
-          )}
-          <p className="card-source">{isSample ? "Sample chat" : "Imported chat"} · {speaker}</p>
+          <div className="wrapped-copy">
+            <h2 className="eyebrow" id="word-title">Most repeated word</h2>
+            {insight.word ? (
+              <>
+                <p className={insight.word.text.length > 8 ? "feature-word feature-word-small" : "feature-word"}>
+                  “{insight.word.text}”
+                </p>
+                <p><strong>{format(insight.word.count)} times</strong> in {messageCount}</p>
+              </>
+            ) : (
+              <p className="empty-word">No standout word in {messageCount}.</p>
+            )}
+            <p className="card-source">{isSample ? "Sample chat" : "Imported chat"} · {speaker}</p>
+          </div>
+          <div className="sticker-stack" aria-hidden="true">
+            <span className="sticker sticker-quote" />
+            <span className="sticker sticker-pause" />
+            <span className="sticker-spark" />
+          </div>
         </article>
       </div>
 
       <div className="stat-grid">
-        <article className="panel">
+        <article className="panel panel-lilac">
           <h2 className="eyebrow">Signature phrase</h2>
           {insight.phrase ? (
             <><p className="stat-value">“{insight.phrase.text}”</p><p>{format(insight.phrase.count)} appearances</p></>
           ) : <p>No repeated phrase found.</p>}
         </article>
-        <article className="panel">
+        <article className="panel panel-peach">
           <h2 className="eyebrow">Messages with questions</h2>
           <p className="stat-value">{format(insight.questions)}</p>
           <p>{insight.questions ? "Curious or confused?" : "Keeping it declarative."}</p>
