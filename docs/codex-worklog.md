@@ -198,3 +198,7 @@ Aligned the three-step section, pitch action, and footer to the preview width. R
 ## Pitch opening slide
 
 Both pitch URLs now open on the first content slide. Presenters can still start with the blank slide at `/pitch#blank`. Chrome verified both URLs, the blank opener, Right Arrow and Home. Lint, typecheck and build passed.
+
+## Daily quest pop-up — November 21, 2026
+
+Branch `fix/mobile-daily-quest` centers the open recording preview and lets its content scroll on short screens. Chrome verified portrait and landscape phone sizes, the recording preview control, and focus return on close. Lint, typecheck, and build passed.
