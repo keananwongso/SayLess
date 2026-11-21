@@ -29,6 +29,9 @@ assert.match(html, /id="how-it-works"/);
 assert.match(html, /Synthetic sample/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/practice#practice"/);
+assert.match(html, /viewBox="0 0 120 120"/);
+assert.match(css, /prefers-reduced-motion/);
+assert.match(css, /repeating-linear-gradient/);
 for (const path of ["/demo", "/practice", "/landing/sayless-coaching-collage.png"]) {
   assert.equal((await fetch(new URL(path, base))).status, 200, path);
 }
