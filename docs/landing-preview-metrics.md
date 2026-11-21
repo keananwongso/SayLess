@@ -3,7 +3,7 @@
 The landing preview is a synthetic, authored example. It does not use customer recordings, scientific study measurements, or the app's live analysis route.
 
 - Two illustrative 60-second takes are split into six authored 10-second segments. These are not timestamped audio measurements.
-- Only whole-word “um” and “uh” occurrences are counted, case-insensitively.
+- Whole-word “um,” “uh,” “like,” “wait,” and “well” occurrences are counted in this authored fixture. These are deliberately written as hesitations, not general-purpose classifications of those words.
 - First take: 8 fillers; retry: 2 fillers.
 - Relative reduction: (8 − 2) / 8 × 100 = 75%. Equal minute-long windows make the displayed per-minute rates 8 and 2.
 - Counts, bars, highlighted text, and the percentage derive from `src/lib/landing-sample.ts`. Tests validate their agreement.
@@ -16,6 +16,6 @@ Normal disfluencies are not a character flaw. Filler count alone is not a measur
 
 ## Waveform and goal chart
 
-The waveform references the supplied outlined-region visual, using SayLess colors rather than tone or emotion classifications. Its deterministic amplitude bars are decorative, not extracted from audio. Authored start/end times match each segment's filler order. First/retry, seeking, and pause preview all retain a 60-second axis. Playback is silent and user-initiated; reduced-motion visitors use the seek slider and timestamp buttons.
+The compact waveform uses a pale Azure surface and fills automatically at 3× preview speed: 60 illustrative seconds in 20 real seconds, followed by a two-second hold. It has no seek slider or moving playhead. Pause/resume remains available; offscreen/hidden-tab playback stops, and reduced-motion visitors see a static completed waveform. Deterministic amplitude bars are decorative, not extracted from audio. Authored start/end times match each segment's hesitation order and remain available in a disclosure. Pause preview retains the same duration and does not edit audio.
 
-The Duolingo-inspired progress chart is an adjustable four-week **goal**, not a forecast or research claim. Starting at 8 fillers/min, the selected 25%, 50%, or 75% reduction yields end targets of 6, 4, or 2. Weekly milestones are linear interpolation, not an estimated learning curve. Numeric values remain available in a disclosure. No practice frequency or success probability is asserted.
+The Duolingo-inspired chart is an adjustable four-week **illustrative goal path**, not a forecast or research claim. Five authored sample rates precede eight projected checkpoints, with plateaus and small setbacks. Solid lines distinguish synthetic examples from the dashed projection. These points are separate illustrative practice sessions, not the two takes used in the 75% comparison above. Starting at 8 fillers/min, the selected 25%, 50%, or 75% reduction yields end targets of 6, 4, or 2. Every checkpoint exposes its value through a labeled button. No practice frequency, success probability, or measured learning curve is asserted.

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { landingSample, countLandingFillers, firstCounts, retryCounts, firstTotal, retryTotal, reductionPercent, fillerEvents, practiceGoal } from "../src/lib/landing-sample.ts";
+import { landingSample, countLandingFillers, firstCounts, retryCounts, firstTotal, retryTotal, reductionPercent, fillerEvents, practiceJourney } from "../src/lib/landing-sample.ts";
 
 test("sample figures are derived from equal-length, explicitly synthetic transcripts", () => {
   assert.equal(landingSample.seconds, 60);
@@ -16,6 +16,7 @@ test("sample figures are derived from equal-length, explicitly synthetic transcr
 
 test("filler counting uses whole words, ignores case, and handles zero", () => {
   assert.equal(countLandingFillers("Um, UH. um!"), 3);
+  assert.equal(countLandingFillers("Like, wait, well…"), 3);
   assert.equal(countLandingFillers("summer thumb human"), 0);
   assert.equal(countLandingFillers(""), 0);
 });
@@ -36,17 +37,28 @@ test("authored timestamps match filler order, counts, and equal timeline windows
       previous = event.end;
     }
     landingSample[take].forEach((segment, index) => {
-      assert.deepEqual(events.filter(event => Math.floor(event.start / 10) === index).map(event => event.word), segment.toLowerCase().match(/\b(?:um|uh)\b/g) ?? []);
+      assert.deepEqual(events.filter(event => Math.floor(event.start / 10) === index).map(event => event.word), segment.toLowerCase().match(/\b(?:um|uh|like|wait|well)\b/g) ?? []);
     });
   }
 });
 
 test("goal milestones use the selected reduction, not invented performance data", () => {
   for (const target of [25, 50, 75]) {
-    const values = practiceGoal(target);
-    assert.equal(values.length, 5);
+    const values = practiceJourney(target);
+    assert.equal(values.length, 13);
     assert.equal(values[0], 8);
-    assert.equal(values[4], 8 * (1 - target / 100));
-    assert.ok(values.every((value, index) => index === 0 || value <= values[index - 1]));
+    assert.equal(values.at(-1), 8 * (1 - target / 100));
+    assert.ok(values.some((value, index) => index > 0 && value > values[index - 1]));
+    assert.ok(values.some((value, index) => index > 0 && value === values[index - 1]));
+    assert.ok(values.every(value => value >= 0 && value <= 8));
   }
+});
+
+test("autoplay retains pause and reduced-motion safeguards without a seek control", () => {
+  const component = readFileSync(new URL("../src/components/landing-graphs.tsx", import.meta.url), "utf8");
+  assert.doesNotMatch(component, /type="range"|<audio|playhead/);
+  assert.match(component, /prefers-reduced-motion/);
+  assert.match(component, /document.hidden/);
+  assert.match(component, /clearInterval/);
+  assert.match(component, /"Resume" : "Pause"/);
 });

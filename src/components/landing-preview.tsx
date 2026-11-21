@@ -10,8 +10,8 @@ import styles from "@/app/landing.module.css";
 const screens = ["Discover", "Practice", "Compare"] as const;
 
 function HighlightedTranscript({ text }: { text: string }) {
-  return <>{text.split(/(\b(?:um|uh)\b)/gi).map((part, index) =>
-    /^(um|uh)$/i.test(part) ? <mark key={index}>{part}</mark> : part)}</>;
+  return <>{text.split(/(\b(?:um|uh|like|wait|well)\b)/gi).map((part, index) =>
+    /^(um|uh|like|wait|well)$/i.test(part) ? <mark key={index}>{part}</mark> : part)}</>;
 }
 
 export function LandingPreview() {
@@ -35,7 +35,7 @@ export function LandingPreview() {
           {screen === "Discover" && <>
             <div className={styles.contentHeading}><h3>Small words. A visible pattern.</h3><span>First take · 60 seconds</span></div>
             <div className={styles.insight}>
-              <div><p>Filler words in this sample</p><strong>{firstTotal}</strong><p>“um” and “uh” · {firstTotal} per minute</p></div>
+              <div><p>Filler words in this sample</p><strong>{firstTotal}</strong><p>Five example word types · {firstTotal} per minute</p></div>
               <SayLessDot mood="curious" color="jonquil" className={styles.insightFace} />
             </div>
             <blockquote className={styles.transcript}><HighlightedTranscript text={landingSample.first[0]} /></blockquote>
@@ -69,7 +69,7 @@ export function LandingPreview() {
         </div>
         <details className={styles.methodNote}>
           <summary>About this sample &amp; the coaching approach</summary>
-          <p>Transcripts, waveform, and timestamps are authored examples, not recorded audio. The four-week chart shows adjustable goals, not predicted results. We count only “um” and “uh” here; normal speech is not a flaw, and fewer fillers alone do not measure speaking quality.</p>
+          <p>Transcripts, waveform, and timestamps are authored examples, not recorded audio. The four-week chart uses synthetic takes and illustrative projected goals, not predicted results. “Um,” “uh,” “like,” “wait,” and “well” are deliberately used as hesitations in this example; they are not always fillers. Normal speech is not a flaw, and fewer fillers alone do not measure speaking quality.</p>
           <p>The coaching approach follows <a href="https://www.toastmasters.org/magazine/magazine-issues/2019/feb/sidebars/three-ways-to-make-ah-counting-count-for-more" target="_blank" rel="noreferrer">Toastmasters guidance on noticing recurring fillers and practicing pauses</a>. The {reductionPercent}% sample reduction is calculated from our fixture, not that source or a study.</p>
         </details>
       </div>

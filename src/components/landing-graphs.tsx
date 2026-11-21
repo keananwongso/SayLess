@@ -1,118 +1,102 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fillerEvents, landingSample, firstTotal, practiceGoal } from "@/lib/landing-sample";
+import { useEffect, useRef, useState } from "react";
+import { fillerEvents, landingSample, practiceJourney } from "@/lib/landing-sample";
 import styles from "./landing-graphs.module.css";
 
-const clock = (seconds: number) => `00:${seconds.toFixed(1).padStart(4, "0")}`;
-const x = (seconds: number) => 24 + seconds / 60 * 912;
+const clock = (seconds: number) => `${Math.floor(seconds / 60).toString().padStart(2, "0")}:${(seconds % 60).toFixed(1).padStart(4, "0")}`;
 
 export function TranscriptGraph() {
   const [take, setTake] = useState<"first" | "retry">("first");
   const [time, setTime] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [reduced, setReduced] = useState(false);
   const [pauses, setPauses] = useState(false);
-  const [selected, setSelected] = useState(0);
+  const root = useRef<HTMLDivElement>(null);
   const events = fillerEvents[take];
-  const event = events[selected];
+  const visibleTime = reduced ? 60 : time;
+  const found = events.filter(event => event.start <= visibleTime);
+  const event = found.at(-1);
+  const segment = Math.min(5, Math.floor(visibleTime / 10));
 
   useEffect(() => {
-    if (!playing) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-    let previous = performance.now();
-    const stop = () => setPlaying(false);
-    const tick = (now: number) => {
-      const elapsed = (now - previous) / 1000;
-      previous = now;
-      setTime(value => Math.min(60, value + elapsed));
-      frame = requestAnimationFrame(tick);
-    };
-    // Explicit playback only; reduced-motion users can still seek by keyboard.
-    if (!motion.matches) frame = requestAnimationFrame(tick);
-    motion.addEventListener("change", stop);
-    return () => { cancelAnimationFrame(frame); motion.removeEventListener("change", stop); };
-  }, [playing]);
+    const sync = () => setReduced(motion.matches);
+    sync();
+    motion.addEventListener("change", sync);
+    return () => motion.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
-    if (time >= 60 && playing) {
-      const id = requestAnimationFrame(() => setPlaying(false));
-      return () => cancelAnimationFrame(id);
-    }
-  }, [time, playing]);
+    if (paused || reduced) return;
+    let visible = true;
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    if (root.current) observer.observe(root.current);
+    // 60 illustrative seconds fill in over 20 real seconds, then hold before looping.
+    const timer = window.setInterval(() => {
+      if (visible && !document.hidden) setTime(value => value >= 66 ? 0 : value + .3);
+    }, 100);
+    return () => { clearInterval(timer); observer.disconnect(); };
+  }, [paused, reduced]);
 
-  function selectEvent(index: number) {
-    setSelected(index); setTime(events[index].start); setPlaying(false);
-  }
-
-  return <div className={styles.waveCard}>
+  return <div ref={root} className={styles.waveCard}>
     <div className={styles.heading}>
-      <div><h4>Make room for a pause.</h4><p>Every hesitation has a place on the timeline.</p></div>
+      <div><h4>Catch the little words.</h4><p>Notice it. Leave a little space.</p></div>
       <div className={styles.switcher} role="group" aria-label="Transcript take">
-        {(["first", "retry"] as const).map(value => <button key={value} type="button" aria-pressed={take === value} onClick={() => { setTake(value); setSelected(0); setTime(0); setPlaying(false); }}>{value === "first" ? "First take" : "Retry"}</button>)}
+        {(["first", "retry"] as const).map(value => <button key={value} type="button" aria-pressed={take === value} onClick={() => { setTake(value); setTime(0); }}>{value === "first" ? "First take" : "Retry"}</button>)}
       </div>
     </div>
     <div className={styles.wavePanel}>
-      <div className={styles.waveMeta}><span>{pauses ? "Proposed pauses" : `${events.length} filler moments`}</span><span>Illustrative waveform · 60s</span></div>
-      <div className={styles.waveScroll} tabIndex={0} role="region" aria-label="Scrollable waveform; use the timestamp buttons below to select a filler">
-        <svg className={styles.wave} viewBox="0 0 960 240" role="img" aria-label={`${take === "first" ? "First take" : "Retry"}: ${events.length} authored filler timestamps. ${pauses ? "Highlighted regions are proposed silent pauses." : "Highlighted regions mark um and uh."}`}>
-          {Array.from({ length: 181 }, (_, i) => {
-            const seconds = i / 3;
-            const inEvent = events.some(item => seconds >= item.start && seconds <= item.end);
-            const height = pauses && inEvent ? 2 : 8 + Math.abs(Math.sin(i * 1.7) * Math.cos(i * .23)) * 80;
-            return <line key={i} x1={x(seconds)} x2={x(seconds)} y1={120 - height / 2} y2={120 + height / 2} className={inEvent ? styles.accentBar : styles.waveBar} />;
-          })}
-          {events.map((item, index) => <g key={item.start} className={selected === index ? styles.selectedRegion : styles.region}>
-            <rect x={x(item.start) - 3} y="65" width={Math.max(12, x(item.end) - x(item.start) + 6)} height="110" rx="3" />
-            <path d={`M${x(item.start)} ${index % 2 ? 175 : 65} v${index % 2 ? 22 : -22}`} />
-            <text x={Math.max(24, x(item.start) - 10)} y={index % 2 ? 216 : 30}>{pauses ? "pause" : item.word} · {item.start.toFixed(1)}s</text>
-          </g>)}
-          <line x1={x(time)} x2={x(time)} y1="50" y2="190" className={styles.playhead} />
-        </svg>
-        <div className={styles.ruler} aria-hidden="true">{[0, 10, 20, 30, 40, 50, 60].map(n => <span key={n}>{n}s</span>)}</div>
+      <div className={styles.waveMeta}><span>{found.length} / {events.length} moments noticed</span><span>{clock(Math.min(60, visibleTime))} · 3× preview</span></div>
+      <div className={styles.waveBars} role="img" aria-label="Illustrative waveform fills automatically as hesitation words appear. Exact example timestamps are listed below.">
+        {Array.from({ length: 100 }, (_, index) => {
+          const seconds = index * .6;
+          const filler = events.some(item => seconds >= item.start - .3 && seconds <= item.end);
+          const height = pauses && filler ? 4 : 12 + Math.abs(Math.sin(index * 1.7) * Math.cos(index * .23)) * 76;
+          return <span key={index} data-filled={seconds <= visibleTime} data-filler={filler} style={{ height: `${height}%` }} />;
+        })}
       </div>
-      <label className={styles.seek}>Seek timeline <output>{clock(time)} / 01:00</output><input aria-label="Timeline position in seconds" type="range" min="0" max="60" step="0.1" value={time} onChange={e => { setTime(Number(e.target.value)); setPlaying(false); }} /></label>
+      <div className={styles.ruler} aria-hidden="true"><span>0s</span><span>15s</span><span>30s</span><span>45s</span><span>60s</span></div>
+      <div className={styles.currentWord}>
+        <strong>{event ? (pauses ? "A little pause" : `“${event.word}”`) : "Your idea, taking shape."}</strong>
+        <span>{event ? `${clock(event.start)}–${clock(event.end)}` : "Watching the example…"}</span>
+      </div>
     </div>
     <div className={styles.controls}>
-      <button type="button" className={styles.animateButton} aria-pressed={playing} onClick={() => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        if (time >= 60) setTime(0);
-        setPlaying(value => !value);
-      }}>{playing ? "Pause animation" : "Animate timeline"}</button>
-      <button type="button" aria-pressed={pauses} onClick={() => setPauses(value => !value)}>{pauses ? "Show original fillers" : "Preview pauses"}</button>
-      <span>Silent preview · no audio editing</span>
+      {!reduced && <button type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? "Resume" : "Pause"}</button>}
+      <button type="button" aria-pressed={pauses} onClick={() => setPauses(value => !value)}>{pauses ? "Show words" : "Try pauses"}</button>
+      <span>Silent, illustrative sample</span>
     </div>
-    <div className={styles.timestamps} role="group" aria-label="Select a filler timestamp">
-      {events.map((item, index) => <button key={item.start} type="button" aria-pressed={selected === index} aria-controls="filler-excerpt" onClick={() => selectEvent(index)}><strong>{item.word}</strong> {clock(item.start)}</button>)}
-    </div>
-    <div className={styles.excerpt} id="filler-excerpt" aria-live="polite">
-      <span>{clock(event.start)}–{clock(event.end)} · {pauses ? "Suggested pause" : `“${event.word}”`}</span>
-      <p>{landingSample[take][Math.floor(event.start / 10)].split(/(\b(?:um|uh)\b)/gi).map((part, index) => /^(um|uh)$/i.test(part) ? <mark key={index}>{pauses ? "[pause]" : part}</mark> : part)}</p>
-    </div>
-    <p className={styles.note}>Authored timestamps and waveform, not recorded audio. Pause preview keeps the same 60-second scale.</p>
+    <p className={styles.excerpt}>{landingSample[take][segment].split(/(\b(?:um|uh|like|wait|well)\b)/gi).map((part, index) => /^(um|uh|like|wait|well)$/i.test(part) ? <mark key={index}>{pauses ? "[pause]" : part}</mark> : part)}</p>
+    <details className={styles.values}><summary>All example timestamps</summary><ul>{events.map(item => <li key={item.start}>{item.word} · {clock(item.start)}–{clock(item.end)}</li>)}</ul></details>
   </div>;
 }
 
 export function PracticeProjection() {
   const [target, setTarget] = useState(75);
-  const values = practiceGoal(target);
-  const point = (value: number, week: number) => `${52 + week * 128},${208 - value * 20}`;
+  const [checkpoint, setCheckpoint] = useState(4);
+  const values = practiceJourney(target);
+  const px = (index: number) => 44 + index * 42;
+  const py = (value: number) => 210 - value * 19;
+  const points = values.map((value, index) => `${px(index)},${py(value)}`);
   return <div className={styles.goalCard}>
-    <div className={styles.heading}><div><h4>A little practice. A direction to aim for.</h4><p>Set a four-week goal · fillers per minute</p></div><div className={styles.goalStat}><strong>{values[4]}</strong><span>goal / min</span></div></div>
-    <div className={styles.switcher} role="group" aria-label="Choose illustrative reduction goal">
-      {[25, 50, 75].map(value => <button type="button" key={value} aria-pressed={target === value} onClick={() => setTarget(value)}>{value}% fewer</button>)}
+    <div className={styles.heading}><div><h4>Progress has its pauses.</h4><p>A few retries. A new direction.</p></div><div className={styles.goalStat}><strong>{values.at(-1)}</strong><span>goal / min</span></div></div>
+    <div className={styles.switcher} role="group" aria-label="Choose illustrative reduction goal">{[25, 50, 75].map(value => <button type="button" key={value} aria-pressed={target === value} onClick={() => setTarget(value)}>{value}% fewer</button>)}</div>
+    <div className={styles.goalScroll} tabIndex={0} role="region" aria-label="Scrollable example progress chart">
+      <svg className={styles.goalGraph} viewBox="0 0 600 260" role="img" aria-label={`Illustrative progress with 13 checkpoints, plateaus and setbacks. Five synthetic sample points followed by eight projected goal points, ending at ${values.at(-1)} fillers per minute.`}>
+        <rect x={px(4)} y="24" width={px(12) - px(4)} height="186" rx="12" className={styles.projectedZone} />
+        {[0, 2, 4, 6, 8].map(value => <g key={value}><line x1="44" x2="548" y1={py(value)} y2={py(value)} className={styles.gridLine} /><text x="14" y={py(value) + 6}>{value}</text></g>)}
+        <text x="54" y="28">Example takes</text><text x="330" y="28">Illustrative projection</text>
+        <polygon points={`44,210 ${points.join(" ")} 548,210`} className={styles.goalArea} />
+        <polyline points={points.slice(0, 5).join(" ")} className={styles.goalLine} />
+        <polyline points={points.slice(4).join(" ")} className={styles.projectedLine} />
+        <line x1={px(checkpoint)} x2={px(checkpoint)} y1="42" y2="210" className={styles.checkpointLine} />
+        {values.map((value, index) => <circle key={index} cx={px(index)} cy={py(value)} r={checkpoint === index ? 8 : 5} className={index > 4 ? styles.projectedPoint : styles.goalPoint} />)}
+        {[0, 3, 6, 9, 12].map((index, week) => <text key={index} x={px(index)} y="246" textAnchor="middle">{week ? `W${week}` : "Start"}</text>)}
+      </svg>
     </div>
-    <div className={styles.goalScroll} tabIndex={0} role="region" aria-label="Scrollable practice goal chart">
-    <svg className={styles.goalGraph} viewBox="0 0 600 256" role="img" aria-label={`Illustrative goal from ${firstTotal} to ${values[4]} fillers per minute over four weeks, not a prediction.`}>
-      {[0, 2, 4, 6, 8].map(value => <g key={value}><line x1="52" x2="564" y1={208 - value * 20} y2={208 - value * 20} className={styles.gridLine} /><text x="22" y={213 - value * 20}>{value}</text></g>)}
-      <path d="M52 48 H564" className={styles.baseline} />
-      <polygon points={`52,208 ${values.map(point).join(" ")} 564,208`} className={styles.goalArea} />
-      <polyline points={values.map(point).join(" ")} className={styles.goalLine} />
-      {values.map((value, week) => <g key={week}><circle cx={52 + week * 128} cy={208 - value * 20} r="6" className={styles.goalPoint} /><text x={52 + week * 128} y="244" textAnchor="middle">{week ? `W${week}` : "Now"}</text></g>)}
-    </svg>
-    </div>
-    <div className={styles.legend}><span>— Practice goal</span><span>┄ Starting rate: {firstTotal}/min</span></div>
-    <details className={styles.values}><summary>Weekly goal values</summary><ul>{values.map((value, week) => <li key={week}>{week ? `Week ${week}` : "Starting point"}: {value} fillers/min</li>)}</ul></details>
-    <p className={styles.note}>Illustrative goal, not a forecast. The line connects evenly spaced targets; it does not predict your learning rate or guarantee results.</p>
+    <div className={styles.checkpointSummary} aria-live="polite"><strong>{values[checkpoint]} fillers/min</strong><span>{checkpoint > 4 ? "Projected checkpoint" : "Synthetic example take"} {checkpoint + 1}{checkpoint === 4 ? " · A pause before the next step" : checkpoint === 2 ? " · A small setback" : ""}</span></div>
+    <div className={styles.checkpoints} role="group" aria-label="Inspect progress checkpoints">{values.map((value, index) => <button key={index} type="button" aria-pressed={checkpoint === index} aria-label={`${index > 4 ? "Projected checkpoint" : "Example take"} ${index + 1}: ${value} fillers per minute`} onClick={() => setCheckpoint(index)}>{index + 1}</button>)}</div>
+    <p className={styles.note}>Solid: synthetic examples. Dashed: an illustrative path to your goal, not a forecast or a guaranteed result. Fillers per minute.</p>
   </div>;
 }

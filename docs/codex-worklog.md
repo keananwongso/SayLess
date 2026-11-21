@@ -3,6 +3,12 @@
 ## Edge-to-edge pitch on load — November 21, 2026
 
 On `codex/pitch-edge-to-edge`, made the deck fill the browser viewport from the first slide and removed the presentation toolbar. Lint, typecheck, and build passed. Chrome verified the layout on load and forward and backward keyboard navigation at desktop and mobile viewport sizes.
+## Compact autoplay landing graphs — November 21, 2026
+
+- `codex/landing-autoplay-polish` starts at `origin/main` (`dd17765`) and carries forward the unmerged graph work. Main's pitch route and shared navigation are preserved; API and guided demo unchanged.
+- Practice now uses a centered 720px maximum card, pale Azure surface, progressively filled waveform, varied authored hesitation words, and timestamp disclosure. Removed the slider/playhead. Silent 3× autoplay holds then loops, with pause/resume, offscreen/hidden-tab suspension, timer cleanup, and reduced-motion static mode.
+- Compare has 13 selectable checkpoints with plateaus and setbacks, solid synthetic examples, and dashed illustrative projections. Data labels and disclaimers follow Sites guidance; no measured performance or prediction claims.
+- Lint, typecheck, six fixture/source tests, production build, and whitespace checks pass. Browser-tab access is unavailable, so visual/interaction QA remains pending. No merge or deployment.
 
 ## Fullscreen pitch deck — November 21, 2026
 
