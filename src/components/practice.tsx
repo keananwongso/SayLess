@@ -34,7 +34,11 @@ function recordingError(error: unknown) {
   return error instanceof Error ? error.message : "The recording didn't finish.";
 }
 
-export function Practice({ attempt, onResult }: { attempt: number; onResult: (take: Take) => void }) {
+export function Practice({ attempt, onResult, onSample }: {
+  attempt: number;
+  onResult: (take: Take) => void;
+  onSample: () => void;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [elapsed, setElapsed] = useState(0);
   const [error, setError] = useState("");
@@ -171,6 +175,9 @@ export function Practice({ attempt, onResult }: { attempt: number; onResult: (ta
             {status === "processing" ? "Transcribing your pitch and finding one improvement." : "Your recording is sent to OpenAI for feedback."}
           </p>
         </div>
+      </div>
+      <div className="action-row">
+        <button className="secondary" onClick={onSample}>Watch sample replay</button>
       </div>
     </section>
   );

@@ -3,7 +3,7 @@
 import { pitchMetrics, type Take } from "@/lib/practice";
 import { speak } from "@/lib/speech";
 
-function TakeCard({ take, label }: { take: Take; label: string }) {
+function TakeCard({ take, label, sample }: { take: Take; label: string; sample: boolean }) {
   const { fillers, pace } = pitchMetrics(take);
   const fillerBreakdown = Array.from(new Set(fillers)).map((word) => {
     const count = fillers.filter((filler) => filler === word).length;
@@ -20,6 +20,7 @@ function TakeCard({ take, label }: { take: Take; label: string }) {
       </dl>
       {fillerBreakdown && <p className="footnote">{fillerBreakdown}</p>}
       <blockquote>“{take.transcript}”</blockquote>
+      {sample && <button className="secondary listen-take" onClick={() => speak(take.transcript)}>Listen to {label.toLowerCase()}</button>}
     </article>
   );
 }
@@ -28,10 +29,12 @@ export function Results({
   takes,
   onRetry,
   onRestart,
+  sample = false,
 }: {
   takes: [Take, Take?];
   onRetry: () => void;
   onRestart: () => void;
+  sample?: boolean;
 }) {
   const [first, retry] = takes;
   const current = retry ?? first;
@@ -44,14 +47,14 @@ export function Results({
     <section className="flow" aria-labelledby="results-title">
       <div className="results-heading">
         <div>
-          <p className="eyebrow">{retry ? "Side by side" : "Take 1 complete"}</p>
+          <p className="eyebrow">{sample ? "Sample replay" : retry ? "Side by side" : "Take 1 complete"}</p>
           <h1 id="results-title" tabIndex={-1}>{retry ? "Two takes." : "First take."}</h1>
         </div>
         {retry && <p className="change">{change}</p>}
       </div>
       <div className={retry ? "stat-grid take-grid" : "take-grid"}>
-        <TakeCard take={first} label="First take" />
-        {retry && <TakeCard take={retry} label="Retry" />}
+        <TakeCard take={first} label="First take" sample={sample} />
+        {retry && <TakeCard take={retry} label="Retry" sample={sample} />}
       </div>
       <div className="coaching">
         <div>
@@ -62,7 +65,7 @@ export function Results({
       </div>
       <div className="action-row">
         {retry ? (
-          <button className="primary" onClick={onRestart}>Start new comparison</button>
+          <button className="primary" onClick={onRestart}>{sample ? "Back to live practice" : "Start new comparison"}</button>
         ) : (
           <button className="primary" onClick={onRetry}>Try the same prompt again <span aria-hidden="true">↗</span></button>
         )}

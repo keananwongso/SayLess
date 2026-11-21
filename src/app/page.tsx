@@ -5,9 +5,10 @@ import { Practice } from "@/components/practice";
 import { Results } from "@/components/results";
 import { Wrapped } from "@/components/wrapped";
 import type { Take } from "@/lib/practice";
+import { samplePitches } from "@/lib/sample-pitches";
 import { stopSpeech } from "@/lib/speech";
 
-type Step = "wrapped" | "practice" | "results";
+type Step = "wrapped" | "practice" | "results" | "sample";
 
 export default function Home() {
   const [step, setStep] = useState<Step>("wrapped");
@@ -52,7 +53,12 @@ export default function Home() {
           <Wrapped onPractice={() => go("practice")} />
         </div>
         {step === "practice" && (
-          <div><Practice attempt={takes ? 2 : 1} onResult={save} /></div>
+          <div><Practice attempt={takes ? 2 : 1} onResult={save} onSample={() => go("sample")} /></div>
+        )}
+        {step === "sample" && (
+          <div>
+            <Results sample takes={samplePitches} onRetry={() => go("practice")} onRestart={() => go("practice")} />
+          </div>
         )}
         {step === "results" && takes && (
           <div>

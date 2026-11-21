@@ -120,3 +120,4 @@ input[type="checkbox"] { accent-color: var(--accent); }
 .muted { color: var(--muted); }
 
 @media (max-width: 600px) { .take-grid { grid-template-columns: 1fr; } }
+.listen-take { justify-self: start; }
