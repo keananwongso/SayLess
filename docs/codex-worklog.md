@@ -1,5 +1,18 @@
 # Codex work log
 
+## Landing polish merge — November 21, 2026
+
+Merged `codex/landing-dots-polish` into `main`. Kept the grid, SVG dots, and interactive preview alongside the links to the working app, Jade’s demo, and the architecture page. The practice button opens `/app#practice`.
+
+Lint, typecheck, production build, and the served landing regression check passed. Chrome showed no horizontal overflow at 320px and 1440px. Verified the preview buttons and navigation into the Practice tab.
+
+## Dot-led landing refinement — November 21, 2026
+
+- Branch `codex/landing-dots-polish` starts from latest main and integrates the prior landing work. Adapted the supplied Fermata reference's floating navigation, fading grid backdrop, framed product view, and segmented navigation in SayLess's own components and palette.
+- Replaced the pink page canvas with Surface white and a pale Azure/Lavender grid. Added a reusable original SVG `SayLessDot` with pause, curious, bright, and calm expressions. Removed the oversized raster illustration from the page and reduced repeated marketing text. Updated DESIGN.md with the landing-specific canvas and motion rules; app colors are unchanged.
+- Preview controls remain functional with existing synthetic audio/data. Added short panel/hero entrance and button transitions, all disabled for reduced-motion. No new dependencies or API changes.
+- Lint, typecheck, build and final served-CSS regression checks pass, including SVG markup, responsive rules, reduced-motion fallback, and destination routes. Browser visual verification remains blocked: browser inventory access was denied and isolated IAB is unavailable; do not infer visual verification from these checks.
+
 ## Clean landing redesign — November 21, 2026
 
 - Branch: `codex/landing-clean-redesign`, based on `origin/main` at `dfc2b29`, carrying forward the landing-route/CSS-loader repair. Preserved the newer Jade guided demo and hash-aware full app; its final CTA now opens `/practice#practice`.

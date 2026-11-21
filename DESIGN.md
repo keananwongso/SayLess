@@ -35,6 +35,8 @@ Use this system across SayLess screens, shared components, and product visuals. 
 
 ## Components and screens
 
+The public landing page uses a white Surface canvas with an Azure-tinted grid fading into white. Keep Dune for the app and subtle control fills. Use original SVG dot characters with thick Ink expressions, the existing accent tokens, and short 180–400ms entrance/control transitions; disable these for reduced-motion preferences.
+
 | Pattern | SayLess treatment |
 | --- | --- |
 | Primary action | Ink pill with white text. Give the main action one clear verb and one prominent placement. |

@@ -28,9 +28,13 @@ assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
 assert.match(html, /Synthetic sample/);
 assert.match(html, /aria-controls="preview-content"/);
+assert.match(html, /href="\/app"/);
 assert.match(html, /href="\/app#practice"/);
 assert.match(html, /href="\/architecture"/);
-for (const path of ["/demo", "/app", "/architecture", "/landing/sayless-coaching-collage.png"]) {
+assert.match(html, /viewBox="0 0 120 120"/);
+assert.match(css, /prefers-reduced-motion/);
+assert.match(css, /repeating-linear-gradient/);
+for (const path of ["/demo", "/app", "/architecture"]) {
   assert.equal((await fetch(new URL(path, base))).status, 200, path);
 }
 const legacy = await fetch(new URL("/practice", base), { redirect: "manual" });
