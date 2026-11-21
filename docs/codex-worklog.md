@@ -4,7 +4,7 @@
 
 On `codex/demo-device-preview`, put `/demo` inside a handset with a slim metal rim, camera cutout, side buttons, and home indicator. Narrow screens show the same steps edge to edge. Yap Recap uses an Ink word reveal on a Lavender card. Practice, Compare, and Finish use light Azure, Mint, and Jonquil surfaces. The working app retains its own layout.
 
-Lint, typecheck, build, and served landing checks passed. Chrome verified all five steps, recap details, and the transition to sample replay at 320px and 390px and at two desktop heights. Inspected the desktop recap capture and verified five distinct light surfaces at 320px, 390px, and 1440px. Replaced the chat disclosure with seven estimated expression counts from a labeled simulated conversation. Verified the breakdown and the full demo flow at all three widths.
+Lint, typecheck, build, and served landing checks passed. Chrome verified all five steps, recap details, and the transition to sample replay at 320px and 390px and at two desktop heights. Inspected the desktop recap capture and verified five distinct light surfaces at 320px, 390px, and 1440px. Replaced the chat disclosure with seven estimated expression counts from a labeled simulated conversation. Verified the breakdown and the full demo flow at all three widths. Enlarged the desktop handset to use the viewport and made the recap card fill the space between the progress bar and controls. Checked short and tall viewports, including 320px mobile.
 
 ## Edge-to-edge pitch on load — November 21, 2026
 

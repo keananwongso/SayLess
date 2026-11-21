@@ -19,12 +19,9 @@
   flex-direction: column;
 }
 
-.demo-onboarding:is([data-step="setup"], [data-step="wrapped"], [data-step="finish"]) .demo-card {
+.demo-onboarding:is([data-step="setup"], [data-step="finish"]) .demo-card {
   flex: none;
   margin-block: auto;
-}
-
-.demo-onboarding:is([data-step="setup"], [data-step="finish"]) .demo-card {
   border: 0;
   background: transparent;
 }
@@ -37,10 +34,11 @@
 
 @media (width >= 520px) {
   .demo-device {
+    --device-height: clamp(550px, calc(100dvh - 116px), 1000px);
     position: relative;
-    width: clamp(326px, calc((100dvh - 132px) * .49), 394px);
-    height: clamp(600px, calc(100dvh - 132px), 804px);
-    margin: 18px auto 20px;
+    width: clamp(326px, calc(var(--device-height) * .525), 520px);
+    height: var(--device-height);
+    margin: 12px auto 10px;
     padding: 6px;
     border-radius: 52px;
     background: linear-gradient(140deg, #c4bfc3, #57535a 32%, #242228 66%, #8b868e);
@@ -197,19 +195,24 @@
 .demo-controls .primary { flex: 1; min-width: fit-content; }
 
 .demo-onboarding[data-step="wrapped"] .demo-card {
+  display: grid;
+  flex: 1 0 auto;
   border: 0;
   background: var(--color-lavender);
 }
 
-.demo-onboarding[data-step="wrapped"] .demo-content { padding: 0; }
+.demo-onboarding[data-step="wrapped"] .app-screen { padding-inline: 12px; padding-bottom: 12px; }
+.demo-onboarding[data-step="wrapped"] .demo-progress { margin-bottom: 12px; }
+.demo-onboarding[data-step="wrapped"] .demo-content { align-content: stretch; padding: 0; }
 
 .demo-recap {
   position: relative;
   isolation: isolate;
   display: grid;
+  align-content: center;
   width: 100%;
-  gap: 16px;
-  padding: 20px;
+  gap: clamp(12px, 2.2dvh, 24px);
+  padding: clamp(16px, 3dvh, 28px);
   overflow: hidden;
   border-radius: var(--card-radius);
   background: radial-gradient(ellipse at 100% 0, #ffffff70, transparent 52%);
@@ -231,14 +234,14 @@
 .demo-recap-insight > p:first-child { font-size: 13px; font-weight: 650; }
 .demo-recap-word {
   color: var(--color-ink);
-  font-size: clamp(48px, 16vw, 68px);
+  font-size: clamp(48px, 16vw, 84px);
   line-height: .98;
   font-weight: 830;
   letter-spacing: -.075em;
 }
 .demo-recap-breakdown { border-top: 1px solid #190f1740; padding-top: 12px; }
 .demo-recap-breakdown h2 { font-size: 13px; font-weight: 750; margin-bottom: 8px; }
-.demo-recap-breakdown dl { display: grid; gap: 5px; font-size: 13px; }
+.demo-recap-breakdown dl { display: grid; gap: 6px; font-size: 14px; }
 .demo-recap-breakdown dl > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 8px; }
 .demo-recap-breakdown dd { display: grid; grid-template-columns: minmax(0, 1fr) 2ch; align-items: center; gap: 8px; text-align: right; font-variant-numeric: tabular-nums; }
 .demo-recap-track { height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--color-ink) 11%, transparent); }
