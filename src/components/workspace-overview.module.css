@@ -93,8 +93,10 @@
   position: fixed;
   inset: 0;
   width: min(calc(100% - 32px), 360px);
-  max-height: calc(100% - 32px);
+  height: fit-content;
+  max-height: calc(100dvh - 32px);
   margin: auto;
+  overflow-y: auto;
   color: var(--color-ink);
   background: var(--color-surface);
   border: 1px solid var(--color-divider);
