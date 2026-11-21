@@ -102,3 +102,21 @@ input[type="checkbox"] { accent-color: var(--accent); }
 .rec-timer { font: 700 .85rem ui-monospace, monospace; }
 .footnote { font-size: .85rem; }
 .panel > .alert { color: #ffb8a8; }
+
+.results-heading { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; }
+.results-heading h1 { font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 850; line-height: .98; letter-spacing: -.085em; }
+.results-heading .eyebrow { color: var(--muted); margin-bottom: .5rem; }
+.change { font-size: clamp(1rem, 3vw, 1.45rem); font-weight: 750; color: var(--accent); }
+.take-card { gap: .7rem; }
+.take-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .55rem; }
+.take-metrics dt { color: var(--muted); font-size: .8rem; }
+.take-metrics dd { font-size: clamp(1.8rem, 4vw, 3.1rem); line-height: 1; font-weight: 800; letter-spacing: -.07em; }
+.take-card blockquote { border-top: 1px solid var(--line); padding-top: .8rem; }
+.coaching { background: var(--accent); color: var(--dark-ink); border-radius: .9rem; padding: 1.1rem 1.4rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .8rem; }
+.coaching p { margin-top: .3rem; }
+.coaching .secondary { color: var(--dark-ink); border-color: #718333; }
+.coaching .secondary:focus-visible { outline-color: var(--dark-ink); }
+.action-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+.muted { color: var(--muted); }
+
+@media (max-width: 600px) { .take-grid { grid-template-columns: 1fr; } }

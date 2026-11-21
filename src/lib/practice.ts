@@ -8,3 +8,16 @@ export type Feedback = {
 };
 
 export type Take = Feedback & { seconds: number };
+
+function tokens(transcript: string) {
+  return transcript.toLowerCase().match(/\p{L}+(?:['’]\p{L}+)*/gu) ?? [];
+}
+
+export function pitchMetrics({ transcript, seconds }: Take) {
+  const words = tokens(transcript);
+  const fillers = words.filter((word) => /^(um+|uh+|erm+|er+|ah+|hmm+)$/.test(word));
+  return {
+    fillers,
+    pace: Math.round(words.length * 60 / seconds),
+  };
+}
