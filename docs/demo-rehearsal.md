@@ -9,11 +9,12 @@
 
 ## Guided 40-second walkthrough
 
-Open `/demo` in Chrome before the pitch and leave Alex selected. The page preloads the sample recordings.
+Open `/demo` in Chrome before the pitch. It preloads both sample speakers’ recordings.
 
-- **0–8s** — Show Alex’s Wrapped card and point out the repeated word. Click **Start practice**.
-- **8–22s** — Show the pitch prompt and click the short **Hear “um”** marker on the first take. Read the coaching cue and click **Compare the retry**.
-- **22–34s** — Play a marked moment from the retry and point out the change in fillers. Click **See the challenge**.
-- **34–40s** — Show the daily challenge, demo XP, and Filler Jar. **Restart demo** resets the walkthrough.
+- **0–5s** — Leave Alex selected and click **See Wrapped**.
+- **5–12s** — Show Alex’s repeated word and click **Start practice**. The chat breakdown is optional.
+- **12–23s** — Read the prompt, play the first filler clip, and give the coaching cue. Click **Hear the retry**.
+- **23–34s** — Show “um” going from 3 to 1 and play the retry clip. Click **Finish the challenge**.
+- **34–40s** — Show the demo XP. **Restart demo** resets the walkthrough and **Try it with your voice** opens live Practice.
 
 The guided route uses two synthetic profiles and prerecorded speech. Demo scores stay in the walkthrough.

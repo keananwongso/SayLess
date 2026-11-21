@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Challenges } from "@/components/challenges";
 import { Practice } from "@/components/practice";
 import { Results } from "@/components/results";
@@ -14,8 +14,19 @@ import { stopSpeech } from "@/lib/speech";
 
 type Step = "wrapped" | "practice" | "results" | "sample" | "challenges";
 
+function subscribeToHash(onChange: () => void) {
+  window.addEventListener("hashchange", onChange);
+  return () => window.removeEventListener("hashchange", onChange);
+}
+
+function currentHash() {
+  return window.location.hash;
+}
+
 export default function Home() {
-  const [step, setStep] = useState<Step>("wrapped");
+  const hash = useSyncExternalStore(subscribeToHash, currentHash, () => "");
+  const [selectedStep, setStep] = useState<Step>();
+  const step = selectedStep ?? (hash === "#practice" ? "practice" : "wrapped");
   const [session, setSession] = useState<PracticeSession>();
   const [practiceHistory, setPracticeHistory] = useState<ChallengeTake[]>([]);
   const [sampleIndex, setSampleIndex] = useState(0);

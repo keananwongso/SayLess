@@ -23,3 +23,5 @@ See the [voice analysis architecture](voice-analysis.md), [practice API and trac
 ## Guided demo
 
 `feat/guided-demo` adds `/demo` with sample onboarding, analyzed chat insights, original voice clips, a retry comparison, and simulated Challenges rewards. It reuses Wrapped analysis, voice replay, and challenge scoring. See the [guided rehearsal steps](demo-rehearsal.md#guided-40-second-walkthrough).
+
+`design/demo-onboarding` separates setup, Wrapped, practice, comparison, and the challenge finish into five focused screens. Each uses one brand color as an accent. Chat statistics and full transcripts are available through disclosures.
