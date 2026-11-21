@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { ConversationProjection } from "@/components/conversation-projection";
 import { SayLessDot } from "@/components/sayless-dot";
+import { jadeConversationDuration, jadeExpressions, jadeGoal, jadeTopExpression } from "@/lib/jade-demo";
 
 const steps = [
   { id: "setup", label: "Sample upload" },
@@ -10,26 +12,8 @@ const steps = [
   { id: "projection", label: "Two-week goal" },
 ] as const;
 
-const simulatedExpressions = [
-  { expression: "wait", count: 40 },
-  { expression: "like", count: 35 },
-  { expression: "yeah", count: 10 },
-  { expression: "wow", count: 7 },
-  { expression: "um / uh", count: 6 },
-  { expression: "you know", count: 4 },
-  { expression: "I mean", count: 2 },
-] as const;
-const [topExpression] = simulatedExpressions;
-const chartBottom = 138;
-const countToY = (count: number) => chartBottom - count * 2.8;
-const projection = [
-  { label: "Today", count: topExpression.count, x: 36 },
-  { label: "Week 1", count: Math.round(topExpression.count * 0.8), x: 155 },
-  { label: "Week 2", count: Math.round(topExpression.count * 0.6), x: 274 },
-].map((point) => ({ ...point, y: countToY(point.count) }));
-const [baseline, weekOne, weekTwo] = projection;
+const [baseline, , weekTwo] = jadeGoal;
 const goalReduction = Math.round(100 * (baseline.count - weekTwo.count) / baseline.count);
-const targetPath = projection.map(({ x, y }) => `${x},${y}`).join(" ");
 
 export function GuidedDemo() {
   const [index, setIndex] = useState(0);
@@ -96,7 +80,7 @@ export function GuidedDemo() {
                 <p className="demo-copy">See what SayLess finds in Jade’s sample conversation.</p>
                 <div className="demo-file">
                   <span className="demo-file-icon" aria-hidden="true">♫</span>
-                  <div><strong>conversation.m4a</strong><p>2:23 · Sample audio</p></div>
+                  <div><strong>conversation.m4a</strong><p>{jadeConversationDuration} · Sample audio</p></div>
                 </div>
                 <p className="demo-note" role="status">
                   {processing ? "Analyzing the sample…" : uploaded ? "Sample ready." : "This demo runs with a simulated upload."}
@@ -107,21 +91,21 @@ export function GuidedDemo() {
             {step.id === "wrapped" && (
               <div className="demo-recap">
                 <h1 id="demo-title" tabIndex={-1}>yap recap.</h1>
-                <p className="demo-recap-source">Simulated conversation · 2:23 · all speakers</p>
+                <p className="demo-recap-source">Simulated conversation · {jadeConversationDuration} · all speakers</p>
                 <div className="demo-recap-insight">
                   <p>Most frequent expression</p>
-                  <p className="demo-recap-word">“{topExpression.expression}”</p>
-                  <p>About <strong>{topExpression.count} times</strong></p>
+                  <p className="demo-recap-word">“{jadeTopExpression.expression}”</p>
+                  <p>About <strong>{jadeTopExpression.count} times</strong></p>
                 </div>
                 <div className="demo-recap-breakdown">
                   <h2>Estimated expression counts</h2>
                   <dl>
-                    {simulatedExpressions.map(({ expression, count }) => (
+                    {jadeExpressions.map(({ expression, count }) => (
                       <div key={expression}>
                         <dt>{expression}</dt>
                         <dd>
                           <span className="demo-recap-track" aria-hidden="true">
-                            <span style={{ width: `${100 * count / topExpression.count}%` }} />
+                            <span style={{ width: `${100 * count / jadeTopExpression.count}%` }} />
                           </span>
                           <span>{count}</span>
                         </dd>
@@ -135,7 +119,7 @@ export function GuidedDemo() {
             {step.id === "projection" && (
               <>
                 <h1 id="demo-title" className="demo-goal-title" tabIndex={-1}>
-                  aim for {goalReduction}% fewer “{topExpression.expression}”s.
+                  aim for {goalReduction}% fewer “{jadeTopExpression.expression}”s.
                 </h1>
                 <dl className="demo-goal-summary">
                   <div>
@@ -147,32 +131,7 @@ export function GuidedDemo() {
                     <dd>{weekTwo.count}</dd>
                   </div>
                 </dl>
-                <figure className="demo-goal-chart">
-                  <figcaption>Per 2:23 group conversation</figcaption>
-                  <svg viewBox="0 0 310 168" role="img" aria-labelledby="projection-description">
-                    <title id="projection-description">The recap baseline is about {baseline.count} uses of “{topExpression.expression}” and stays flat as a comparison. The practice targets are {weekOne.count} in week one and {weekTwo.count} in week two.</title>
-                    {[0, 20, baseline.count].map((value) => (
-                      <g key={value}>
-                        <text className="demo-projection-label" x="24" y={countToY(value)} textAnchor="end" dominantBaseline="central">{value}</text>
-                        {value !== baseline.count && <line className="demo-projection-grid" x1={baseline.x} x2={weekTwo.x} y1={countToY(value)} y2={countToY(value)} />}
-                      </g>
-                    ))}
-                    <polygon className="demo-goal-area" points={`${targetPath} ${weekTwo.x},${baseline.y}`} />
-                    <line className="demo-projection-baseline" x1={baseline.x} x2={weekTwo.x} y1={baseline.y} y2={baseline.y} />
-                    <polyline className="demo-projection-line" points={targetPath} />
-                    {projection.map(({ label, count, x, y }, position) => (
-                      <g key={label} textAnchor="middle">
-                        <circle cx={x} cy={y} r="4.5" className={position === 0 ? "demo-projection-point" : "demo-projection-target"} />
-                        {position > 0 && <text x={x} y={y + 23} className="demo-projection-value">{count}</text>}
-                        <text x={x} y="160" className="demo-projection-label">{label}</text>
-                      </g>
-                    ))}
-                  </svg>
-                  <ul className="demo-goal-key" aria-hidden="true">
-                    <li>Recap baseline</li>
-                    <li>Practice targets</li>
-                  </ul>
-                </figure>
+                <div className="demo-goal-chart"><ConversationProjection /></div>
               </>
             )}
 

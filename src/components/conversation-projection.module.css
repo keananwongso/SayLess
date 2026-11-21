@@ -1,0 +1,21 @@
+.chart {
+  --goal-stroke: color-mix(in srgb, var(--color-mint) 62%, var(--color-ink));
+  display: grid;
+  gap: 4px;
+  width: 100%;
+}
+.chart figcaption { font-size: 13px; font-weight: 650; }
+.chart svg { display: block; width: 100%; height: auto; }
+.area { fill: color-mix(in srgb, var(--color-mint) 15%, transparent); }
+.gridLine { stroke: var(--color-divider); }
+.baseline { stroke: var(--color-muted); stroke-width: 1.5; }
+.targetLine { fill: none; stroke: var(--goal-stroke); stroke-width: 2.5; stroke-dasharray: 5 4; stroke-linecap: round; }
+.point { fill: var(--color-muted); }
+.targetPoint { fill: var(--color-surface); stroke: var(--goal-stroke); stroke-width: 2.5; }
+.value { fill: var(--color-ink); font-size: 15px; font-weight: 750; }
+.label { fill: var(--color-muted); font-size: 14px; }
+
+.key { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--color-muted); font-size: 12px; }
+.key li { display: flex; align-items: center; gap: 6px; }
+.key li::before { content: ""; width: 16px; border-top: 2px solid var(--color-muted); }
+.key li:last-child::before { border-top: 2px dashed var(--goal-stroke); }

@@ -23,6 +23,10 @@ export default function DocsPage() {
         <h2 id="using-sayless">using sayless</h2>
         <dl className={styles.features}>
           <div>
+            <dt>Stats overview</dt>
+            <dd>See your filler counts from recent practice takes and preview Jade’s demo recap and two-week goal.</dd>
+          </div>
+          <div>
             <dt>Analyze · Stats</dt>
             <dd>Upload an M4A, MP3, WAV, WebM, or Ogg recording up to 4 MB. The report counts fillers and repeated phrases across the full recording. When timestamps are available, play the moment a filler occurred.</dd>
           </div>

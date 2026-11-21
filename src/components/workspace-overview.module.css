@@ -23,6 +23,22 @@
 .takeBar { height: 8px; border-radius: 999px; overflow: hidden; background: var(--color-dune); }
 .takeBar span { display: block; height: 100%; border-radius: inherit; background: var(--color-azure); }
 
+.statsRecap {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-lavender) 58%, var(--color-surface));
+}
+.recapTitle, .goalTitle { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+.recapTitle p, .goalTitle p { margin-top: 2px; color: var(--color-muted); font-size: 13px; }
+.recapDot { width: 40px; height: 40px; flex: none; }
+.expressionCounts { display: grid; gap: 6px; font-size: 14px; }
+.expressionCounts > div { display: grid; grid-template-columns: 4ch minmax(0, 1fr); align-items: center; gap: 8px; }
+.expressionCounts dt { font-weight: 650; }
+.expressionCounts dd { display: grid; grid-template-columns: minmax(0, 1fr) 2ch; align-items: center; gap: 8px; text-align: end; font-variant-numeric: tabular-nums; }
+.expressionCounts .takeBar { background: color-mix(in srgb, var(--color-ink) 10%, transparent); }
+.expressionCounts .takeBar span { background: var(--color-ink); }
+.statsGoal { background: linear-gradient(150deg, color-mix(in srgb, var(--color-mint) 13%, var(--color-surface)), var(--color-surface) 64%); }
+.statsGoal .goalTitle p { font-weight: 650; }
+
 @media (prefers-reduced-motion: no-preference) {
   .home > * { animation: card-enter 260ms cubic-bezier(.2, .8, .2, 1) both; }
   .home > :nth-child(2) { animation-delay: 40ms; }
@@ -32,6 +48,9 @@
   .ring .avatar { animation: mascot-hop 460ms 85ms ease-out both; }
   .friendsPreview { transition: transform 160ms ease-out; }
   .friendsPreview:active { transform: scale(.98); }
+  .takeBar span { transform-origin: left; animation: bar-reveal 380ms 100ms ease-out both; }
+  .expressionCounts > :nth-child(2) .takeBar span { animation-delay: 140ms; }
+  .expressionCounts > :nth-child(3) .takeBar span { animation-delay: 180ms; }
 }
 
 @keyframes card-enter {
@@ -44,4 +63,9 @@
   46% { transform: translateY(-7px) rotate(5deg); }
   72% { transform: translateY(1px) rotate(-3deg); }
   100% { transform: translateY(0) rotate(0); }
+}
+
+@keyframes bar-reveal {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }

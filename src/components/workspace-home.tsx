@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { ConversationProjection } from "@/components/conversation-projection";
 import { SayLessDot } from "@/components/sayless-dot";
 import { saveChallengeProgress, useChallengeProgress } from "@/lib/challenge-progress";
 import { currentStreak, dailyChallenge, DAILY_XP, localDay, qualifiesForDailyChallenge, type ChallengeTake } from "@/lib/challenges";
+import { jadeConversationDuration, jadeExpressions, jadeGoal, jadeTopExpression } from "@/lib/jade-demo";
 import styles from "./workspace-overview.module.css";
 
 export function WorkspaceHome({ takes, onPractice, onFriends }: {
@@ -98,9 +100,9 @@ export function WorkspaceStats({ takes, onAnalyze, onWrapped }: {
   return (
     <section className="flow" aria-labelledby="stats-title">
       <h1 id="stats-title" tabIndex={-1}>stats.</h1>
-      <article className={styles.card}>
-        <h2>Recent practice</h2>
-        {recent.length > 0 ? (
+      {recent.length > 0 && (
+        <article className={styles.card}>
+          <h2>Your recent practice</h2>
           <ol className={styles.practiceCounts} aria-label="Fillers by take">
             {recent.map(({ fillerCount, seconds }, index) => (
               <li key={index}>
@@ -110,7 +112,31 @@ export function WorkspaceStats({ takes, onAnalyze, onWrapped }: {
               </li>
             ))}
           </ol>
-        ) : <p className="muted">Record a take to see your filler counts here.</p>}
+        </article>
+      )}
+      <article className={`${styles.card} ${styles.statsRecap}`}>
+        <div className={styles.recapTitle}>
+          <div><h2>Jade’s Yap Recap</h2><p>Estimates · {jadeConversationDuration} demo · All speakers</p></div>
+          <SayLessDot className={styles.recapDot} mood="curious" color="lavender" />
+        </div>
+        <dl className={styles.expressionCounts} aria-label="Estimated expression counts">
+          {jadeExpressions.slice(0, 3).map(({ expression, count }) => (
+            <div key={expression}>
+              <dt>{expression}</dt>
+              <dd>
+                <span className={styles.takeBar} aria-hidden="true"><span style={{ width: `${100 * count / jadeTopExpression.count}%` }} /></span>
+                <span>{count}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+      <article className={`${styles.card} ${styles.statsGoal}`}>
+        <div className={styles.goalTitle}>
+          <h2>Two-week goal</h2>
+          <p>≈{jadeGoal[0].count} <span aria-hidden="true">→</span><span className="sr-only"> to </span> {jadeGoal[2].count} “{jadeTopExpression.expression}”s</p>
+        </div>
+        <ConversationProjection />
       </article>
       <div className={styles.card}>
         <h2>Explore your habits</h2>

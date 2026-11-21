@@ -214,28 +214,10 @@
 .demo-goal-approx { margin-inline-end: .12em; font-size: .65em; vertical-align: .12em; }
 
 .demo-goal-chart {
-  --goal-stroke: color-mix(in srgb, var(--color-mint) 62%, var(--color-ink));
-  display: grid;
-  gap: 4px;
   width: 100%;
   padding-top: 12px;
   border-top: 1px solid var(--color-divider);
 }
-.demo-goal-chart figcaption { font-size: 13px; font-weight: 650; }
-.demo-goal-chart svg { display: block; width: 100%; height: auto; }
-.demo-goal-area { fill: color-mix(in srgb, var(--color-mint) 15%, transparent); }
-.demo-projection-grid { stroke: var(--color-divider); }
-.demo-projection-baseline { stroke: var(--color-muted); stroke-width: 1.5; }
-.demo-projection-line { fill: none; stroke: var(--goal-stroke); stroke-width: 2.5; stroke-dasharray: 5 4; stroke-linecap: round; }
-.demo-projection-point { fill: var(--color-muted); }
-.demo-projection-target { fill: var(--color-surface); stroke: var(--goal-stroke); stroke-width: 2.5; }
-.demo-projection-value { fill: var(--color-ink); font-size: 15px; font-weight: 750; }
-.demo-projection-label { fill: var(--color-muted); font-size: 14px; }
-
-.demo-goal-key { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--color-muted); font-size: 12px; }
-.demo-goal-key li { display: flex; align-items: center; gap: 6px; }
-.demo-goal-key li::before { content: ""; width: 16px; border-top: 2px solid var(--color-muted); }
-.demo-goal-key li:last-child::before { border-top: 2px dashed var(--goal-stroke); }
 
 .demo-file {
   display: flex;
