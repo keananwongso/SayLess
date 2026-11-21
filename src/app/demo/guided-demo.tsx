@@ -8,28 +8,18 @@ import { chooseRule, pitchMetrics, PITCH_PROMPT, type Filler, type FillerEvent, 
 import { sampleProfiles } from "@/lib/sample-pitches";
 import { speak, stopSpeech } from "@/lib/speech";
 import { loadTakeAudio } from "@/lib/take-audio";
-import { analyzeMessages, sampleMessages, type Message } from "@/lib/wrapped";
+import { analyzeMessages, sampleMessages } from "@/lib/wrapped";
 
 const steps = [
-  { id: "setup", label: "Setup", action: "See Wrapped" },
+  { id: "setup", label: "Meet Jade", action: "See Jade’s Wrapped" },
   { id: "wrapped", label: "Wrapped", action: "Start practice" },
   { id: "practice", label: "Practice", action: "Hear the retry" },
   { id: "compare", label: "Compare", action: "Finish the challenge" },
   { id: "finish", label: "Finish" },
 ] as const;
 
-const demoMessages: Message[] = [
-  ...sampleMessages.filter(({ speaker }) => speaker === "Alex"),
-  { speaker: "Sam", message: "Maybe try a shorter opener?" },
-  { speaker: "Sam", message: "Maybe try a question instead. Sorry, I keep changing my mind." },
-  { speaker: "Sam", message: "Maybe we should tell them who it helps first." },
-  { speaker: "Sam", message: "Maybe try the clearer version. Thanks for listening!" },
-];
-
-const profiles = sampleProfiles.map((profile) => ({
-  ...profile,
-  wrapped: analyzeMessages(demoMessages, profile.name),
-}));
+const jadeTakes = sampleProfiles[0].takes;
+const jadeWrapped = analyzeMessages(sampleMessages, sampleProfiles[0].name);
 
 function FillerClip({ take, target, label, playing, onPlay }: {
   take: Take;
@@ -50,24 +40,20 @@ function FillerClip({ take, target, label, playing, onPlay }: {
 
 export function GuidedDemo() {
   const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState(0);
   const { playing, playbackError, playClip, stopClip } = useTakePlayback();
   const title = useRef<HTMLHeadingElement>(null);
   const previousIndex = useRef(0);
 
   const step = steps[index];
-  const profile = profiles[selected];
-  const [first, retry] = profile.takes;
+  const [first, retry] = jadeTakes;
   const rule = chooseRule(first.events ?? []);
   const after = retry.events?.filter(({ text }) => text === rule?.target).length ?? 0;
-  const counts = profile.takes.map((take) => ({ seconds: take.seconds, fillerCount: pitchMetrics(take).fillers.length }));
+  const counts = jadeTakes.map((take) => ({ seconds: take.seconds, fillerCount: pitchMetrics(take).fillers.length }));
   const earned = qualifiesForDailyChallenge(counts[1]) ? dailyChallenge.xp : 0;
 
   useEffect(() => {
-    for (const { takes } of profiles) {
-      for (const { audio } of takes) {
-        if (audio) void loadTakeAudio(audio).catch(() => undefined);
-      }
+    for (const { audio } of jadeTakes) {
+      if (audio) void loadTakeAudio(audio).catch(() => undefined);
     }
     return stopSpeech;
   }, []);
@@ -102,36 +88,28 @@ export function GuidedDemo() {
           <div className="demo-content" key={step.id}>
             {step.id === "setup" && (
               <>
-                <h1 id="demo-title" ref={title} tabIndex={-1}>let’s find your habits.</h1>
-                <p className="demo-copy">Choose a sample speaker to see what shows up in their chats and how their pitch changes after one retry.</p>
-                <div className="demo-options" role="group" aria-label="Sample speaker">
-                  {profiles.map(({ name }, profileIndex) => (
-                    <button className="demo-option" key={name} aria-pressed={selected === profileIndex} onClick={() => setSelected(profileIndex)}>
-                      <span className="demo-choice-mark" aria-hidden="true" />
-                      {name}
-                    </button>
-                  ))}
-                </div>
-                <p className="demo-note">Uses sample chats and prerecorded audio.</p>
+                <h1 id="demo-title" ref={title} tabIndex={-1}>meet <span className="demo-story-name">jade.</span></h1>
+                <p className="demo-copy">Jade built a tool for students who get nervous presenting. Follow her first SayLess session as she rehearses her project pitch.</p>
+                <p className="demo-note">Fictional story with prerecorded audio.</p>
               </>
             )}
 
             {step.id === "wrapped" && (
               <>
-                <p className="demo-note">{profile.name}’s sample chat</p>
-                <h1 id="demo-title" ref={title} tabIndex={-1}>your most repeated word.</h1>
-                {profile.wrapped.word && (
+                <p className="demo-note">Jade’s chat</p>
+                <h1 id="demo-title" ref={title} tabIndex={-1}>jade’s most repeated word.</h1>
+                {jadeWrapped.word && (
                   <>
-                    <p className="demo-reveal">“{profile.wrapped.word.text}”</p>
-                    <p className="demo-copy"><strong>{profile.wrapped.word.count} times</strong> in {profile.wrapped.total} messages.</p>
+                    <p className="demo-reveal">“{jadeWrapped.word.text}”</p>
+                    <p className="demo-copy"><strong>{jadeWrapped.word.count} times</strong> in {jadeWrapped.total} messages.</p>
                   </>
                 )}
                 <details className="demo-details">
                   <summary>See chat details</summary>
-                  {profile.wrapped.phrase && <p>Signature phrase <strong>“{profile.wrapped.phrase.text}”</strong> · {profile.wrapped.phrase.count} times</p>}
-                  <p>{profile.wrapped.profile.strengths[0]}</p>
+                  {jadeWrapped.phrase && <p>Signature phrase <strong>“{jadeWrapped.phrase.text}”</strong> · {jadeWrapped.phrase.count} times</p>}
+                  <p>{jadeWrapped.profile.strengths[0]}</p>
                   <dl>
-                    {profile.wrapped.habits.map(({ id, label, count }) => (
+                    {jadeWrapped.habits.map(({ id, label, count }) => (
                       <div key={id}><dt>{label}</dt><dd>{count}</dd></div>
                     ))}
                   </dl>
@@ -141,7 +119,7 @@ export function GuidedDemo() {
 
             {step.id === "practice" && (
               <>
-                <h1 id="demo-title" ref={title} tabIndex={-1}>try a pitch.</h1>
+                <h1 id="demo-title" ref={title} tabIndex={-1}>jade tries a pitch.</h1>
                 <p className="demo-copy">{PITCH_PROMPT}</p>
                 <div className="action-row">
                   <FillerClip take={first} target={rule?.target} label="Hear the first take’s filler" playing={playing} onPlay={(take, event) => void playClip(take, event)} />
@@ -160,7 +138,7 @@ export function GuidedDemo() {
                 {rule && (
                   <>
                     <p className="demo-count" aria-label={`${rule.target}, from ${rule.baselineCount} to ${after}`}><span>“{rule.target}”</span> {rule.baselineCount} → {after}</p>
-                    <p className="demo-copy">Same speaker, same prompt. Hear the moment in each take.</p>
+                    <p className="demo-copy">Jade answered the same prompt again. Hear the moment in each take.</p>
                   </>
                 )}
                 <div className="action-row">
@@ -169,7 +147,7 @@ export function GuidedDemo() {
                 </div>
                 <details className="demo-details">
                   <summary>See the transcripts</summary>
-                  {profile.takes.map((take, takeIndex) => {
+                  {jadeTakes.map((take, takeIndex) => {
                     const label = takeIndex === 0 ? "First take" : "Retry";
                     return (
                       <div className="demo-transcript" key={label}>
@@ -187,7 +165,7 @@ export function GuidedDemo() {
               <>
                 <h1 id="demo-title" ref={title} tabIndex={-1}>one small win.</h1>
                 <p className="demo-count">+{earned} <span>demo XP</span></p>
-                <p className="demo-copy">{profile.name} completed the clear-pitch challenge with {counts[1].fillerCount} filler sound in {retry.seconds.toFixed(1)}s.</p>
+                <p className="demo-copy">Jade completed the clear-pitch challenge with {counts[1].fillerCount} filler sound in {retry.seconds.toFixed(1)}s.</p>
                 <details className="demo-details">
                   <summary>See challenge details</summary>
                   <p>{dailyChallenge.prompt}</p>
@@ -205,7 +183,7 @@ export function GuidedDemo() {
             {index > 0 && <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>}
             {step.id === "finish" ? (
               <>
-                <button className="demo-text-link" onClick={() => { setSelected(0); move(0); }}>Restart demo</button>
+                <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
                 <Link href="/#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
               </>
             ) : (

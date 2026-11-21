@@ -4,7 +4,7 @@ import { GuidedDemo } from "./guided-demo";
 
 export const metadata: Metadata = {
   title: "SayLess | Guided demo",
-  description: "Meet a sample speaker, discover their habits, and hear how their pitch changes after one retry.",
+  description: "Meet Jade and follow her first SayLess session, from Communication Wrapped to one pitch retry.",
 };
 
 export default function DemoPage() {

@@ -9,12 +9,12 @@
 
 ## Guided 40-second walkthrough
 
-Open `/demo` in Chrome before the pitch. It preloads both sample speakers’ recordings.
+Open `/demo` in Chrome before the pitch. It preloads Jade’s prerecorded takes.
 
-- **0–5s** — Leave Alex selected and click **See Wrapped**.
-- **5–12s** — Show Alex’s repeated word and click **Start practice**. The chat breakdown is optional.
+- **0–5s** — Introduce Jade and click **See Jade’s Wrapped**.
+- **5–12s** — Show Jade’s repeated word and click **Start practice**. The chat breakdown is optional.
 - **12–23s** — Read the prompt, play the first filler clip, and give the coaching cue. Click **Hear the retry**.
 - **23–34s** — Show “um” going from 3 to 1 and play the retry clip. Click **Finish the challenge**.
 - **34–40s** — Show the demo XP. **Restart demo** resets the walkthrough and **Try it with your voice** opens live Practice.
 
-The guided route uses two synthetic profiles and prerecorded speech. Demo scores stay in the walkthrough.
+The guided route follows Jade, a fictional speaker, with prerecorded speech. Demo scores stay in the walkthrough.

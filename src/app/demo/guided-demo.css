@@ -80,41 +80,6 @@
 .demo-copy { max-width: 45ch; color: var(--color-muted); }
 .demo-note { font-size: 14px; color: var(--color-muted); }
 
-.demo-options {
-  width: 100%;
-  max-width: 360px;
-  display: grid;
-  gap: 8px;
-}
-
-.demo-option {
-  display: flex;
-  min-height: 48px;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
-  border: 1px solid var(--color-control-border);
-  border-radius: var(--control-radius);
-  font-weight: 650;
-  text-align: left;
-}
-
-.demo-option[aria-pressed="true"] {
-  background: color-mix(in srgb, var(--demo-accent) 48%, var(--color-surface));
-}
-
-.demo-choice-mark {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  border: 1px solid var(--color-control-border);
-  border-radius: 50%;
-}
-
-.demo-option[aria-pressed="true"] .demo-choice-mark {
-  border: 5px solid var(--color-ink);
-}
-
 .demo-reveal, .demo-count {
   font-size: clamp(48px, 9vw, 88px);
   line-height: .96;
@@ -123,8 +88,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-.demo-reveal {
-  padding: 0 4px;
+.demo-story-name, .demo-reveal {
+  padding-inline: 4px;
   background: linear-gradient(transparent 72%, var(--demo-accent) 72%);
 }
 
