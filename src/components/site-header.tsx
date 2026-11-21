@@ -12,7 +12,6 @@ export function SiteHeader() {
           sayless
         </Link>
         <nav className={styles.navigation} aria-label="Main navigation">
-          <Link href="/architecture">Architecture</Link>
           <Link href="/demo">Demo</Link>
           <Link className={styles.appLink} href="/app">Use SayLess</Link>
         </nav>

@@ -41,7 +41,6 @@ export default function Home() {
       <footer className={styles.footer}>
         <Link href="/" className="wordmark">sayless</Link>
         <p>Say it your way.</p>
-        <Link href="/architecture">Architecture</Link>
         <Link href="/demo">Demo</Link>
         <Link href="/docs">Docs</Link>
       </footer>

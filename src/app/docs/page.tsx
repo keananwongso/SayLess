@@ -54,7 +54,6 @@ export default function DocsPage() {
         <h2 id="data-handling">where your data goes</h2>
         <p>SayLess analyzes imported chats in the browser. Your display name, challenge progress, and any count snapshots you save stay in this browser.</p>
         <p>Recorded or uploaded audio goes to the configured transcription provider. When live coaching is enabled, OpenAI receives the transcript and coaching focus. Refreshing the app clears the current audio, reports, and takes.</p>
-        <Link className={styles.link} href="/architecture">See how transcription and coaching work</Link>
       </section>
 
       <section className={styles.section} aria-labelledby="still-to-build">
