@@ -17,7 +17,7 @@ export function LandingPreview() {
     <section className={styles.preview} id="preview" aria-label="Interactive product preview">
       <div className={styles.previewHeader}>
         <span className={styles.previewTitle}>Your communication, unpacked.</span>
-        <span className={styles.sampleBadge}>Synthetic sample · {sample.name}</span>
+        <span className={styles.sampleBadge}>Sample · {sample.name}</span>
       </div>
       <div className={styles.previewBody}>
         <aside className={styles.previewSidebar}>

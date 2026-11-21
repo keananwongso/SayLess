@@ -37,12 +37,15 @@ Use this system across SayLess screens, shared components, and product visuals. 
 
 The public landing page uses a white Surface canvas with an Azure-tinted grid fading into white. Keep Dune for the app and subtle control fills. Use original SVG dot characters with thick Ink expressions, the existing accent tokens, and short 180–400ms entrance/control transitions; disable these for reduced-motion preferences.
 
+Use the shared sticky site navbar on every page. Keep Analyze, Wrapped, Practice, Challenges, and Jade’s demo in a single column capped at 600px. Give each screen one prominent next action.
+
 | Pattern | SayLess treatment |
 | --- | --- |
 | Primary action | Ink pill with white text. Give the main action one clear verb and one prominent placement. |
 | Secondary action | White or transparent fill, ink label, and control border. Use for hearing audio, importing a file, and opening a sample. |
-| Wrapped | Lead with one Jonquil card for the most repeated word. Use Lavender for a signature phrase and Melon for a secondary insight. Show the source and counts next to the insight. |
-| Practice | Use an Azure card for the prompt with a prominent recording control. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
+| Analyze | Start with one recording picker. Show the analysis action after a file is selected, then display the report beneath it. |
+| Wrapped | Lead with a single Ink card and large Lavender type for the most repeated word. Show its source and count. Use neutral rows for secondary stats and disclosures for detailed insights. |
+| Practice | Put the prompt on a pale Azure fill inside a single card. Keep recording as the primary action. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
 | Results | Use the same metric order and units on both takes. Use Azure for the baseline highlight, Mint for a positive change, and Lavender for the coaching suggestion. Use Jonquil for the sample replay label. |
 | Stickers | Use original, simple shapes with thick ink marks. Place them beside an insight or on an empty state where they leave the primary action and data legible. |
 

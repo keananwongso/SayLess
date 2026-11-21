@@ -6,15 +6,6 @@ import styles from "./landing.module.css";
 export default function Home() {
   return (
     <div className={styles.page}>
-      <a className={styles.skipLink} href="#main">Skip to content</a>
-      <header className={styles.header}>
-        <Link href="/" className="wordmark" aria-label="SayLess home"><SayLessDot mood="pause" color="lavender" className={styles.brandDot} />sayless</Link>
-        <nav className={styles.navigation} aria-label="Main navigation">
-          <Link className={styles.howLink} href="/architecture">Architecture</Link>
-          <Link href="/demo">Demo</Link>
-          <Link className={styles.demoLink} href="/app">Use SayLess</Link>
-        </nav>
-      </header>
       <main className={styles.main} id="main">
         <section className={styles.hero} aria-labelledby="landing-title">
           <div className={styles.heroCopy}>

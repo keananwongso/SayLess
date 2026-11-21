@@ -1,0 +1,70 @@
+.header {
+  position: sticky;
+  top: var(--gutter);
+  z-index: 2;
+  width: min(880px, calc(100% - 2 * var(--gutter)));
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px 12px 24px;
+  border: 1px solid var(--color-divider);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: 0 2px 0 #190f1705, 0 8px 24px #190f1705;
+}
+
+.brandDot { width: 32px; height: 32px; flex: none; }
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.navigation a { display: inline-flex; min-height: 44px; align-items: center; }
+
+.appLink {
+  background: var(--color-ink);
+  color: var(--color-surface);
+  padding: 10px 24px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: box-shadow 180ms ease;
+}
+
+.appLink:hover { box-shadow: 0 5px 14px #190f1720; }
+
+.skipLink {
+  position: fixed;
+  top: 8px;
+  left: var(--gutter);
+  z-index: 3;
+  background: var(--color-ink);
+  color: var(--color-surface);
+  padding: 12px 20px;
+  border-radius: 12px;
+  transform: translateY(-200%);
+}
+
+.skipLink:focus { transform: none; }
+
+@media (width < 700px) {
+  .header { padding: 8px 12px; }
+  .navigation { gap: 12px; }
+  .appLink { padding-inline: 16px; }
+}
+
+@media (width < 520px) {
+  .header { flex-wrap: wrap; gap: 4px; }
+  .navigation { width: 100%; justify-content: space-between; gap: 8px; }
+  .appLink { padding-inline: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appLink { transition: none; }
+}

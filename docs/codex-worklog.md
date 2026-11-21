@@ -1,5 +1,11 @@
 # Codex work log
 
+## Shared navigation and phone-first demo — November 21, 2026
+
+On `codex/shared-site-navigation`, moved the landing navbar into the root layout and kept workspace tabs inside the app. Capped the workspace and Jade’s demo at 600px. Analyze starts with a recording picker, Wrapped leads with one insight, and Practice prioritizes recording. Challenges and results stack in a single column. Shortened the landing preview label to “Sample.”
+
+Lint, typecheck, production build, and the served landing check passed. Chrome checked all four pages and workspace tabs at 320px, 390px, and 1440px. Also checked a recording upload and filler clip, CSV import, private snapshot, sample replay, and all five demo screens through the link into live Practice.
+
 ## Steady landing navigation — November 21, 2026
 
 On `codex/steady-landing-nav`, pinned the landing navbar at its original desktop and mobile insets and removed the "Use SayLess" hover lift. In-page targets clear the bar. Lint, typecheck, build, and the served landing check passed. Chrome verified the bar and button positions at 320px and 1440px and confirmed the preview anchor stays visible.

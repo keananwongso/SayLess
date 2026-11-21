@@ -73,12 +73,7 @@ export function GuidedDemo() {
 
   return (
     <div className="demo-onboarding" data-step={step.id}>
-      <header className="demo-header">
-        <Link href="/" className="wordmark"><span className="brand-mark" aria-hidden="true" />SayLess</Link>
-        <Link href="/" className="demo-text-link">Exit demo</Link>
-      </header>
-
-      <main className="demo-shell">
+      <main className="demo-shell" id="main">
         <div className="demo-progress">
           <p><strong>{step.label}</strong> · {index + 1} of {steps.length}</p>
           <progress aria-label="Demo progress" value={index + 1} max={steps.length} />

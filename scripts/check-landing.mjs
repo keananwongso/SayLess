@@ -26,7 +26,7 @@ assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
 assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
-assert.match(html, /Synthetic sample/);
+assert.match(html, /Sample ·/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/app"/);
 assert.match(html, /href="\/app#practice"/);
@@ -34,8 +34,16 @@ assert.match(html, /href="\/architecture"/);
 assert.match(html, /viewBox="0 0 120 120"/);
 assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /repeating-linear-gradient/);
+const navbar = html.match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0];
+assert.ok(navbar, "The landing page must include the site navbar");
+for (const path of ["/architecture", "/demo", "/app"]) {
+  assert.ok(navbar.includes(`href="${path}"`), `Navbar must link to ${path}`);
+}
 for (const path of ["/demo", "/app", "/architecture"]) {
-  assert.equal((await fetch(new URL(path, base))).status, 200, path);
+  const page = await fetch(new URL(path, base));
+  assert.equal(page.status, 200, path);
+  const markup = await page.text();
+  assert.equal(markup.match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0], navbar, `Shared navbar on ${path}`);
 }
 const legacy = await fetch(new URL("/practice", base), { redirect: "manual" });
 assert.equal(legacy.status, 307);

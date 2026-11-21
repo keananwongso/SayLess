@@ -1,0 +1,33 @@
+.heading { display: grid; gap: 8px; }
+.heading p { color: var(--color-muted); }
+
+.card {
+  display: grid;
+  gap: 16px;
+  padding: clamp(16px, 4vw, 24px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--card-radius);
+}
+
+.question {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  padding: 16px 16px 4px;
+  background: color-mix(in srgb, var(--color-azure) 12%, var(--color-surface));
+  border-radius: var(--control-radius);
+}
+
+.question p { font-size: clamp(20px, 5vw, 26px); font-weight: 700; line-height: 1.2; letter-spacing: -.03em; }
+.card :global(.record-controls) { align-items: center; }
+.card :global(.primary) { flex: 1; justify-content: center; }
+
+.textAction {
+  justify-self: start;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

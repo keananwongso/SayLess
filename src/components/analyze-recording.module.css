@@ -1,7 +1,21 @@
-.intro .lede { max-width: 54ch; }
-.form { display: grid; gap: 8px; min-width: 0; max-width: 100%; }
-.file { overflow-wrap: anywhere; font-weight: 650; }
-.textAction { min-height: 44px; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.intro { display: grid; gap: 8px; }
+.intro p, .file { color: var(--color-muted); }
+.form {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 24px 16px;
+  border: 1px dashed var(--color-control-border);
+  border-radius: var(--card-radius);
+  background: var(--color-surface);
+  text-align: center;
+}
+.form h2 { font-size: 22px; font-weight: 720; letter-spacing: -.03em; }
+.form :global(.action-row) { justify-content: center; }
+.uploadDot { width: 52px; height: 52px; }
+.file { font-size: 14px; overflow-wrap: anywhere; }
+.textAction { min-height: 44px; justify-self: start; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
 .report { gap: 16px; }
 .report h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 760; letter-spacing: -.045em; }
 .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }

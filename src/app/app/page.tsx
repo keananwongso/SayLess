@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnalyzeRecording } from "@/components/analyze-recording";
 import { Challenges } from "@/components/challenges";
@@ -38,7 +37,7 @@ export default function Workspace() {
   useEffect(() => {
     if (previousStep.current === step) return;
     previousStep.current = step;
-    main.current?.querySelector<HTMLElement>("div:not([hidden]) > section h1")?.focus();
+    main.current?.querySelector<HTMLElement>(":scope > section h1, :scope > div:not([hidden]) > section h1")?.focus();
   }, [step]);
 
   useEffect(() => {
@@ -62,65 +61,54 @@ export default function Workspace() {
   }
 
   return (
-    <>
-      <header className="site-header workspace-header">
-        <div className="header-inner">
-          <Link href="/" className="wordmark">
-            <span className="brand-mark" aria-hidden="true" />
-            SayLess
-          </Link>
-          <nav aria-label="SayLess workspace">
-            <button aria-current={step === "analyze" ? "page" : undefined} onClick={() => go("analyze")}>
-              Analyze
-            </button>
-            <button aria-current={step === "wrapped" ? "page" : undefined} onClick={() => go("wrapped")}>
-              Wrapped
-            </button>
-            <button aria-current={step === "practice" || step === "sample" ? "page" : undefined} onClick={() => go("practice")}>
-              Practice
-            </button>
-            <button aria-current={step === "challenges" ? "page" : undefined} onClick={() => go("challenges")}>
-              Challenges
-            </button>
-            {session && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
-            <Link href="/demo">Demo</Link>
-          </nav>
+    <main className="shell workspace-shell" id="main" ref={main}>
+      <nav className="workspace-nav" aria-label="SayLess workspace">
+        <button aria-current={step === "analyze" ? "page" : undefined} onClick={() => go("analyze")}>
+          Analyze
+        </button>
+        <button aria-current={step === "wrapped" ? "page" : undefined} onClick={() => go("wrapped")}>
+          Wrapped
+        </button>
+        <button aria-current={step === "practice" || step === "sample" ? "page" : undefined} onClick={() => go("practice")}>
+          Practice
+        </button>
+        <button aria-current={step === "challenges" ? "page" : undefined} onClick={() => go("challenges")}>
+          Challenges
+        </button>
+        {session && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
+      </nav>
+      {step === "analyze" && <div><AnalyzeRecording onPractice={() => go("practice")} /></div>}
+      <div hidden={step !== "wrapped"}>
+        <Wrapped onPractice={() => go("practice")} />
+      </div>
+      {step === "practice" && (
+        <div>
+          <Practice attempt={(session?.attempt ?? 0) + 1} rule={session?.nextRule} onResult={save} onSample={() => go("sample")} />
         </div>
-      </header>
-      <main className="shell" ref={main}>
-        {step === "analyze" && <div><AnalyzeRecording onPractice={() => go("practice")} /></div>}
-        <div hidden={step !== "wrapped"}>
-          <Wrapped onPractice={() => go("practice")} />
+      )}
+      {step === "sample" && (
+        <div>
+          <Results
+            key={sample.name}
+            session={nextTake(nextTake(undefined, sample.takes[0]), sample.takes[1])}
+            sample={{ names: sampleProfiles.map(({ name }) => name), selected: sampleIndex, onSelect: setSampleIndex }}
+            onRetry={() => go("practice")}
+          />
         </div>
-        {step === "practice" && (
-          <div>
-            <Practice attempt={(session?.attempt ?? 0) + 1} rule={session?.nextRule} onResult={save} onSample={() => go("sample")} />
-          </div>
-        )}
-        {step === "sample" && (
-          <div>
-            <Results
-              key={sample.name}
-              session={nextTake(nextTake(undefined, sample.takes[0]), sample.takes[1])}
-              sample={{ names: sampleProfiles.map(({ name }) => name), selected: sampleIndex, onSelect: setSampleIndex }}
-              onRetry={() => go("practice")}
-            />
-          </div>
-        )}
-        {step === "challenges" && <Challenges takes={practiceHistory} onPractice={() => go("practice")} />}
-        {step === "results" && session && (
-          <div>
-            <Results
-              session={session}
-              onRetry={() => go("practice")}
-              onRestart={() => {
-                setSession(undefined);
-                go("practice");
-              }}
-            />
-          </div>
-        )}
-      </main>
-    </>
+      )}
+      {step === "challenges" && <Challenges takes={practiceHistory} onPractice={() => go("practice")} />}
+      {step === "results" && session && (
+        <div>
+          <Results
+            session={session}
+            onRetry={() => go("practice")}
+            onRestart={() => {
+              setSession(undefined);
+              go("practice");
+            }}
+          />
+        </div>
+      )}
+    </main>
   );
 }

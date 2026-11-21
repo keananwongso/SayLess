@@ -98,7 +98,6 @@ export function Challenges({ takes, onPractice }: { takes: ChallengeTake[]; onPr
     <section className="flow" aria-labelledby="challenges-title">
       <div className="results-heading">
         <div>
-          <p className="eyebrow challenge-label">Challenges</p>
           <h1 id="challenges-title" className="challenge-heading" tabIndex={-1}>small reps.<br /><em>real momentum.</em></h1>
         </div>
         <p className="streak-pill">{streak}-day streak · {progress.xp} XP</p>
@@ -122,21 +121,19 @@ export function Challenges({ takes, onPractice }: { takes: ChallengeTake[]; onPr
         </div>
       </article>
 
-      <div className="challenge-grid">
-        <article className="panel filler-jar" aria-labelledby="jar-title">
-          <p className="eyebrow">Filler jar</p>
-          <h2 id="jar-title"><span aria-hidden="true">◒</span> {jarCount}</h2>
-          <p>{takes.length ? "Filler sounds logged from this browser session’s practice takes." : "Your jar starts counting when you record a practice take."}</p>
-          <p className="footnote">A count is a cue to notice—not a judgment about how you speak.</p>
-        </article>
+      <article className="panel filler-jar" aria-labelledby="jar-title">
+        <p className="eyebrow">Filler jar</p>
+        <h2 id="jar-title"><span aria-hidden="true">◒</span> {jarCount}</h2>
+        <p>{takes.length ? "Filler sounds logged from this browser session’s practice takes." : "Your jar starts counting when you record a practice take."}</p>
+        <p className="footnote">A count is a cue to notice—not a judgment about how you speak.</p>
+      </article>
 
-        <article className="panel duel-card" aria-labelledby="duel-title">
-          <p className="eyebrow">Friend duel</p>
-          <h2 id="duel-title">Riley’s clear-pitch round</h2>
-          <p>{duelStatus}</p>
-          <p className="footnote">Local demo scoring rewards fewer filler sounds on a retry. Friend accounts are not connected yet.</p>
-        </article>
-      </div>
+      <article className="panel duel-card" aria-labelledby="duel-title">
+        <p className="eyebrow">Friend duel</p>
+        <h2 id="duel-title">Riley’s clear-pitch round</h2>
+        <p>{duelStatus}</p>
+        <p className="footnote">Local demo scoring rewards fewer filler sounds on a retry. Friend accounts are not connected yet.</p>
+      </article>
 
       <article className="accountability">
         <div>

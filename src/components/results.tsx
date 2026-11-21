@@ -76,7 +76,7 @@ export function Results({ session, onRetry, onRestart, sample }: {
           ))}
         </div>
       )}
-      <div className={retry ? "stat-grid take-grid" : "take-grid"}>
+      <div className="take-grid">
         <TakeCard take={first} label={attempt <= 2 ? "First take" : `Take ${attempt - 1}`} baseline onPlay={(event) => void playClip(first, event)} playing={playing} />
         {retry && <TakeCard take={retry} label={attempt === 2 ? "Retry" : `Take ${attempt}`} onPlay={(event) => void playClip(retry, event)} playing={playing} />}
       </div>

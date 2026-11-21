@@ -1,7 +1,9 @@
-.demo-onboarding {
-  min-height: 100dvh;
-  --demo-accent: var(--color-lavender);
+body:has(.demo-onboarding) {
   background: color-mix(in srgb, var(--color-dune) 40%, var(--color-surface));
+}
+
+.demo-onboarding {
+  --demo-accent: var(--color-lavender);
 }
 
 .demo-onboarding[data-step="wrapped"] { --demo-accent: var(--color-jonquil); }
@@ -9,20 +11,10 @@
 .demo-onboarding[data-step="compare"] { --demo-accent: var(--color-mint); }
 .demo-onboarding[data-step="finish"] { --demo-accent: var(--color-melon); }
 
-.demo-header {
-  width: min(100% - 32px, 1120px);
-  min-height: 72px;
-  margin-inline: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 .demo-shell {
-  width: min(100% - 32px, 648px);
+  width: min(100% - 32px, 600px);
   margin-inline: auto;
-  padding: clamp(20px, 5vw, 56px) 0 40px;
+  padding: 24px 0 40px;
 }
 
 .demo-progress {
@@ -71,7 +63,7 @@
 }
 
 .demo-content h1 {
-  font-size: clamp(36px, 6vw, 58px);
+  font-size: clamp(36px, 7vw, 48px);
   line-height: 1;
   letter-spacing: -.06em;
   font-weight: 790;

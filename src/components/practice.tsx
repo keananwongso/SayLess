@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ConversationStub } from "@/components/conversation-stub";
 import { MAX_AUDIO_BYTES, MAX_RECORDING_SECONDS, PITCH_PROMPT, stockCue, type CoachingRule, type Feedback, type Take } from "@/lib/practice";
 import { speak, stopSpeech } from "@/lib/speech";
+import styles from "./practice.module.css";
 
 type Status = "idle" | "permission" | "recording" | "processing";
 
@@ -174,41 +174,33 @@ export function Practice({ attempt, rule, onResult, onSample }: {
 
   return (
     <section aria-labelledby="practice-title" className="flow">
-      <div className="spread">
-        <div className="hero">
-          <p className="eyebrow">Pitch practice · Take {attempt}</p>
-          <h1 id="practice-title" tabIndex={-1}>Make your<br /><em>point.</em></h1>
-          <p className="lede">Give yourself about 10 seconds to pitch your project.</p>
-        </div>
-        <div className="panel practice-panel">
-          <h2 className="eyebrow prompt-label">
-            <span className="sound-wave" aria-hidden="true"><span /><span /><span /><span /></span>
-            Your coach asks
-          </h2>
-          <p className="prompt">{PITCH_PROMPT}</p>
-          {rule && <p className="footnote"><strong>Focus on “{rule.target}.”</strong> Try a brief pause in its place.</p>}
-          <div className="record-controls">
-            {status === "recording" ? (
-              <button className="primary is-recording" onClick={stopRecording}><span className="record-dot" aria-hidden="true" />Stop &amp; get feedback</button>
-            ) : (
-              <button className="primary" disabled={status !== "idle"} onClick={startRecording}>
-                <span className="record-dot" aria-hidden="true" />
-                {status === "permission" ? "Waiting for microphone…" : status === "processing" ? "Coach is listening back…" : "Start recording"}
-              </button>
-            )}
-            {status === "recording" && <span className="rec-timer" aria-label="Seconds recorded">0:{String(elapsed).padStart(2, "0")}</span>}
-            <button className="secondary" disabled={status !== "idle"} onClick={() => speak(PITCH_PROMPT)}>Hear prompt</button>
-          </div>
-          {error && <p className="alert" role="alert">{error}</p>}
-          <p className="footnote" role="status">
-            {status === "processing" ? "Transcribing your pitch and finding one improvement." : "Your recording is sent for transcription and stays in this tab for replay."}
-          </p>
-        </div>
+      <div className={styles.heading}>
+        <h1 id="practice-title" tabIndex={-1}>practice your pitch.</h1>
+        <p>Take {attempt} · Aim for about 10 seconds.</p>
       </div>
-      <div className="action-row">
-        <button className="secondary" onClick={onSample}>Watch sample replay</button>
+      <div className={styles.card}>
+        <div className={styles.question}>
+          <p>{PITCH_PROMPT}</p>
+          <button className={styles.textAction} disabled={status !== "idle"} onClick={() => speak(PITCH_PROMPT)}>Hear prompt</button>
+        </div>
+        {rule && <p className="footnote"><strong>Focus on “{rule.target}.”</strong> Try a brief pause in its place.</p>}
+        <div className="record-controls">
+          {status === "recording" ? (
+            <button className="primary is-recording" onClick={stopRecording}><span className="record-dot" aria-hidden="true" />Stop &amp; get feedback</button>
+          ) : (
+            <button className="primary" disabled={status !== "idle"} onClick={startRecording}>
+              <span className="record-dot" aria-hidden="true" />
+              {status === "permission" ? "Waiting for microphone…" : status === "processing" ? "Getting feedback…" : "Start recording"}
+            </button>
+          )}
+          {status === "recording" && <span className="rec-timer" aria-label="Seconds recorded">0:{String(elapsed).padStart(2, "0")}</span>}
+        </div>
+        {error && <p className="alert" role="alert">{error}</p>}
+        <p className="footnote" role="status">
+          {status === "processing" ? "Transcribing your pitch and finding one improvement." : "We send your recording for transcription and keep it in this tab for replay."}
+        </p>
       </div>
-      <ConversationStub />
+      <button className={styles.textAction} onClick={onSample}>Watch sample replay</button>
     </section>
   );
 }

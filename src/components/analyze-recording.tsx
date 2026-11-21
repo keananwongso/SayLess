@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { SayLessDot } from "@/components/sayless-dot";
 import { useTakePlayback } from "@/components/use-take-playback";
 import { fillerCounts, MAX_AUDIO_BYTES, normalizeFiller, type RecordingAnalysis, type Take } from "@/lib/practice";
 import { analyzeMessages } from "@/lib/wrapped";
@@ -134,23 +135,27 @@ export function AnalyzeRecording({ onPractice }: { onPractice: () => void }) {
 
   return (
     <section className="flow" aria-labelledby="analyze-title">
-      <div className={`hero ${styles.intro}`}>
+      <div className={styles.intro}>
         <h1 id="analyze-title" tabIndex={-1}>analyze a recording.</h1>
-        <p className="lede">Upload a conversation or voice note to see repeated phrases, count fillers, and hear where they happened.</p>
-        <form className={styles.form} onSubmit={analyze}>
-          <input ref={input} hidden type="file" accept=".m4a,.mp4,.mp3,.wav,.webm,.ogg,.opus,audio/*" onChange={selectFile} />
-          <div className="action-row">
-            <button className="secondary" type="button" disabled={busy} onClick={() => input.current?.click()}>Choose recording</button>
-            <button className="primary" type="submit" disabled={!file || busy}>{busy ? "Analyzing…" : "Analyze recording"}</button>
-          </div>
-          {file && <p className={styles.file}>{file.name}</p>}
-          <p className="footnote muted">M4A, MP3, WAV, WebM, or Ogg up to 4 MB. Use audio you have permission to share for transcription.</p>
-          {busy && <p className="footnote" role="status">Transcribing your recording and finding repeated words.</p>}
-          {error && <p className="alert" role="alert">{error}</p>}
-        </form>
-        <button className={styles.textAction} onClick={onPractice}>Record a practice pitch</button>
+        <p>Find repeated words and phrases, then hear where fillers show up.</p>
       </div>
+      <form className={styles.form} onSubmit={analyze}>
+        <SayLessDot mood="curious" color="lavender" className={styles.uploadDot} />
+        <h2>{file ? "Ready to analyze" : "Upload audio"}</h2>
+        <p className={styles.file}>{file ? file.name : "M4A, MP3, WAV, WebM, or Ogg · up to 4 MB"}</p>
+        <input ref={input} hidden type="file" accept=".m4a,.mp4,.mp3,.wav,.webm,.ogg,.opus,audio/*" onChange={selectFile} />
+        <div className="action-row">
+          <button className={file ? "secondary" : "primary"} type="button" disabled={busy} onClick={() => input.current?.click()}>
+            {file ? "Change recording" : "Choose recording"}
+          </button>
+          {file && <button className="primary" type="submit" disabled={busy}>{busy ? "Analyzing…" : "Analyze recording"}</button>}
+        </div>
+        {busy && <p className="footnote" role="status">Transcribing your recording and finding repeated words.</p>}
+        {error && <p className="alert" role="alert">{error}</p>}
+      </form>
+      <p className="footnote muted">Only upload audio you have permission to share for transcription.</p>
       {result && <RecordingReport {...result} />}
+      <button className={styles.textAction} onClick={onPractice}>Record a practice pitch</button>
     </section>
   );
 }
