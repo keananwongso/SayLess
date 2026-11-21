@@ -22,3 +22,26 @@
 .practiceCounts li { display: grid; grid-template-columns: minmax(90px, auto) minmax(0, 1fr) 2.4ch; align-items: center; gap: 8px; font-size: 13px; }
 .takeBar { height: 8px; border-radius: 999px; overflow: hidden; background: var(--color-dune); }
 .takeBar span { display: block; height: 100%; border-radius: inherit; background: var(--color-azure); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .home > * { animation: card-enter 260ms cubic-bezier(.2, .8, .2, 1) both; }
+  .home > :nth-child(2) { animation-delay: 40ms; }
+  .home > :nth-child(3) { animation-delay: 80ms; }
+  .home > :nth-child(4) { animation-delay: 120ms; }
+  .home > :nth-child(5) { animation-delay: 160ms; }
+  .ring .avatar { animation: mascot-hop 460ms 85ms ease-out both; }
+  .friendsPreview { transition: transform 160ms ease-out; }
+  .friendsPreview:active { transform: scale(.98); }
+}
+
+@keyframes card-enter {
+  from { opacity: .3; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mascot-hop {
+  0% { transform: translateY(0) rotate(-9deg); }
+  46% { transform: translateY(-7px) rotate(5deg); }
+  72% { transform: translateY(1px) rotate(-3deg); }
+  100% { transform: translateY(0) rotate(0); }
+}

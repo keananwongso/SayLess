@@ -44,7 +44,7 @@ export function WorkspaceHome({ takes, onPractice, onFriends }: {
   }
 
   return (
-    <section className="flow" aria-labelledby="home-title">
+    <section className={`flow ${styles.home}`} aria-labelledby="home-title">
       <div className={styles.greeting}>
         <h1 id="home-title" tabIndex={-1}>home.</h1>
         <p>{streak}-day streak</p>

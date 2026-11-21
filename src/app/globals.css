@@ -155,11 +155,29 @@ button:disabled { cursor: default; opacity: .58; }
 }
 
 .workspace-nav {
+  --tab-gap: 2px;
+  --tab-inset: 8px;
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  gap: 2px;
-  padding-inline: 8px;
+  gap: var(--tab-gap);
+  padding-inline: var(--tab-inset);
+}
+
+.workspace-nav::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block-start: 8px;
+  inset-inline-start: var(--tab-inset);
+  width: calc((100% - 2 * var(--tab-inset) + var(--tab-gap)) / var(--tab-count) - var(--tab-gap));
+  height: 52px;
+  border-radius: var(--control-radius);
+  background: var(--color-dune);
+  transform: translateX(calc(var(--active-tab) * (100% + var(--tab-gap))));
+  pointer-events: none;
 }
 
 .workspace-nav button {
@@ -175,8 +193,27 @@ button:disabled { cursor: default; opacity: .58; }
 }
 
 .workspace-nav button:hover { color: var(--color-ink); }
-.workspace-nav button[aria-current] { background: var(--color-dune); color: var(--color-ink); }
+.workspace-nav button[aria-current] { color: var(--color-ink); }
 .workspace-nav svg { width: 21px; height: 21px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-screen:not([data-screen="home"]) > :not([hidden]) {
+    animation: workspace-enter 260ms cubic-bezier(.2, .8, .2, 1) both;
+  }
+
+  .workspace-nav::before { transition: transform 260ms cubic-bezier(.2, .8, .2, 1); }
+  .workspace-nav button svg, .workspace-screen :is(button.primary, button.secondary) { transition: transform 160ms ease-out; }
+  .workspace-nav button:active svg, .workspace-screen :is(button.primary, button.secondary):active:enabled { transform: scale(.95); }
+}
+
+@keyframes workspace-enter {
+  from { opacity: .35; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (forced-colors: active) {
+  .workspace-nav button[aria-current] { border: 1px solid Highlight; }
+}
 
 .shell { padding-block: clamp(24px, 4vw, 56px) 48px; }
 .flow, .take-grid { display: grid; gap: 20px; }

@@ -72,7 +72,7 @@ export default function Workspace() {
 
   return (
     <div className="app-surface">
-      <main className="app-screen workspace-screen" id="main" ref={main} tabIndex={-1}>
+      <main className="app-screen workspace-screen" id="main" ref={main} tabIndex={-1} data-screen={step}>
         {step === "home" && <WorkspaceHome takes={practiceHistory} onPractice={() => go("practice")} onFriends={() => go("friends")} />}
         {step === "stats" && <WorkspaceStats takes={practiceHistory} onAnalyze={() => go("analyze")} onWrapped={() => go("wrapped")} />}
         {step === "friends" && <WorkspaceFriends />}

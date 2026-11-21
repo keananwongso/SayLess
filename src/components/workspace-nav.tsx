@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 const tabs = [
   { id: "home", label: "Home", icon: "M3 10l9-7 9 7v10H3zM9 20v-6h6v6" },
   { id: "stats", label: "Stats", icon: "M4 20h16M7 16v-5m5 5V6m5 10V9" },
@@ -12,7 +14,10 @@ export function WorkspaceNav({ active, onSelect }: {
   onSelect: (tab: Tab) => void;
 }) {
   return (
-    <nav className="app-dock workspace-nav" aria-label="SayLess workspace">
+    <nav className="app-dock workspace-nav" aria-label="SayLess workspace" style={{
+      "--tab-count": tabs.length,
+      "--active-tab": tabs.findIndex(({ id }) => id === active),
+    } as CSSProperties}>
       {tabs.map(({ id, label, icon }) => (
         <button key={id} type="button" aria-current={active === id ? "page" : undefined} onClick={() => onSelect(id)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
