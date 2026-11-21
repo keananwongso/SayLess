@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function DemoPage() {
   return (
-    <div className="demo-device">
+    <div className="handset">
       <GuidedDemo />
     </div>
   );
