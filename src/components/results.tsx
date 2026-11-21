@@ -1,52 +1,117 @@
 "use client";
 
-import { pitchMetrics, type Take } from "@/lib/practice";
-import { speak } from "@/lib/speech";
+import { useEffect, useRef, useState } from "react";
+import { fillerCounts, pitchMetrics, type FillerEvent, type PracticeSession, type Take } from "@/lib/practice";
+import { speak, stopSpeech } from "@/lib/speech";
+import { loadTakeAudio } from "@/lib/take-audio";
 
-function TakeCard({ take, label, sample, baseline = false }: {
+function TakeCard({ take, label, baseline, onPlay, playing }: {
   take: Take;
   label: string;
-  sample: boolean;
   baseline?: boolean;
+  onPlay: (event?: FillerEvent) => void;
+  playing?: Take | FillerEvent;
 }) {
   const { fillers, pace } = pitchMetrics(take);
-  const fillerBreakdown = Array.from(new Set(fillers)).map((word) => {
-    const count = fillers.filter((filler) => filler === word).length;
-    return `${word} × ${count}`;
-  }).join(" · ");
+  const breakdown = Array.from(fillerCounts(fillers), ([word, count]) => `${word} × ${count}`).join(" · ");
+  const markers = take.audio ? take.events : undefined;
 
   return (
     <article className={baseline ? "panel take-card take-baseline" : "panel take-card"}>
       <h2 className="eyebrow">{label}</h2>
       <dl className="take-metrics">
-        <div><dt>Fillers</dt><dd>{fillers.length}</dd></div>
+        <div><dt>{take.events ? "Fillers" : "Text estimate"}</dt><dd>{fillers.length}</dd></div>
         <div><dt>Words / min</dt><dd>{pace}</dd></div>
         <div><dt>Time</dt><dd>{Math.round(take.seconds)}s</dd></div>
       </dl>
-      {fillerBreakdown && <p className="footnote">{fillerBreakdown}</p>}
+      {breakdown && <p className="footnote">{breakdown}</p>}
       <blockquote>“{take.transcript}”</blockquote>
-      {sample && <button className="secondary listen-take" onClick={() => speak(take.transcript)}>Listen to {label.toLowerCase()}</button>}
+      {markers?.length ? (
+        <div className="action-row filler-clips" role="group" aria-label={`${label} filler clips`}>
+          {markers.map((event, index) => (
+            <button className="secondary" key={index} aria-pressed={event === playing} onClick={() => onPlay(event)}>
+              <span aria-hidden="true">▶</span> “{event.text}” at {(event.startMs / 1000).toFixed(1)}s
+            </button>
+          ))}
+        </div>
+      ) : !markers && <p className="footnote muted">Timestamped replay is unavailable for this take.</p>}
+      {take.audio && (
+        <button className="secondary listen-take" aria-pressed={take === playing} onClick={() => onPlay()}>
+          Listen to {label.toLowerCase()}
+        </button>
+      )}
     </article>
   );
 }
 
-export function Results({
-  takes,
-  onRetry,
-  onRestart,
-  sample = false,
-}: {
-  takes: [Take, Take?];
+type SampleSelection = { names: string[]; selected: number; onSelect: (index: number) => void };
+
+export function Results({ session, onRetry, onRestart, sample }: {
+  session: PracticeSession;
   onRetry: () => void;
-  onRestart: () => void;
-  sample?: boolean;
+  onRestart?: () => void;
+  sample?: SampleSelection;
 }) {
-  const [first, retry] = takes;
+  const { takes: [first, retry], attempt, appliedRule, nextRule } = session;
   const current = retry ?? first;
-  const delta = retry ? pitchMetrics(retry).fillers.length - pitchMetrics(first).fillers.length : 0;
-  const change = delta === 0
-    ? "Same filler count."
-    : `${Math.abs(delta)} ${delta < 0 ? "fewer" : "more"} ${Math.abs(delta) === 1 ? "filler" : "fillers"}.`;
+  const after = appliedRule && retry?.events?.filter(({ text }) => text === appliedRule.target).length;
+  const comparison = appliedRule && after !== undefined
+    ? `“${appliedRule.target}” ${appliedRule.baselineCount} → ${after}`
+    : undefined;
+  const decreased = appliedRule && after !== undefined && after < appliedRule.baselineCount;
+  const context = useRef<AudioContext>(null);
+  const source = useRef<AudioBufferSourceNode>(null);
+  const playbackId = useRef(0);
+  const [playing, setPlaying] = useState<Take | FillerEvent>();
+  const [playbackError, setPlaybackError] = useState("");
+
+  useEffect(() => () => {
+    playbackId.current += 1;
+    void context.current?.close().catch(() => undefined);
+    context.current = null;
+  }, []);
+
+  function stopClip() {
+    playbackId.current += 1;
+    source.current?.stop();
+    source.current = null;
+    setPlaying(undefined);
+  }
+
+  async function playClip(take: Take, event?: FillerEvent) {
+    const audio = take.audio;
+    if (!audio) return;
+    const alreadyPlaying = playing === (event ?? take);
+    stopClip();
+    stopSpeech();
+    setPlaybackError("");
+    if (alreadyPlaying) return;
+    const id = playbackId.current;
+    try {
+      const player = context.current ??= new AudioContext();
+      await player.resume();
+      const bytes = await loadTakeAudio(audio);
+      if (id !== playbackId.current) return;
+      const clip = await player.decodeAudioData(bytes.slice(0));
+      if (id !== playbackId.current) return;
+      const start = event ? Math.max(0, event.startMs / 1000 - 0.18) : 0;
+      const end = event ? Math.min(clip.duration, event.endMs / 1000 + 0.25) : clip.duration;
+      if (end <= start) throw new Error("Clip offset is outside the recording");
+      const node = player.createBufferSource();
+      node.buffer = clip;
+      node.connect(player.destination);
+      node.onended = () => {
+        if (id !== playbackId.current) return;
+        source.current = null;
+        setPlaying(undefined);
+      };
+      node.start(0, start, end - start);
+      source.current = node;
+      setPlaying(event ?? take);
+    } catch {
+      if (id === playbackId.current) setPlaybackError("That clip couldn't play. Try it again.");
+    }
+  }
 
   return (
     <section className="flow" aria-labelledby="results-title">
@@ -55,27 +120,32 @@ export function Results({
           {sample && <p className="eyebrow sample-label">Sample replay</p>}
           <h1 id="results-title" tabIndex={-1}>{retry ? "Two takes." : "First take."}</h1>
         </div>
-        {retry && <p className={delta < 0 ? "change change-positive" : "change"}>{change}</p>}
+        {comparison && <p className={decreased ? "change change-positive" : "change"}>{comparison}</p>}
       </div>
+      {sample && (
+        <div className="action-row" role="group" aria-label="Sample speaker">
+          {sample.names.map((name, index) => (
+            <button className="secondary" key={name} aria-pressed={index === sample.selected} onClick={() => sample.onSelect(index)}>{name}</button>
+          ))}
+        </div>
+      )}
       <div className={retry ? "stat-grid take-grid" : "take-grid"}>
-        <TakeCard take={first} label="First take" sample={sample} baseline />
-        {retry && <TakeCard take={retry} label="Retry" sample={sample} />}
+        <TakeCard take={first} label={attempt <= 2 ? "First take" : `Take ${attempt - 1}`} baseline onPlay={(event) => void playClip(first, event)} playing={playing} />
+        {retry && <TakeCard take={retry} label={attempt === 2 ? "Retry" : `Take ${attempt}`} onPlay={(event) => void playClip(retry, event)} playing={playing} />}
       </div>
+      {playbackError && <p className="alert" role="alert">{playbackError}</p>}
       <div className="coaching">
         <div>
-          <h2 className="eyebrow">Coach’s suggestion</h2>
+          <h2 className="eyebrow">{nextRule ? `Next focus · “${nextRule.target}”` : "Coach’s suggestion"}</h2>
           <p>{current.suggestion}</p>
         </div>
-        <button className="secondary" onClick={() => speak(current.suggestion)}>Hear feedback</button>
+        <button className="secondary" onClick={() => { stopClip(); speak(current.suggestion); }}>Hear feedback</button>
       </div>
       <div className="action-row">
-        {retry ? (
-          <button className="primary" onClick={onRestart}>{sample ? "Back to live practice" : "Start new comparison"}</button>
-        ) : (
-          <button className="primary" onClick={onRetry}>Try the same prompt again <span aria-hidden="true">↗</span></button>
-        )}
+        <button className="primary" onClick={onRetry}>{sample ? "Back to live practice" : "Try the same prompt again"}</button>
+        {retry && onRestart && <button className="secondary" onClick={onRestart}>Start new comparison</button>}
       </div>
-      <p className="footnote muted">Pace is estimated from transcript words and recording time. Filler counts track sounds like “um” and “uh.”</p>
+      <p className="footnote muted">Pace is estimated from transcript words and recording time.</p>
     </section>
   );
 }

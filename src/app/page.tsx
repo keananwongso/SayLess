@@ -4,15 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { Practice } from "@/components/practice";
 import { Results } from "@/components/results";
 import { Wrapped } from "@/components/wrapped";
-import type { Take } from "@/lib/practice";
-import { samplePitches } from "@/lib/sample-pitches";
+import { nextTake, type PracticeSession, type Take } from "@/lib/practice";
+import { sampleProfiles } from "@/lib/sample-pitches";
+import { loadTakeAudio } from "@/lib/take-audio";
 import { stopSpeech } from "@/lib/speech";
 
 type Step = "wrapped" | "practice" | "results" | "sample";
 
 export default function Home() {
   const [step, setStep] = useState<Step>("wrapped");
-  const [takes, setTakes] = useState<[Take, Take?]>();
+  const [session, setSession] = useState<PracticeSession>();
+  const [sampleIndex, setSampleIndex] = useState(0);
+  const sample = sampleProfiles[sampleIndex];
   const main = useRef<HTMLElement>(null);
   const previousStep = useRef(step);
 
@@ -22,13 +25,21 @@ export default function Home() {
     main.current?.querySelector<HTMLElement>("div:not([hidden]) > section h1")?.focus();
   }, [step]);
 
+  useEffect(() => {
+    for (const profile of sampleProfiles) {
+      for (const take of profile.takes) {
+        if (take.audio) void loadTakeAudio(take.audio).catch(() => undefined);
+      }
+    }
+  }, []);
+
   function go(next: Step) {
     stopSpeech();
     setStep(next);
   }
 
   function save(result: Take) {
-    setTakes((current) => current ? [current[0], result] : [result]);
+    setSession((current) => nextTake(current, result));
     setStep("results");
   }
 
@@ -47,7 +58,7 @@ export default function Home() {
             <button aria-current={step === "practice" || step === "sample" ? "page" : undefined} onClick={() => go("practice")}>
               Practice
             </button>
-            {takes && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
+            {session && <button aria-current={step === "results" ? "page" : undefined} onClick={() => go("results")}>Results</button>}
           </nav>
         </div>
       </header>
@@ -56,20 +67,27 @@ export default function Home() {
           <Wrapped onPractice={() => go("practice")} />
         </div>
         {step === "practice" && (
-          <div><Practice attempt={takes ? 2 : 1} onResult={save} onSample={() => go("sample")} /></div>
+          <div>
+            <Practice attempt={(session?.attempt ?? 0) + 1} rule={session?.nextRule} onResult={save} onSample={() => go("sample")} />
+          </div>
         )}
         {step === "sample" && (
           <div>
-            <Results sample takes={samplePitches} onRetry={() => go("practice")} onRestart={() => go("practice")} />
+            <Results
+              key={sample.name}
+              session={nextTake(nextTake(undefined, sample.takes[0]), sample.takes[1])}
+              sample={{ names: sampleProfiles.map(({ name }) => name), selected: sampleIndex, onSelect: setSampleIndex }}
+              onRetry={() => go("practice")}
+            />
           </div>
         )}
-        {step === "results" && takes && (
+        {step === "results" && session && (
           <div>
             <Results
-              takes={takes}
+              session={session}
               onRetry={() => go("practice")}
               onRestart={() => {
-                setTakes(undefined);
+                setSession(undefined);
                 go("practice");
               }}
             />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MAX_AUDIO_BYTES, MAX_RECORDING_SECONDS, PITCH_PROMPT, type Feedback, type Take } from "@/lib/practice";
+import { MAX_AUDIO_BYTES, MAX_RECORDING_SECONDS, PITCH_PROMPT, stockCue, type CoachingRule, type Feedback, type Take } from "@/lib/practice";
 import { speak, stopSpeech } from "@/lib/speech";
 
 type Status = "idle" | "permission" | "recording" | "processing";
@@ -38,8 +38,9 @@ function recordingError(error: unknown) {
   return error instanceof Error ? error.message : "The recording didn't finish.";
 }
 
-export function Practice({ attempt, onResult, onSample }: {
+export function Practice({ attempt, rule, onResult, onSample }: {
   attempt: number;
+  rule?: CoachingRule;
   onResult: (take: Take) => void;
   onSample: () => void;
 }) {
@@ -130,7 +131,7 @@ export function Practice({ attempt, onResult, onSample }: {
           const response = await fetch("/api/practice", {
             method: "POST",
             body: form,
-            signal: AbortSignal.any([signal, AbortSignal.timeout(24_000)]),
+            signal: AbortSignal.any([signal, AbortSignal.timeout(11_000)]),
           });
           const data = await response.json().catch(() => null) as (Partial<Feedback> & { error?: string }) | null;
           if (!response.ok || !data?.transcript || !data.suggestion) {
@@ -139,8 +140,9 @@ export function Practice({ attempt, onResult, onSample }: {
           }
           if (signal.aborted) return;
           active.current = null;
-          speak(data.suggestion);
-          onResult({ transcript: data.transcript, suggestion: data.suggestion, seconds });
+          const suggestion = rule && !data.events ? stockCue(rule) : data.suggestion;
+          speak(suggestion);
+          onResult({ transcript: data.transcript, suggestion, events: data.events, seconds, audio });
         } catch (failure) {
           reset(failure instanceof Error && failure.name === "TimeoutError"
             ? "Live coaching timed out. Try again or watch the sample."
@@ -183,6 +185,7 @@ export function Practice({ attempt, onResult, onSample }: {
             Your coach asks
           </h2>
           <p className="prompt">{PITCH_PROMPT}</p>
+          {rule && <p className="footnote"><strong>Focus on “{rule.target}.”</strong> Try a brief pause in its place.</p>}
           <div className="record-controls">
             {status === "recording" ? (
               <button className="primary is-recording" onClick={stopRecording}><span className="record-dot" aria-hidden="true" />Stop &amp; get feedback</button>
@@ -197,7 +200,7 @@ export function Practice({ attempt, onResult, onSample }: {
           </div>
           {error && <p className="alert" role="alert">{error}</p>}
           <p className="footnote" role="status">
-            {status === "processing" ? "Transcribing your pitch and finding one improvement." : "Your recording is sent to OpenAI for feedback."}
+            {status === "processing" ? "Transcribing your pitch and finding one improvement." : "Your recording is sent for transcription and stays in this tab for replay."}
           </p>
         </div>
       </div>

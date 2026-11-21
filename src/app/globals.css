@@ -491,3 +491,6 @@ button:disabled { cursor: default; opacity: .58; }
   .header-inner { flex-wrap: wrap; padding-block: 8px; }
   .site-header nav { flex-wrap: wrap; }
 }
+
+.filler-clips { max-height: 156px; overflow: auto; padding: 4px; }
+.secondary[aria-pressed="true"] { background: var(--color-lilac); }
