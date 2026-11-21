@@ -28,8 +28,7 @@ export default function DocsPage() {
         <div className={styles.features}>
           <section>
             <h3>Home</h3>
-            <p>Tap <strong>Roll daily quest</strong> on Home to reveal a prompt and try the recording preview. Open <strong>Practice your pitch</strong> from Profile for live coaching and a two-take comparison. Select <strong>Watch sample replay</strong> in Practice to hear a prerecorded comparison.</p>
-            <p>Finish in 20 seconds or less with at most two filler sounds, then return to Home to claim {dailyChallenge.xp} XP for the day.</p>
+            <p>Open Home for the daily quest, your check-ins, and your streak. To earn {dailyChallenge.xp} XP, record a practice take of 20 seconds or less with at most two filler sounds, then claim it on Home.</p>
           </section>
           <section>
             <h3>Stats</h3>
@@ -44,6 +43,7 @@ export default function DocsPage() {
           <section>
             <h3>Profile</h3>
             <p>Edit your display name and see your saved check-ins, streak, and XP. Practice totals cover the current session.</p>
+            <p>Select <strong>Practice your pitch</strong> to record a take, get one coaching cue, and try the same prompt again. Use <strong>Watch sample replay</strong> in Practice to hear a prerecorded comparison.</p>
           </section>
         </div>
       </section>
