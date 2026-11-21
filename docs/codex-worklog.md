@@ -14,6 +14,10 @@ Profile adds an editable display name, saved challenge XP and streak, a seven-da
 
 Lint, typecheck, build, and served landing checks passed. Chrome verified scroll and tab behavior at 320px, 390px, and 1440px, profile progress and name persistence, sample replay, and the five-step demo.
 
+## Pitch deck URL — November 21, 2026
+
+On `codex/pitch-route`, added a Next.js rewrite so `/pitch` serves Allison’s existing deck and keeps the short URL in the address bar. Lint, typecheck, and production build passed. The production server returned HTTP 200 and identical HTML from `/pitch` and `/pitch.html`.
+
 ## Shared navigation and phone-first demo — November 21, 2026
 
 On `codex/shared-site-navigation`, moved the landing navbar into the root layout and kept workspace tabs inside the app. Capped the workspace and Jade’s demo at 600px. Analyze starts with a recording picker, Wrapped leads with one insight, and Practice prioritizes recording. Challenges and results stack in a single column. Shortened the landing preview label to “Sample.”
@@ -69,6 +73,7 @@ Each entry should include the date and branch or commit, the change or decision,
 | Voice analysis implementation | Added the Deepgram adapter, automatic rule updates, playable filler clips, two synthetic speakers, and request tracing. | Verified rule transitions and offline clip playback in Chrome with mocked Deepgram responses. The OpenAI transcript-only path processed a synthetic take in about 3.7 seconds locally. Real Deepgram accuracy and latency need a configured key. |
 | Phase 4 and voice integration | Connected Challenges to count-only take summaries and kept the latest audio pair in Practice for replay. | All four synthetic clips returned the expected filler counts from live Deepgram. Marker starts differed by at most 198 ms from the fixture markers. Local API responses took 1.7–2.5 seconds. |
 | Palette and typography | Applied the six reference colors across SayLess, set display titles in lowercase, and emphasized “REAL MOMENTUM.” with a Jonquil highlight. | Checked palette contrast and exercised Wrapped, Challenges, and sample replay in Chrome at desktop and mobile widths. |
+| HTML pitch · `presentation` | Added a six-slide [browser deck](../public/pitch.html) with speaker notes, sourced statistics, a chat screenshot gallery, and a demo title card. | Checked desktop and mobile layout and keyboard navigation in Chrome. |
 
 See the [voice analysis architecture](voice-analysis.md), [practice API and tracing guide](voice-api.md), and [demo rehearsal notes](demo-rehearsal.md).
 
