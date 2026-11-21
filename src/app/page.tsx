@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Wrapped } from "@/components/wrapped";
 
 export default function Home() {
   const [step, setStep] = useState<"wrapped" | "practice">("wrapped");
@@ -21,13 +22,10 @@ export default function Home() {
         </nav>
       </header>
       <main className="shell">
-        {step === "wrapped" ? (
-          <section className="hero">
-            <p className="eyebrow">Communication Wrapped</p>
-            <h1>Say less.<br /><em>Mean more.</em></h1>
-            <button className="primary" onClick={() => setStep("practice")}>Practice your pitch <span aria-hidden="true">↗</span></button>
-          </section>
-        ) : (
+        <div hidden={step !== "wrapped"}>
+          <Wrapped onPractice={() => setStep("practice")} />
+        </div>
+        {step === "practice" && (
           <section className="hero">
             <p className="eyebrow">Pitch practice</p>
             <h1>Make your<br /><em>point.</em></h1>
