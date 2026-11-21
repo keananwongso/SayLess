@@ -1,5 +1,9 @@
 # Codex work log
 
+## Steady landing navigation — November 21, 2026
+
+On `codex/steady-landing-nav`, pinned the landing navbar at its original desktop and mobile insets and removed the "Use SayLess" hover lift. In-page targets clear the bar. Lint, typecheck, build, and the served landing check passed. Chrome verified the bar and button positions at 320px and 1440px and confirmed the preview anchor stays visible.
+
 ## Landing polish merge — November 21, 2026
 
 Merged `codex/landing-dots-polish` into `main`. Kept the grid, SVG dots, and interactive preview alongside the links to the working app, Jade’s demo, and the architecture page. The practice button opens `/app#practice`.
