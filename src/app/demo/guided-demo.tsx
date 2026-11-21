@@ -41,6 +41,7 @@ function FillerClip({ take, target, label, playing, onPlay }: {
 export function GuidedDemo() {
   const [index, setIndex] = useState(0);
   const { playing, playbackError, playClip, stopClip } = useTakePlayback();
+  const screen = useRef<HTMLElement>(null);
   const title = useRef<HTMLHeadingElement>(null);
   const previousIndex = useRef(0);
 
@@ -62,7 +63,7 @@ export function GuidedDemo() {
     if (previousIndex.current === index) return;
     previousIndex.current = index;
     title.current?.focus({ preventScroll: true });
-    window.scrollTo({ top: 0 });
+    screen.current?.scrollTo({ top: 0 });
   }, [index]);
 
   function move(next: number) {
@@ -72,8 +73,8 @@ export function GuidedDemo() {
   }
 
   return (
-    <div className="demo-onboarding" data-step={step.id}>
-      <main className="demo-shell" id="main">
+    <div className="phone-frame demo-onboarding" data-step={step.id}>
+      <main className="phone-screen" id="main" ref={screen} tabIndex={-1}>
         <div className="demo-progress">
           <p><strong>{step.label}</strong> · {index + 1} of {steps.length}</p>
           <progress aria-label="Demo progress" value={index + 1} max={steps.length} />
@@ -173,20 +174,19 @@ export function GuidedDemo() {
             )}
             {playbackError && <p className="alert" role="alert">{playbackError}</p>}
           </div>
-
-          <footer className="demo-controls">
-            {index > 0 && <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>}
-            {step.id === "finish" ? (
-              <>
-                <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
-                <Link href="/app#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
-              </>
-            ) : (
-              <button className="primary" onClick={() => move(index + 1)}>{step.action} <span aria-hidden="true">→</span></button>
-            )}
-          </footer>
         </section>
       </main>
+      <footer className="phone-dock demo-controls">
+        {index > 0 && <button className="demo-text-link" onClick={() => move(index - 1)}>Back</button>}
+        {step.id === "finish" ? (
+          <>
+            <button className="demo-text-link" onClick={() => move(0)}>Restart demo</button>
+            <Link href="/app#practice" className="primary">Try it with your voice <span aria-hidden="true">→</span></Link>
+          </>
+        ) : (
+          <button className="primary" onClick={() => move(index + 1)}>{step.action} <span aria-hidden="true">→</span></button>
+        )}
+      </footer>
     </div>
   );
 }

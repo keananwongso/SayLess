@@ -1,5 +1,13 @@
 # Codex work log
 
+## Phone interface and local profile — November 21, 2026
+
+On `codex/phone-interface`, added a desktop phone frame and full-width mobile screens for the app and Jade’s demo. App tabs and demo actions stay reachable below scrolling content. Practice retains access to the last live results.
+
+Profile adds an editable display name, saved challenge XP and streak, a seven-day completion strip, and current-session practice stats. It shares the existing browser challenge store.
+
+Lint, typecheck, build, and served landing checks passed. Chrome verified scroll and tab behavior at 320px, 390px, and 1440px, profile progress and name persistence, sample replay, and the five-step demo.
+
 ## Shared navigation and phone-first demo — November 21, 2026
 
 On `codex/shared-site-navigation`, moved the landing navbar into the root layout and kept workspace tabs inside the app. Capped the workspace and Jade’s demo at 600px. Analyze starts with a recording picker, Wrapped leads with one insight, and Practice prioritizes recording. Challenges and results stack in a single column. Shortened the landing preview label to “Sample.”

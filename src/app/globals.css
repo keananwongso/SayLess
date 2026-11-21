@@ -62,40 +62,70 @@ button:disabled { cursor: default; opacity: .58; }
 
 .wordmark, .shell h1 { text-transform: lowercase; }
 
-.workspace-nav {
-  display: flex;
-  flex-wrap: wrap;
-  width: fit-content;
-  margin-bottom: 24px;
-  text-transform: lowercase;
-  align-items: center;
-  gap: 4px;
-  padding: 4px;
-  background: var(--color-dune);
+.phone-frame {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(420px, calc(100% - 2 * var(--gutter)));
+  height: clamp(440px, calc(100dvh - 130px), 760px);
+  margin: 18px auto;
+  overflow: hidden;
+  border: 8px solid var(--color-ink);
+  border-radius: 44px;
+  background: var(--color-surface);
+  box-shadow: 0 24px 56px color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+
+.phone-frame::before {
+  content: "";
+  justify-self: center;
+  width: 44px;
+  height: 5px;
+  margin-block: 10px 3px;
   border-radius: 999px;
-  font-size: 14px;
-  font-weight: 650;
+  background: var(--color-ink);
+}
+
+.phone-screen {
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  padding: 16px 16px 24px;
+  scroll-padding-block: 16px 24px;
+  background: color-mix(in srgb, var(--color-dune) 35%, var(--color-surface));
+}
+
+.phone-dock {
+  padding-block: 8px max(8px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-divider);
+  background: var(--color-surface);
+}
+
+.workspace-nav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 2px;
+  padding-inline: 8px;
 }
 
 .workspace-nav button {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding-inline: 16px;
-  border-radius: inherit;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  min-height: 52px;
+  border-radius: var(--control-radius);
   color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 650;
 }
 
 .workspace-nav button:hover { color: var(--color-ink); }
-
-.workspace-nav button[aria-current] {
-  background: var(--color-surface);
-  color: var(--color-ink);
-  box-shadow: 0 1px 4px color-mix(in srgb, var(--color-ink) 14%, transparent);
-}
+.workspace-nav button[aria-current] { background: var(--color-dune); color: var(--color-ink); }
+.workspace-nav svg { width: 21px; height: 21px; }
 
 .shell { padding-block: clamp(24px, 4vw, 56px) 48px; }
-.workspace-shell { max-width: 600px; padding-top: 24px; }
 .flow, .take-grid { display: grid; gap: 20px; }
 
 .panel {
@@ -118,7 +148,7 @@ button:disabled { cursor: default; opacity: .58; }
 }
 
 .change { background: var(--color-dune); }
-.workspace-shell h1 {
+.workspace-screen h1 {
   font-size: clamp(32px, 7vw, 42px);
   font-weight: 780;
   line-height: 1.04;
@@ -397,7 +427,17 @@ button:disabled { cursor: default; opacity: .58; }
 
 @media (width < 520px) {
   :root { --header-clearance: 136px; }
-  .workspace-nav button { padding-inline: 8px; }
+  .phone-frame {
+    grid-template-rows: minmax(0, 1fr) auto;
+    width: 100%;
+    height: max(300px, calc(100dvh - var(--header-clearance)));
+    margin: 10px 0 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .phone-frame::before { display: none; }
+  .workspace-nav button { font-size: 10px; }
 }
 
 .filler-clips { max-height: 156px; overflow: auto; padding: 4px; }

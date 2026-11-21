@@ -1,0 +1,30 @@
+.hero {
+  display: grid;
+  gap: 12px;
+  border-radius: var(--card-radius);
+  overflow-wrap: anywhere;
+}
+.banner {
+  display: grid;
+  place-items: center;
+  min-height: 140px;
+  border-radius: var(--card-radius);
+  background: radial-gradient(circle, var(--color-surface) 0 54px, transparent 55px),
+    color-mix(in srgb, var(--color-lavender) 32%, var(--color-surface));
+}
+.avatar { width: 92px; height: 92px; }
+.textAction { min-height: 44px; justify-self: start; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.edit { display: grid; gap: 8px; }
+.edit input { min-height: 44px; padding: 8px 12px; border: 1px solid var(--color-control-border); border-radius: var(--control-radius); background: var(--color-surface); }
+.metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-divider); border-radius: var(--card-radius); background: var(--color-surface); }
+.metrics > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; padding: 12px 8px; text-align: center; overflow-wrap: anywhere; }
+.metrics > div + div { border-left: 1px solid var(--color-divider); }
+.metrics dt, .week > p { color: var(--color-muted); font-size: 13px; }
+.metrics dd { font-size: 24px; font-weight: 780; font-variant-numeric: tabular-nums; }
+.week { border: 1px solid var(--color-divider); }
+.week h2 { font-size: 20px; font-weight: 750; }
+.days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin-top: 4px; }
+.days li { display: grid; justify-items: center; gap: 4px; font-size: 11px; color: var(--color-muted); }
+.days abbr { text-decoration: none; }
+.days li > span:first-child { display: grid; place-items: center; width: 100%; max-width: 36px; aspect-ratio: 1; border-radius: 8px; background: var(--color-dune); color: var(--color-ink); font-size: 16px; font-weight: 700; }
+.days [data-completed="true"] > span:first-child { background: var(--color-mint); }
