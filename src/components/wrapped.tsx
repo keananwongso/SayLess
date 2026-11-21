@@ -134,13 +134,13 @@ export function Wrapped({ onPractice }: { onPractice: () => void }) {
       </div>
 
       <div className="stat-grid">
-        <article className="panel panel-lilac">
+        <article className="panel panel-lavender">
           <h2 className="eyebrow">Signature phrase</h2>
           {insight.phrase ? (
             <><p className="stat-value">“{insight.phrase.text}”</p><p>{format(insight.phrase.count)} appearances</p></>
           ) : <p>No repeated phrase found.</p>}
         </article>
-        <article className="panel panel-peach">
+        <article className="panel panel-melon">
           <h2 className="eyebrow">Messages with questions</h2>
           <p className="stat-value">{format(insight.questions)}</p>
           <p>{insight.questions ? "Curious or confused?" : "Keeping it declarative."}</p>

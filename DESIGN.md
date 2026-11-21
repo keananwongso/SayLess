@@ -1,23 +1,23 @@
 # SayLess design system
 
-Use this system across SayLess screens, shared components, and product visuals. The direction is a light lavender canvas, bold ink typography, rounded cards, and colorful stickers that make practice feel approachable. Draw original SayLess marks from simple speech bubbles, pauses, and sound waves.
+Use this system across SayLess screens, shared components, and product visuals. The direction is a warm Dune canvas with saturated accents, bold ink typography, rounded cards, and colorful stickers that make practice feel approachable. Draw original SayLess marks from simple speech bubbles, pauses, and sound waves.
 
 ## Color
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| `--color-canvas` | `#F4F1FA` | Page background |
+| `--color-dune` | `#EEE1E0` | Warm page background and neutral fills |
 | `--color-surface` | `#FFFFFF` | Navigation, cards, and inputs |
-| `--color-ink` | `#201B2C` | Headlines, body text, and primary button fill |
-| `--color-muted` | `#5E566C` | Supporting text on canvas or white |
-| `--color-divider` | `#DDD5E7` | Decorative dividers and card borders |
-| `--color-control-border` | `#756889` | Input and outlined button boundaries |
-| `--color-focus` | `#5A3496` | Keyboard focus ring |
-| `--color-lime` | `#CBF58C` | Main Wrapped reveal and positive changes |
-| `--color-lilac` | `#DEC5FF` | Signature phrases and coach feedback |
-| `--color-sky` | `#BBDDFC` | Voice prompt, first-take metrics, and informational highlights |
-| `--color-peach` | `#FFBD99` | Secondary Wrapped insights and decorative stickers |
-| `--color-butter` | `#FFE28A` | Sample replay label and decorative stickers |
+| `--color-ink` | `#190F17` | Headlines, body text, and primary button fill |
+| `--color-muted` | `#53424E` | Supporting text on canvas or white |
+| `--color-divider` | `#DBCDCE` | Decorative dividers and card borders |
+| `--color-control-border` | `#362535` | Input and outlined button boundaries |
+| `--color-focus` | `#401454` | Keyboard focus ring |
+| `--color-mint` | `#07B682` | Positive changes and challenge completions |
+| `--color-lavender` | `#FFB7F1` | Signature phrases and coach feedback |
+| `--color-azure` | `#067FF3` | Voice prompt, first-take metrics, and informational highlights |
+| `--color-melon` | `#FFA88F` | Secondary Wrapped insights and decorative stickers |
+| `--color-jonquil` | `#F7CD1B` | Main Wrapped reveal, sample replay label, and headline emphasis |
 | `--color-error-surface` | `#FDE0E3` | Error banners |
 | `--color-error-ink` | `#8D213B` | Error text and active recording indicator |
 
@@ -39,9 +39,9 @@ Use this system across SayLess screens, shared components, and product visuals. 
 | --- | --- |
 | Primary action | Ink pill with white text. Give the main action one clear verb and one prominent placement. |
 | Secondary action | White or transparent fill, ink label, and control border. Use for hearing audio, importing a file, and opening a sample. |
-| Wrapped | Lead with one lime card for the most repeated word. Use lilac for a signature phrase and peach for a secondary insight. Show the source and counts next to the insight. |
-| Practice | Use a sky card for the prompt with a prominent recording control. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
-| Results | Use the same metric order and units on both takes. Use sky for the baseline highlight, lime for a positive change, and lilac for the coaching suggestion. Use butter for the sample replay label. |
+| Wrapped | Lead with one Jonquil card for the most repeated word. Use Lavender for a signature phrase and Melon for a secondary insight. Show the source and counts next to the insight. |
+| Practice | Use an Azure card for the prompt with a prominent recording control. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
+| Results | Use the same metric order and units on both takes. Use Azure for the baseline highlight, Mint for a positive change, and Lavender for the coaching suggestion. Use Jonquil for the sample replay label. |
 | Stickers | Use original, simple shapes with thick ink marks. Place them beside an insight or on an empty state where they leave the primary action and data legible. |
 
 Write coaching copy that is specific, encouraging, and grounded in the take. Use playful language for Wrapped when it fits the data.

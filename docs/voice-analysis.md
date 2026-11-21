@@ -24,9 +24,9 @@ flowchart LR
     F -->|Speaker retries| A
     C -.-> G["Vercel logs<br/>Request ID, timings, event count"]
 
-    classDef voice fill:#BBDDFC,stroke:#756889,color:#201B2C
-    classDef analysis fill:#CBF58C,stroke:#756889,color:#201B2C
-    classDef learning fill:#DEC5FF,stroke:#756889,color:#201B2C
+    classDef voice fill:#067FF3,stroke:#362535,color:#190F17
+    classDef analysis fill:#07B682,stroke:#362535,color:#190F17
+    classDef learning fill:#FFB7F1,stroke:#362535,color:#190F17
     class A,B voice
     class C,D analysis
     class E,F learning
