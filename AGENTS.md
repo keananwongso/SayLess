@@ -10,6 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## SayLess team workflow
 
+- Read [DESIGN.md](DESIGN.md) at the start of every task. Use its design tokens and component rules for any SayLess UI or product visuals.
 - Branch from the latest `origin/main` for each task. Keep changes in small commits and push your task branch for review.
 - Agree on the files each teammate will edit before working in parallel. Coordinate changes to `package.json`, the lockfile, the page flow, and global styles in the team chat because multiple tasks can touch them.
 - If a task depends on another branch or changes the practice API, flag that in the team chat and include it in your handoff.
