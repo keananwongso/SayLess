@@ -190,3 +190,7 @@ On `main`, replaced the sample friend quest with four synthetic profiles and pra
 ## Practice screen and onboarding outlook
 
 Simplified Practice to one Azure prompt card and a separate recording action. The last onboarding step now frames Jade’s two-week targets as an example. Home reuses the landing page’s compact progress chart for new sessions and shows fillers per minute after a recorded take. Lint, typecheck, and build passed. Chrome verified mobile Home, the onboarding walkthrough, Wrapped → Practice → Results with synthetic audio and mocked coaching, and the sample replay screen.
+
+## Public homepage spacing
+
+Aligned the three-step section, pitch action, and footer to the preview width. Reduced vertical gaps and made the steps compact rows on mobile. Lint, typecheck, build, and the landing smoke test passed. Chrome checked alignment and overflow at 1440, 390, and 320 pixels.
