@@ -45,3 +45,13 @@
   .mobileChart text { font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .waveCard *, .goalCard * { transition: none !important; animation: none !important; } }
+
+.compactChart {
+  display: block;
+  width: 100%;
+}
+
+.compactChart text {
+  fill: var(--color-muted);
+  font-size: 14px;
+}

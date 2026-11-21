@@ -186,3 +186,7 @@ The landing, Jade’s demo, working app, and architecture now have separate rout
 ## Workspace friends and daily quest
 
 On `main`, replaced the sample friend quest with four synthetic profiles and practice streaks. Home now rolls for a speaking prompt and opens a 20-second recording preview. The preview uses local UI state with no audio capture or XP award. Live pitch practice remains available from Profile. Lint, typecheck, and build passed. Chrome verified the popup, countdown, stop, retry, Escape focus return, and the four friends.
+
+## Practice screen and onboarding outlook
+
+Simplified Practice to one Azure prompt card and a separate recording action. The last onboarding step now frames Jade’s two-week targets as an example. Home reuses the landing page’s compact progress chart for new sessions and shows fillers per minute after a recorded take. Lint, typecheck, and build passed. Chrome verified mobile Home, the onboarding walkthrough, Wrapped → Practice → Results with synthetic audio and mocked coaching, and the sample replay screen.

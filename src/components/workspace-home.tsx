@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ConversationProjection } from "@/components/conversation-projection";
 import { DailyQuestPreview } from "@/components/daily-quest-preview";
+import { PracticeHistoryChart, PracticeProjection } from "@/components/landing-graphs";
 import { SayLessDot } from "@/components/sayless-dot";
 import { saveChallengeProgress, useChallengeProgress } from "@/lib/challenge-progress";
 import { currentStreak, DAILY_XP, localDay, qualifiesForDailyChallenge, type ChallengeTake } from "@/lib/challenges";
@@ -24,6 +25,7 @@ export function WorkspaceHome({ takes, onFriends }: {
   const weekTotal = week.filter((date) => completed.has(date)).length;
   const streak = currentStreak(progress.completedDates, now);
   const completedToday = completed.has(today);
+  const rates = takes.slice(-7).map(({ seconds, fillerCount }) => Math.round(600 * fillerCount / seconds) / 10);
   const canClaim = !completedToday && qualifiesForDailyChallenge(takes.at(-1));
 
   function claim() {
@@ -76,6 +78,17 @@ export function WorkspaceHome({ takes, onFriends }: {
           <button className="primary" onClick={claim}>Claim {DAILY_XP} XP</button>
         ) : null}
         {notice && <p className="footnote" role="status">{notice}</p>}
+      </article>
+
+      <article className={styles.card}>
+        {rates.length > 0 ? (
+          <>
+            <h2>Your practice progress</h2>
+            <PracticeHistoryChart rates={rates} />
+          </>
+        ) : (
+          <PracticeProjection compact />
+        )}
       </article>
 
       <button className={styles.friendsPreview} onClick={onFriends}>

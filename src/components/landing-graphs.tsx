@@ -61,7 +61,7 @@ export function TranscriptGraph() {
   </div>;
 }
 
-function JourneyChart({ compact }: { compact: boolean }) {
+function JourneyChart({ compact, alwaysVisible = false }: { compact: boolean; alwaysVisible?: boolean }) {
   const values = practiceJourney(75);
   const width = compact ? 340 : 720;
   const height = compact ? 224 : 236;
@@ -71,7 +71,7 @@ function JourneyChart({ compact }: { compact: boolean }) {
   const px = (index: number) => left + index / 12 * (right - left);
   const py = (value: number) => bottom - value / 8 * (bottom - 48);
   const points = values.map((value, index) => `${px(index)},${py(value)}`);
-  return <svg className={compact ? styles.mobileChart : styles.desktopChart} viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Illustrative four-week path: 8 fillers per minute at the start, 6.4 after example practice, and a projected goal of 2. Not a prediction.">
+  return <svg className={alwaysVisible ? styles.compactChart : compact ? styles.mobileChart : styles.desktopChart} viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Illustrative four-week path: 8 fillers per minute at the start, 6.4 after example practice, and a projected goal of 2. Not a prediction.">
     {[0, 4, 8].map(value => <g key={value}><line x1={left} x2={right} y1={py(value)} y2={py(value)} className={styles.gridLine} /><text x="6" y={py(value) + 5}>{value}</text></g>)}
     <g className={styles.chartReveal}>
       <polygon points={`${left},${bottom} ${points.join(" ")} ${right},${bottom}`} className={styles.goalArea} />
@@ -84,10 +84,40 @@ function JourneyChart({ compact }: { compact: boolean }) {
   </svg>;
 }
 
-export function PracticeProjection() {
+export function PracticeProjection({ compact = false }: { compact?: boolean }) {
+  const Heading = compact ? "h2" : "h3";
   return <div className={styles.goalCard}>
-    <div className={styles.heading}><h3>A little progress, over time.</h3><span className={styles.stat} title={`(${firstTotal} − ${retryTotal}) ÷ ${firstTotal} × 100; synthetic one-minute takes, not measured user results.`}>{reductionPercent}% fewer in sample</span></div>
+    <div className={styles.heading}><Heading>A little progress, over time.</Heading><span className={styles.stat} title={`(${firstTotal} − ${retryTotal}) ÷ ${firstTotal} × 100; synthetic one-minute takes, not measured user results.`}>{reductionPercent}% fewer in sample</span></div>
     <div className={styles.legend}><span>Example takes</span><span>Illustrative goal · fillers/min</span></div>
-    <JourneyChart compact={false} /><JourneyChart compact />
+    {compact ? <JourneyChart compact alwaysVisible /> : <><JourneyChart compact={false} /><JourneyChart compact /></>}
+  </div>;
+}
+
+export function PracticeHistoryChart({ rates }: { rates: number[] }) {
+  const left = 36;
+  const right = 312;
+  const top = 28;
+  const bottom = 116;
+  const max = Math.max(1, ...rates);
+  const points = rates.map((rate, index) => ({
+    x: rates.length === 1 ? (left + right) / 2 : left + index * (right - left) / (rates.length - 1),
+    y: bottom - rate / max * (bottom - top),
+    rate,
+  }));
+
+  return <div>
+    <div className={styles.legend}><span>Your takes · fillers/min</span></div>
+    <svg className={styles.compactChart} viewBox="0 0 340 146" role="img" aria-label={`Fillers per minute across recent takes, oldest first: ${rates.join(", ")}.`}>
+      <line x1={left} x2={right} y1={bottom} y2={bottom} className={styles.gridLine} />
+      <polyline points={points.map(({ x, y }) => `${x},${y}`).join(" ")} className={styles.goalLine} />
+      {points.map(({ x, y, rate }, index) => (
+        <g key={index} textAnchor="middle">
+          <circle cx={x} cy={y} r="4" className={styles.goalPoint} />
+          <text x={x} y={y - 10}>{rate}</text>
+        </g>
+      ))}
+      {rates.length > 1 && <text x={left} y="138">Older</text>}
+      <text x={rates.length === 1 ? (left + right) / 2 : right} y="138" textAnchor={rates.length === 1 ? "middle" : "end"}>Latest take</text>
+    </svg>
   </div>;
 }
