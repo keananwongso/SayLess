@@ -1,5 +1,11 @@
 # Codex work log
 
+## Public product docs — November 21, 2026
+
+On `codex/product-docs`, added `/docs` for setup, demo data, browser storage, and unshipped features. Linked the guide from the landing footer and README, indexed the engineering docs, and updated rehearsal steps for the current Yap Recap.
+
+Lint, typecheck, and build passed. The served landing check covers the Docs link and shared navbar. Verified the guide’s sections and links.
+
 ## Desktop handset preview for Jade’s demo — November 21, 2026
 
 On `codex/demo-device-preview`, put `/demo` inside a handset with a slim metal rim, camera cutout, side buttons, and home indicator. Narrow screens show the same steps edge to edge. Yap Recap uses an Ink word reveal on a Lavender card. Practice, Compare, and Finish use light Azure, Mint, and Jonquil surfaces. The working app retains its own layout.

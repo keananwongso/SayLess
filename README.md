@@ -8,6 +8,7 @@ SayLess is an AI communication coach for students and early-career professionals
 
 - [Use the app](https://sayless-nine.vercel.app/app) to analyze your own recording or practice a pitch.
 - [Watch Jade’s demo](https://sayless-nine.vercel.app/demo) for a guided walkthrough with prerecorded audio.
+- [Read the docs](https://sayless-nine.vercel.app/docs) for setup tips, demo data, and current feature limits.
 - [Explore the architecture](https://sayless-nine.vercel.app/architecture) to see how the analysis works.
 
 ## How it works

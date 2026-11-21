@@ -43,6 +43,7 @@ export default function Home() {
         <p>Say it your way.</p>
         <Link href="/architecture">Architecture</Link>
         <Link href="/demo">Demo</Link>
+        <Link href="/docs">Docs</Link>
       </footer>
     </div>
   );

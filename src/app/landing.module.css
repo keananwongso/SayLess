@@ -68,7 +68,7 @@ body:has(.page)::before {
 .closing h2 { font-size: 28px; font-weight: 650; letter-spacing: -.04em; }
 .footer { border-top: 1px solid var(--color-divider); padding-block: 20px; display: flex; align-items: center; gap: 24px; font-size: 14px; }
 .footer p { flex: 1; color: var(--color-muted); }
-.footer > a:last-child { display: inline-flex; align-items: center; min-height: 44px; }
+.footer > a { display: inline-flex; align-items: center; min-height: 44px; }
 .main a, .footer a, .screenButtons button { transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 .main :global(.primary):hover { transform: translateY(-2px); box-shadow: 0 5px 14px #190f1720; }
 .main a:active, .footer a:active, .screenButtons button:active { transform: translateY(0); }

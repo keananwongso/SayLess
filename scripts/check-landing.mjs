@@ -24,6 +24,7 @@ for (const element of ["header", "main", "section", "figure", "footer"]) {
 assert.match(css, /grid-template-columns/);
 assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
+assert.match(html, /href="\/docs"/);
 assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
 assert.match(html, /Sample ·/);
@@ -39,7 +40,7 @@ assert.ok(navbar, "The landing page must include the site navbar");
 for (const path of ["/architecture", "/demo", "/app"]) {
   assert.ok(navbar.includes(`href="${path}"`), `Navbar must link to ${path}`);
 }
-for (const path of ["/demo", "/app", "/architecture"]) {
+for (const path of ["/demo", "/app", "/architecture", "/docs"]) {
   const page = await fetch(new URL(path, base));
   assert.equal(page.status, 200, path);
   const markup = await page.text();
@@ -48,4 +49,4 @@ for (const path of ["/demo", "/app", "/architecture"]) {
 const legacy = await fetch(new URL("/practice", base), { redirect: "manual" });
 assert.equal(legacy.status, 307);
 assert.equal(legacy.headers.get("location"), "/app#practice");
-console.log("PASS: landing styles, artwork, demo, app, architecture, and practice redirect");
+console.log("PASS: landing styles, artwork, demo, app, architecture, docs, and practice redirect");
