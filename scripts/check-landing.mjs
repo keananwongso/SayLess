@@ -26,7 +26,7 @@ assert.match(css, /700px/);
 assert.match(html, /href="\/demo"/);
 assert.match(html, /id="landing-title"/);
 assert.match(html, /id="how-it-works"/);
-assert.match(html, /Sample ·/);
+assert.doesNotMatch(html, /Illustrative sample|Small words\. A visible pattern\.|First take · 60 seconds|60s take · silent 3× preview/);
 assert.match(html, /aria-controls="preview-content"/);
 assert.match(html, /href="\/app"/);
 assert.match(html, /href="\/app#practice"/);
@@ -39,6 +39,10 @@ assert.ok(navbar, "The landing page must include the site navbar");
 for (const path of ["/architecture", "/demo", "/app"]) {
   assert.ok(navbar.includes(`href="${path}"`), `Navbar must link to ${path}`);
 }
+assert.doesNotMatch(html, /<audio\b/);
+assert.match(html, /data-reveal/);
+assert.doesNotMatch(html, /<details/);
+assert.match(html, /<mark>Um<\/mark>/);
 for (const path of ["/demo", "/app", "/architecture"]) {
   const page = await fetch(new URL(path, base));
   assert.equal(page.status, 200, path);
