@@ -45,7 +45,7 @@ Use the shared sticky site navbar on every page. On desktop, show Jade’s guide
 | Secondary action | White or transparent fill, ink label, and control border. Use for hearing audio, importing a file, and opening a sample. |
 | Analyze | Start with one recording picker. Show the analysis action after a file is selected, then display the report beneath it. |
 | Wrapped | Lead with a single Ink card and large Lavender type for the most repeated word. Show its source and count. Use neutral rows for secondary stats and disclosures for detailed insights. |
-| Demo Yap Recap | Highlight Jade’s most repeated word in large Lavender type on Ink. Use a subtle corner pattern and keep chat details behind a disclosure. |
+| Demo Yap Recap | Highlight Jade’s most repeated word in large Ink type on Lavender. Use a subtle corner pattern and keep chat details behind a disclosure. |
 | Practice | Put the prompt on a pale Azure fill inside a single card. Keep recording as the primary action. Show the timer, processing state, or error beside the control and keep sample replay reachable. |
 | Profile | Use a dot avatar, compact stats, and a seven-day completion strip. Show practice totals for the current session and challenge progress saved in the browser. |
 | Results | Use the same metric order and units on both takes. Use Azure for the baseline highlight, Mint for a positive change, and Lavender for the coaching suggestion. Use Jonquil for the sample replay label. |
