@@ -25,4 +25,6 @@ Run `npm run lint`, `npm run typecheck`, and `npm run build` before deploying.
 
 ## Team kickoff
 
+Start with the [shared agent instructions](AGENTS.md). Claude Code loads them through `CLAUDE.md`.
+
 The [hackathon kickoff prompt](docs/hackathon-kickoff-prompt.md) is the original template. It still contains placeholders for team roles, branch ownership, and the schedule.
