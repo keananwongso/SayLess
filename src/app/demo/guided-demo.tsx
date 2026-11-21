@@ -85,6 +85,7 @@ export function GuidedDemo() {
           <div className="demo-content" key={step.id}>
             {step.id === "setup" && (
               <>
+                <SayLessDot className="demo-avatar" mood="curious" color="lavender" />
                 <h1 id="demo-title" ref={title} tabIndex={-1}>meet <span className="demo-story-name">jade.</span></h1>
                 <p className="demo-copy">Jade built a tool for students who get nervous presenting. Follow her first SayLess session as she rehearses her project pitch.</p>
                 <p className="demo-note">Fictional story with prerecorded audio.</p>

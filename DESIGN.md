@@ -37,7 +37,7 @@ Use this system across SayLess screens, shared components, and product visuals. 
 
 The public landing page uses a white Surface canvas with an Azure-tinted grid fading into white. Keep Dune for the app and subtle control fills. Use original SVG dot characters with thick Ink expressions, the existing accent tokens, and short 180–400ms entrance/control transitions; disable these for reduced-motion preferences.
 
-Use the shared sticky site navbar on every page. Show the workspace and Jade’s demo on a compact, content-sized surface on desktop and edge to edge on phones. Let content scroll above the workspace’s bottom tabs or the demo’s bottom controls. Give each screen one prominent next action.
+Use the shared sticky site navbar on every page. On desktop, show Jade’s guided demo inside a handset with a slim rim, camera cutout, and home indicator. Keep the working app on a compact web surface. On phones, both views use the available width and omit the mock hardware. Let content scroll above the bottom controls and give each screen one prominent next action.
 
 | Pattern | SayLess treatment |
 | --- | --- |
