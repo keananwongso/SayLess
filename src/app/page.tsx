@@ -34,10 +34,6 @@ export default function Home() {
             <article><SayLessDot mood="calm" color="mint" className={styles.stepDot} /><h3>Hear your progress</h3><p>Replay both takes. Keep what works.</p></article>
           </div>
         </section>
-        <section className={styles.closing} aria-labelledby="closing-title" data-reveal>
-          <h2 id="closing-title">your next take starts here.</h2>
-          <Link className="primary" href="/app#practice">Practice your pitch</Link>
-        </section>
       </main>
       <footer className={styles.footer}>
         <Link href="/" className="wordmark">sayless</Link>
