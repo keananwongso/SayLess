@@ -92,7 +92,7 @@
 .questDialog {
   position: fixed;
   inset: 0;
-  width: min(calc(100% - 32px), 360px);
+  width: min(calc(100% - 48px), 304px);
   height: fit-content;
   max-height: calc(100dvh - 32px);
   margin: auto;
