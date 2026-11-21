@@ -39,11 +39,12 @@ function recordingError(error: unknown) {
   return error instanceof Error ? error.message : "The recording didn't finish.";
 }
 
-export function Practice({ attempt, rule, onResult, onSample }: {
+export function Practice({ attempt, rule, onResult, onSample, onPreviousResults }: {
   attempt: number;
   rule?: CoachingRule;
   onResult: (take: Take) => void;
   onSample: () => void;
+  onPreviousResults?: () => void;
 }) {
   const [status, setStatus] = useState<Status>("idle");
   const [elapsed, setElapsed] = useState(0);
@@ -200,7 +201,10 @@ export function Practice({ attempt, rule, onResult, onSample }: {
           {status === "processing" ? "Transcribing your pitch and finding one improvement." : "We send your recording for transcription and keep it in this tab for replay."}
         </p>
       </div>
-      <button className={styles.textAction} onClick={onSample}>Watch sample replay</button>
+      <div className="action-row">
+        <button className={styles.textAction} onClick={onSample}>Watch sample replay</button>
+        {onPreviousResults && <button className={styles.textAction} onClick={onPreviousResults}>View last results</button>}
+      </div>
     </section>
   );
 }

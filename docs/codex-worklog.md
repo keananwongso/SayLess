@@ -4,6 +4,20 @@
 
 On `codex/pitch-fullscreen`, expanded the active slide to the screen edges in fullscreen, hid the toolbar while presenting, and removed speaker notes. The deck fills the browser viewport when native fullscreen is blocked. Lint, typecheck, and build passed. Chrome verified native fullscreen, hidden controls, keyboard navigation through all six slides, and exiting native and viewport fullscreen.
 
+## Demo Yap Recap and responsive layout — November 21, 2026
+
+Replaced the imitation phone hardware with a content-sized desktop surface. On phones, the app and demo stay edge to edge with controls below scrolling content. Renamed Jade’s demo reveal to Yap Recap and gave the source-backed word count a distinct Ink and Lavender treatment. Simplified the finish screen around one primary action.
+
+Lint, typecheck, build, and served landing checks passed. Chrome verified all five demo steps and sample replay at 320px, 390px, and 1440px. Opened the recap details and inspected desktop captures of the reveal and finish.
+
+## Phone interface and local profile — November 21, 2026
+
+On `codex/phone-interface`, added a desktop phone frame and full-width mobile screens for the app and Jade’s demo. App tabs and demo actions stay reachable below scrolling content. Practice retains access to the last live results.
+
+Profile adds an editable display name, saved challenge XP and streak, a seven-day completion strip, and current-session practice stats. It shares the existing browser challenge store.
+
+Lint, typecheck, build, and served landing checks passed. Chrome verified scroll and tab behavior at 320px, 390px, and 1440px, profile progress and name persistence, sample replay, and the five-step demo.
+
 ## Pitch deck URL — November 21, 2026
 
 On `codex/pitch-route`, added a Next.js rewrite so `/pitch` serves Allison’s existing deck and keeps the short URL in the address bar. Lint, typecheck, and production build passed. The production server returned HTTP 200 and identical HTML from `/pitch` and `/pitch.html`.

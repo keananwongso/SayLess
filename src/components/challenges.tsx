@@ -1,44 +1,8 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
-import { currentStreak, dailyChallenge, DAILY_XP, fillerJarCount, improvementScore, localDay, qualifiesForDailyChallenge, type ChallengeProgress, type ChallengeTake } from "@/lib/challenges";
-
-const STORAGE_KEY = "sayless-challenge-progress-v1";
-const PROGRESS_CHANGE_EVENT = "sayless-challenge-progress-change";
-const defaultProgress: ChallengeProgress = { completedDates: [], xp: 0 };
-let cachedProgressValue: string | null | undefined;
-let cachedProgress = defaultProgress;
-
-function subscribeToProgress(callback: () => void) {
-  window.addEventListener("storage", callback);
-  window.addEventListener(PROGRESS_CHANGE_EVENT, callback);
-  return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener(PROGRESS_CHANGE_EVENT, callback);
-  };
-}
-
-function readProgress(): ChallengeProgress {
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === cachedProgressValue) return cachedProgress;
-    cachedProgressValue = stored;
-    if (!stored) {
-      cachedProgress = defaultProgress;
-      return cachedProgress;
-    }
-    const candidate = JSON.parse(stored) as Partial<ChallengeProgress>;
-    if (!Array.isArray(candidate.completedDates) || typeof candidate.xp !== "number") {
-      cachedProgress = defaultProgress;
-      return cachedProgress;
-    }
-    cachedProgress = { completedDates: candidate.completedDates.filter((day): day is string => typeof day === "string"), xp: candidate.xp };
-    return cachedProgress;
-  } catch {
-    cachedProgress = defaultProgress;
-    return cachedProgress;
-  }
-}
+import { useMemo, useState } from "react";
+import { saveChallengeProgress, useChallengeProgress } from "@/lib/challenge-progress";
+import { currentStreak, dailyChallenge, DAILY_XP, fillerJarCount, improvementScore, localDay, qualifiesForDailyChallenge, type ChallengeTake } from "@/lib/challenges";
 
 async function copyText(value: string) {
   if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
@@ -46,7 +10,7 @@ async function copyText(value: string) {
 }
 
 export function Challenges({ takes, onPractice }: { takes: ChallengeTake[]; onPractice: () => void }) {
-  const progress = useSyncExternalStore(subscribeToProgress, readProgress, () => defaultProgress);
+  const progress = useChallengeProgress();
   const [notice, setNotice] = useState("");
   const today = localDay();
   const latestTake = takes.at(-1);
@@ -63,8 +27,7 @@ export function Challenges({ takes, onPractice }: { takes: ChallengeTake[]; onPr
       completedDates: [...new Set([...progress.completedDates, today])],
       xp: progress.xp + DAILY_XP,
     };
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    window.dispatchEvent(new Event(PROGRESS_CHANGE_EVENT));
+    saveChallengeProgress(next);
     setNotice(`Daily challenge complete. ${DAILY_XP} XP added.`);
   }
 
